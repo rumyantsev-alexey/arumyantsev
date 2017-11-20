@@ -26,8 +26,7 @@ public class Triangle {
      * @return расстояние между точками left и right.
      */
     public double distance(Point left, Point right) {
-        double rr=Math.sqrt(Math.pow(left.getX()-right.getX(),2)+Math.pow(left.getY()-right.getY(),2));
-        return rr;
+        return Math.sqrt(Math.pow(left.getX()-right.getX(),2)+Math.pow(left.getY()-right.getY(),2));
     }
 
     /**
@@ -82,9 +81,6 @@ public class Triangle {
      * @return
      */
     public boolean exist(double ab, double ac, double bc) {
-        if ((ab<ac+bc)& (ac<ab+bc)&(bc<ac+ab))
-            return true;
-        else
-            return false;
+        return (ab<ac+bc)& (ac<ab+bc)&(bc<ac+ab) ? true : false;
     }
 }

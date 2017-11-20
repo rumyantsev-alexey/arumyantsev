@@ -6,9 +6,6 @@ public class Point {
     private final int A=15;
     private final int B=9;
 
-    private double fun (int x) {
-        return A*x+B;
-    }
 
     public  Point(int x, int y) {
         this.x = x;
@@ -23,9 +20,6 @@ public class Point {
         return this.y;
     }
     public boolean is(int x, int y) {
-        if (y==this.fun(x))
-            return true;
-        else
-            return false;
+        return y==A*x+B ? true : false;
     }
 }

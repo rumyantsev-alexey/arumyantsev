@@ -8,7 +8,7 @@ public class ArrayDuplicate {
         String swap;
         for (int i=0; i<arcut ;i++){
             for(int j=i+1;j<arcut;j++){
-                if (array[i]==array[j]){
+                if (array[i].equals(array[j])){
                     swap=array[j];
                     array[j]=array[arcut-1];
                     arcut--;

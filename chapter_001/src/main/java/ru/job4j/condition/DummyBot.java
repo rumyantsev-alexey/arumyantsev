@@ -12,9 +12,8 @@ public class DummyBot {
                 return "Привет, умник.";
             case "Пока.":
                 return "До скорой встречи.";
-            case "Сколько будет 2 + 2?":
+            default :
                 return "Это ставит меня в тупик. Спросите другой вопрос.";
         }
-        return "";
     }
 }

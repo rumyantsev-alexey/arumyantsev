@@ -20,6 +20,6 @@ public class Point {
         return this.y;
     }
     public boolean is(int x, int y) {
-        return y==A*x+B ? true : false;
+        return y==A*x+B;
     }
 }

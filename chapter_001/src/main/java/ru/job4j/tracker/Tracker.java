@@ -53,10 +53,10 @@ public class Tracker {
      * @param item существующая заявка
      */
     public void delete(Item item){
-        Item[] items2=Arrays.copyOf(items,position);
+        Item[] temp_items=Arrays.copyOf(items,position);
         for(int i=0; i<position;i++)
             if(items[i].getId().equals(item.getId())){
-                System.arraycopy(items2,i+1,items,i,position-i-1);
+                System.arraycopy(temp_items,i+1,items,i,position-i-1);
                 items[--position]=null;
                 break;
             }

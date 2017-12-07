@@ -6,12 +6,12 @@ package ru.job4j.professions;
 public class Project extends Subject {
     // конструктор для создания объекта Проект с "визуализацией"
 
-    public void Project(String nname, int aage, boolean iisMan, Profession.Special sspec, Profession.Status sstatus){
-        this.setName(nname);
-        this.setIsMan(iisMan);
-        this.setAge(aage);
-        this.setSpec(sspec);
-        this.setStatus(sstatus);
+    public void Project(String name, int age, boolean isMan, Profession.Special spec, Profession.Status status){
+        this.setName(name);
+        this.setIsMan(isMan);
+        this.setAge(age);
+        this.setSpec(spec);
+        this.setStatus(status);
         this.setWho("проект");
         System.out.println("Приветствуем "+this.getWho()+" "+this.getName()+" в нашей базе");
         System.out.println("Возраст: "+this.getAge()+" Пол: "+(getIsMan()?"муж":"жен"));

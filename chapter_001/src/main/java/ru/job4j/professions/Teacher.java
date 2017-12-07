@@ -7,12 +7,12 @@ public class Teacher extends Profession {
 
     // конструктор для создания объекта Учитель с "визуализацией"
 
-    public void Teacher(String nname,int aage,boolean iisMan,Special sspec,Qualification qqualif){
-        this.setName(nname);
-        this.setSpec(sspec);
-        this.setAge(aage);
-        this.setIsMan(iisMan);
-        this.setQualif(qqualif);
+    public void Teacher(String name,int age,boolean isMan,Special spec,Qualification qualif){
+        this.setName(name);
+        this.setSpec(spec);
+        this.setAge(age);
+        this.setIsMan(isMan);
+        this.setQualif(qualif);
         this.setWork("учит");
         this.setObSpec("учитель");
         System.out.println(this.getObSpec()+" "+this.getName()+" введен в базу");

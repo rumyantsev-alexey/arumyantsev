@@ -6,12 +6,12 @@ package ru.job4j.professions;
 public class Engeneer extends Profession{
 
     // конструктор для создания объекта Инженер с "визуализацией"
-    public void Engeneer(String nname,  int aage, boolean iisMan,Profession.Special sspec, Profession.Qualification qqualif){
-        this.setName(nname);
-        this.setSpec(sspec);
-        this.setAge(aage);
-        this.setIsMan(iisMan);
-        this.setQualif(qqualif);
+    public void Engeneer(String name,  int age, boolean isMan,Profession.Special spec, Profession.Qualification qualif){
+        this.setName(name);
+        this.setSpec(spec);
+        this.setAge(age);
+        this.setIsMan(isMan);
+        this.setQualif(qualif);
         this.setWork("делает");
         this.setObSpec("инженер");
         System.out.println(this.getObSpec()+" "+this.getName()+" введен в базу");

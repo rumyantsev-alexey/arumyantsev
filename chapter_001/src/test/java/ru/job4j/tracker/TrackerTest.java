@@ -36,58 +36,58 @@ public class TrackerTest {
     // тест метода FindById
     @Test
     public void whenFindByIdThenTrackerHasTrue() {
-        Item[] test_items = new Item[4];
+        Item[] items = new Item[4];
         // создаем тестовые заявки
-        test_items[0] = new Item("testname1", "testDesc1");
-        test_items[1] = new Item("testname2", "testDesc2");
-        test_items[2] = new Item("testname3", "testDesc3");
-        test_items[3] = new Item("testname4", "testDesc5");
+        items[0] = new Item("testname1", "testDesc1");
+        items[1] = new Item("testname2", "testDesc2");
+        items[2] = new Item("testname3", "testDesc3");
+        items[3] = new Item("testname4", "testDesc5");
         Tracker tracker = new Tracker();
         // добавляем заявки в трекер
-        tracker.add(test_items[0]);
-        tracker.add(test_items[1]);
-        tracker.add(test_items[2]);
-        tracker.add(test_items[3]);
+        tracker.add(items[0]);
+        tracker.add(items[1]);
+        tracker.add(items[2]);
+        tracker.add(items[3]);
         // проверяем что элемнт найденный по id третей заявки является третьим элементом
-        assertThat(tracker.findById(test_items[2].getId()), is(test_items[2]));
+        assertThat(tracker.findById(items[2].getId()), is(items[2]));
     }
     // тест метода FindByName
     @Test
     public void whenFindByNameThenTrackerHasTrue() {
-        Item[] test_items = new Item[4];
+        Item[] items = new Item[4];
         // создаем тестовые заявки
-        test_items[0] = new Item("testname1", "testDesc1");
-        test_items[1] = new Item("testname2", "testDesc2");
-        test_items[2] = new Item("testname3", "testDesc3");
-        test_items[3] = new Item("testname4", "testDesc5");
+        items[0] = new Item("testname1", "testDesc1");
+        items[1] = new Item("testname2", "testDesc2");
+        items[2] = new Item("testname3", "testDesc3");
+        items[3] = new Item("testname4", "testDesc5");
         Tracker tracker = new Tracker();
         // добавляем заявки в трекер
-        tracker.add(test_items[0]);
-        tracker.add(test_items[1]);
-        tracker.add(test_items[2]);
-        tracker.add(test_items[3]);
+        tracker.add(items[0]);
+        tracker.add(items[1]);
+        tracker.add(items[2]);
+        tracker.add(items[3]);
         // проверяем что элемнт найденный по имени второй заявки является вторым элементом
-        assertThat(tracker.findByName(test_items[1].getName())[0], is(test_items[1]));
+        assertThat(tracker.findByName(items[1].getName())[0], is(items[1]));
     }
     @Test
     // тест метода del
     public void whenDelItemThenTrackerDoesIt() {
-        Item[] test_items = new Item[4];
+        Item[] items = new Item[4];
         // создаем тестовые заявки
-        test_items[0] = new Item("testname1", "testDesc1");
-        test_items[1] = new Item("testname2", "testDesc2");
-        test_items[2] = new Item("testname3", "testDesc3");
-        test_items[3] = new Item("testname4", "testDesc5");
+        items[0] = new Item("testname1", "testDesc1");
+        items[1] = new Item("testname2", "testDesc2");
+        items[2] = new Item("testname3", "testDesc3");
+        items[3] = new Item("testname4", "testDesc5");
         Tracker tracker = new Tracker();
         // добавляем заявки в трекер
-        tracker.add(test_items[0]);
-        tracker.add(test_items[1]);
-        tracker.add(test_items[2]);
-        tracker.add(test_items[3]);
+        tracker.add(items[0]);
+        tracker.add(items[1]);
+        tracker.add(items[2]);
+        tracker.add(items[3]);
         // удаляем 3й элемент
-        tracker.delete(test_items[2]);
+        tracker.delete(items[2]);
         // проверяем встал ли на его место 4й
-        assertThat(tracker.findAll()[2].getName(), is(test_items[3].getName()));
+        assertThat(tracker.findAll()[2].getName(), is(items[3].getName()));
     }
 
 }

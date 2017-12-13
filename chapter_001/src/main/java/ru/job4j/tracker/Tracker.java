@@ -33,7 +33,7 @@ public class Tracker {
      */
     private String generateId() {
         //Реализовать метод генерации.
-        return String.valueOf(System.currentTimeMillis()+rn.nextInt());
+        return String.valueOf(rn.nextInt(10000));
     }
 
 

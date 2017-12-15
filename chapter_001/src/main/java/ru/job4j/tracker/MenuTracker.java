@@ -50,15 +50,27 @@ class FindByName implements UserAction{
 
 
 public class MenuTracker {
+    // количество пунктов меню
+    private final int menulenght=7;
+    // возможные значения для выбора пунктов меню
+    private int[] ranges =new int[menulenght];
     private Input input;
     private Tracker tracker;
-    private UserAction[] actions=new UserAction[7];
+    private UserAction[] actions=new UserAction[menulenght];
     // признак выхода из меню
     private boolean vihod=false;
 
     public MenuTracker(Input input, Tracker tracker){
         this.input=input;
         this.tracker=tracker;
+    }
+
+    public int[] getRanges(){
+        return this.ranges;
+    }
+
+    public void setRanges(int[] ranges){
+        this.ranges=ranges;
     }
 
     public boolean getExit(){
@@ -78,6 +90,8 @@ public class MenuTracker {
         this.actions[4]=new FindById();
         this.actions[5]=new FindByName();
         this.actions[6]=new Exit();
+        for(int i=0;i<menulenght;i++)
+            this.ranges[i]=this.actions[i].key();
     }
 
 // метод реализующий различные действия при выборе из меню

@@ -1,10 +1,8 @@
 package ru.job4j.tracker;
 
 public class StartUI {
-    /**
-     * Получение данных от пользователя.
-     */
-    private Input input;
+    // Получение данных от пользователя.
+     private Input input;
     // хранилище заявок
     private Tracker tracker;
 
@@ -20,9 +18,7 @@ public class StartUI {
         menu.fillActions();
         do{
             menu.show();
-            int key=Integer.valueOf(input.ask("Выбор:"));
-            menu.select(key);
-
+            menu.select(input.ask("Выбор:",menu.getRanges()));
         } while(!menu.getExit());
     }
 
@@ -32,6 +28,6 @@ public class StartUI {
      */
     public static void main(String[] args) {
         Tracker tracker=new Tracker();
-        new StartUI(new ConsoleInput(),tracker).init();
+        new StartUI(new ValidateInput(),tracker).init();
     }
 }

@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-public class StabInputTest {
+public class StartUiTest {
 
     // Тест пункта меню Создание заявки
     @Test

@@ -54,7 +54,7 @@ public class StartUiTest {
         // удаляем 3й элемент
         Input input = new StubInput(new String[]{"3", items[2].getId(), "6"});
         new StartUI(input, tracker).init();
-        // проверяем встал ли на его место 4й
+        // проверяем осталась ли удаленная заявка а списке заявок
         assertThat(tracker.findById(items[2].getId()), is(nullValue()));
     }
 

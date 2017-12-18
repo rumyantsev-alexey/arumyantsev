@@ -1,7 +1,20 @@
 package ru.job4j.tracker;
 
+/**
+ * Дочерний класс от ConsoleInput, для проверки ввода корректного значения при выборе меню
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 public class ValidateInput extends ConsoleInput {
 
+    /**
+     * Запрос у пользователя ответа на вопрос, с проверкой
+     * @param question текст вопроса к пользователю
+     * @param range массив возможных ответов на вопрос
+     * @return значение выбора пользователя
+     * @exception MenuOutException выход из диапазона меню
+     * @exception NumberFormatException ввели не число
+     */
     public int ask(String question,int[] range){
         boolean invalid=true;
         int value=-1;

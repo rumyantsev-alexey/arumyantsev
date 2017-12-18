@@ -3,6 +3,12 @@ package ru.job4j.tracker;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Класс дл хранилища хаявок и работы с ним
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
+
 public class Tracker {
     /**
      * Массив для хранение заявок.

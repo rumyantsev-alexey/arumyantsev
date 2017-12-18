@@ -1,11 +1,21 @@
 package ru.job4j.tracker;
 
+/**
+ * Класс для запуска диалога с пользователем
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 public class StartUI {
     // Получение данных от пользователя.
      private Input input;
     // хранилище заявок
     private Tracker tracker;
 
+    /**
+     * Конструктор с инициализацией данных
+     * @param input система ввода
+     * @param tracker хранилище заявок
+     */
     public StartUI(Input input,Tracker tracker) {
         this.input = input;
         this.tracker=tracker;
@@ -24,7 +34,7 @@ public class StartUI {
 
    /**
      * Запуск программы.
-     * @param args
+     * @param args возможные аргументы
      */
     public static void main(String[] args) {
         Tracker tracker=new Tracker();

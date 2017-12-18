@@ -1,10 +1,25 @@
 package ru.job4j.tracker;
 
-// Внешний внутренний класс, реализующий редактирование заявок
+/**
+ * Внешний внутренний класс, реализующий редактирование заявок
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 class EditItem implements UserAction{
+
+    /**
+     * Возврат значения пункта меню "Редактирование"
+     * @return значение
+     */
     public int key(){
         return 2;
     }
+
+    /**
+     * Редактирование заявки
+     * @param input интерфейс ввода
+     * @param tracker хранилище заявок
+     */
     public void execute(Input input,Tracker tracker){
         System.out.println("------------ Редактирование заявки --------------");
         String str_id=input.ask("Введите Id заявки:");
@@ -20,16 +35,36 @@ class EditItem implements UserAction{
         }
         System.out.println("---------------------------------------------------------");
     }
+
+    /**
+     * Отображение назавния пункта меню
+     * @return название
+     */
     public String info(){
         return String.format("%s. %s", this.key(),"Редактировать заявку");
     }
 }
 
-// Внешний внутренний класс, реализующий поиск завки по имени
+/**
+ * Внешний внутренний класс, реализующий поиск завки по имени
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 class FindByName implements UserAction{
+
+    /**
+     * Возврат значения пункта меню "Поиск по имени"
+     * @return значение
+     */
     public int key(){
         return 5;
     }
+
+    /**
+     * Поиск по имени
+     * @param input интерфейс ввода
+     * @param tracker хранилище заявок
+     */
     public void execute(Input input,Tracker tracker){
         System.out.println("------------ Поиск заявки по имени --------------");
         String str_id=input.ask("Введите имя заявки:");
@@ -43,23 +78,41 @@ class FindByName implements UserAction{
         }
         System.out.println("---------------------------------------------------------");
     }
+
+    /**
+     * Отображение названия пункта меню
+     * @return название
+     */
     public String info(){
         return String.format("%s. %s", this.key(),"Поиск заявки по имени");
     }
 }
 
 
+/**
+ * Класс, отвечающий за работу меню с трекером
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 public class MenuTracker {
     // количество пунктов меню
     private final int menulenght=7;
     // возможные значения для выбора пунктов меню
     private int[] ranges =new int[menulenght];
+    // Система ввода пользователя
     private Input input;
+    // Хранилище заявок
     private Tracker tracker;
+    // Возможные действия, выбранные из меню
     private UserAction[] actions=new UserAction[menulenght];
     // признак выхода из меню
     private boolean vihod=false;
 
+    /**
+     * Конструктор, с инициализацией параметров
+     * @param input система ввода
+     * @param tracker хранилище заявок
+     */
     public MenuTracker(Input input, Tracker tracker){
         this.input=input;
         this.tracker=tracker;
@@ -67,10 +120,6 @@ public class MenuTracker {
 
     public int[] getRanges(){
         return this.ranges;
-    }
-
-    public void setRanges(int[] ranges){
-        this.ranges=ranges;
     }
 
     public boolean getExit(){
@@ -81,7 +130,10 @@ public class MenuTracker {
         this.vihod=exit;
     }
 
-    // метод реализующий заполнение меню
+    /**
+     * метод реализующий заполнение меню действий и возможных
+     * значений выбора пользователя
+     */
     public void fillActions(){
         this.actions[0]=new AddItem();
         this.actions[1]=new ShowItems();
@@ -94,7 +146,10 @@ public class MenuTracker {
             this.ranges[i]=this.actions[i].key();
     }
 
-// метод реализующий различные действия при выборе из меню
+    /**
+     * метод реализующий различные действия при выборе из меню
+     * @param key выбор в меню
+     */
    public void select(int key){
         if(key<7 && this.actions[key]!=null)
             this.actions[key].execute(this.input,this.tracker);
@@ -102,18 +157,35 @@ public class MenuTracker {
             System.out.println("Неверный выбор!!");
     }
 
-    // метод, реализующий показ меню
+    /**
+     * метод, реализующий показ меню
+     */
     public void show(){
         for(UserAction action:this.actions){
             if(action!=null) System.out.println(action.info());
         }
     }
 
-// внутрений класс, реализующий Добавление заявки
+    /**
+     * внутрений класс, реализующий Добавление заявки
+     * @author Alex Rumyantcev
+     * @version $Id$
+     */
    private class AddItem implements UserAction{
+
+        /**
+         * Возврат значения пункта меню "Добавление заявки"
+         * @return значение
+         */
         public int key(){
             return 0;
         }
+
+        /**
+         * Добавление заявки
+         * @param input интерфейс ввода
+         * @param tracker хранилище заявок
+         */
         public void execute(Input input,Tracker tracker){
             System.out.println("------------ Добавление новой заявки --------------");
             String name=input.ask("Введите имя заявки:");
@@ -122,32 +194,72 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("------------ Введена новая заявка с Id : " + item.getId() + "-----------");
         }
+
+        /**
+         * Отображение названия пункта меню
+         * @return название
+         */
         public String info(){
             return String.format("%s. %s", this.key(),"Добавить заявку");
         }
     }
 
-// внутрений статический класс, реализующий Показ всех заявок
+    /**
+     * внутрений статический класс, реализующий Показ всех заявок
+     * @author Alex Rumyantcev
+     * @version $Id$
+     */
     private static class ShowItems implements UserAction{
+
+        /**
+         * Возврат значения пункта меню "Показ всех заявок"
+         * @return значение
+         */
         public int key(){
             return 1;
         }
+
+        /**
+         * Показ всех заявок
+         * @param input интерфейс ввода
+         * @param tracker хранилище заявок
+         */
         public void execute(Input input,Tracker tracker){
             System.out.println("------------ Все зарегистрированные заявки --------------");
             for (Item item:tracker.findAll())
                 System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s",item.getName(),item.getDesc(),item.getId()));
             System.out.println("---------------------------------------------------------");
         }
+
+        /**
+         * Отображение названия пункта меню
+         * @return название
+        */
         public String info(){
             return String.format("%s. %s", this.key(),"Посмотреть существующие заявки");
         }
     }
 
-// внутрений класс, реализующий Удаление заявки
+    /**
+     * внутрений класс, реализующий Удаление заявки
+     * @author Alex Rumyantcev
+     * @version $Id$
+     */
     private class DelItem implements UserAction{
+
+        /**
+         * Возврат значения пункта меню "Удаление заявки"
+         * @return значение
+         */
         public int key(){
             return 3;
         }
+
+        /**
+         * Удаление завки
+         * @param input интерфейс ввода
+         * @param tracker хранилище заявок
+         */
         public void execute(Input input,Tracker tracker){
             System.out.println("------------ Удаление заявки --------------");
             String str_id=input.ask("Введите Id заявки:");
@@ -160,16 +272,36 @@ public class MenuTracker {
             }
             System.out.println("---------------------------------------------------------");
         }
+
+        /**
+         * Отображение названия пункта меню
+        * @return название
+        */
         public String info(){
             return String.format("%s. %s", this.key(),"Удаление заявки");
         }
     }
 
-// внутрений статический класс, реализующий Поиск по Id
-    private static class FindById implements UserAction{
+    /**
+     * внутрений статический класс, реализующий Поиск по Id
+     * @author Alex Rumyantcev
+     * @version $Id$
+     */
+   private static class FindById implements UserAction{
+
+        /**
+         * Возврат значения пункта меню "Поиск по Id"
+         * @return значение
+         */
         public int key(){
             return 4;
         }
+
+        /**
+         * Поиск по Id
+         * @param input интерфейс ввода
+         * @param tracker хранилище заявок
+         */
         public void execute(Input input,Tracker tracker){
             System.out.println("------------ Поиск заявки по Id --------------");
             String str_id=input.ask("Введите Id заявки:");
@@ -182,20 +314,45 @@ public class MenuTracker {
             }
             System.out.println("---------------------------------------------------------");
         }
+
+        /**
+         * Отображение названия пункта меню
+        * @return название
+        */
         public String info(){
             return String.format("%s. %s", this.key(),"Поиск заявки по Id");
         }
     }
 
-// внутрений класс , реализующий Выход из меню
+    /**
+     * внутрений класс , реализующий Выход из меню
+     * @author Alex Rumyantcev
+     * @version $Id$
+     */
     private class Exit implements UserAction{
+
+        /**
+         * Возврат значения пункта меню "Выход из меню"
+         * @return значение
+         */
         public int key(){
             return 6;
         }
+
+        /**
+         * Выход из меню
+         * @param input интерфейс ввода
+         * @param tracker хранилище заявок
+         */
         public void execute(Input input,Tracker tracker){
             System.out.println("------------ Выход из меню --------------");
             setExit(true);
         }
+
+    /**
+     * Отображение названия пункта меню
+     * @return название
+     */
         public String info(){
             return String.format("%s. %s", this.key(),"Выход из меню");
         }

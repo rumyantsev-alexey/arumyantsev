@@ -1,6 +1,10 @@
 package ru.job4j.tracker;
 
-// базовый класс заявки
+/**
+ * базовый класс заявки
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
 public class Item {
     private String id; // уникальное поле заявки (может вместо него использовать время создания заявки??)
     private String name;// имя заявки
@@ -8,12 +12,18 @@ public class Item {
     private long created; // время создания заявки
     private String[] commets; // комментарии к заявке (пока не используется)
 
+    /**
+     * конструктор завки с инициализацией параметров
+     * @param name имя заявки
+     * @param desc описание заявки
+     */
     public Item(String name,String desc){
         this.name=name;
         this.desc=desc;
         this.created=System.currentTimeMillis();  // генерим время создания заявки
     }
 
+    // геты/сеты для параметров класса
     public String getId(){
         return this.id;
     }

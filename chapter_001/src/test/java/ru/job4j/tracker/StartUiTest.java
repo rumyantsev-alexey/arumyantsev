@@ -1,7 +1,12 @@
 package ru.job4j.tracker;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -78,7 +83,95 @@ public class StartUiTest {
         assertThat(tracker.findById(items[2].getId()), is(items[2]));
     }
 
-    // Тест пункта меню Показать все заявки не производился, т.к. в нем нет ввода информации
+    // Тест пункта меню Удаление заявки
+    @Test
+    public void whenDelItemThenTrackerShowThis() {
+        // получаем ссылку на стандартный вывод в консоль.
+        PrintStream stdout = System.out;
+        // Создаем буфер для хранения вывода.
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        //Заменяем стандартный вывод на вывод в пямять для тестирования.
+        System.setOut(new PrintStream(out));
+        // удаляем 3й элемент
+        Input input = new StubInput(new String[]{"3", items[2].getId(), "6"});
+        new StartUI(input, tracker).init();
+        assertThat(
+                new String(out.toByteArray()),
+                is(
+                        new StringBuilder()
+                                .append("0. Добавить заявку\r\n")
+                                .append("1. Посмотреть существующие заявки\r\n")
+                                .append("2. Редактировать заявку\r\n")
+                                .append("3. Удаление заявки\r\n")
+                                .append("4. Поиск заявки по Id\r\n")
+                                .append("5. Поиск заявки по имени\r\n")
+                                .append("6. Выход из меню\r\n")
+                                .append("------------ Удаление заявки --------------\r\n")
+                                .append("Заявка удалена!!!\r\n")
+                                .append("---------------------------------------------------------\r\n")
+                                .append("0. Добавить заявку\r\n")
+                                .append("1. Посмотреть существующие заявки\r\n")
+                                .append("2. Редактировать заявку\r\n")
+                                .append("3. Удаление заявки\r\n")
+                                .append("4. Поиск заявки по Id\r\n")
+                                .append("5. Поиск заявки по имени\r\n")
+                                .append("6. Выход из меню\r\n")
+                                .append("------------ Выход из меню --------------\r\n")
+                                .toString()
+                )
+        );
+        // возвращаем обратно стандартный вывод в консоль.
+        System.setOut(stdout);
 
+    }
 
+    // Тест пункта меню Показать все заявки
+    @Test
+    public void whenShowItemsThenTrackerShowThis() {
+        // получаем ссылку на стандартный вывод в консоль.
+        PrintStream stdout = System.out;
+        // Создаем буфер для хранения вывода.
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        //Заменяем стандартный вывод на вывод в пямять для тестирования.
+        System.setOut(new PrintStream(out));
+        // удаляем 3й элемент
+        Input input = new StubInput(new String[]{"1", "6"});
+        new StartUI(input, tracker).init();
+        Item[] items=tracker.findAll();
+        assertThat(
+                new String(out.toByteArray()),
+                is(
+                        new StringBuilder()
+                                .append("0. Добавить заявку\r\n")
+                                .append("1. Посмотреть существующие заявки\r\n")
+                                .append("2. Редактировать заявку\r\n")
+                                .append("3. Удаление заявки\r\n")
+                                .append("4. Поиск заявки по Id\r\n")
+                                .append("5. Поиск заявки по имени\r\n")
+                                .append("6. Выход из меню\r\n")
+                                .append("------------ Все зарегистрированные заявки --------------\r\n")
+                                .append("Имя заявки:").append(items[0].getName()).append(" Описание заявки:")
+                                .append(items[0].getDesc()).append(" Код заявки:").append(items[0].getId()).append("\r\n")
+                                .append("Имя заявки:").append(items[1].getName()).append(" Описание заявки:")
+                                .append(items[1].getDesc()).append(" Код заявки:").append(items[1].getId()).append("\r\n")
+                                .append("Имя заявки:").append(items[2].getName()).append(" Описание заявки:")
+                                .append(items[2].getDesc()).append(" Код заявки:").append(items[2].getId()).append("\r\n")
+                                .append("Имя заявки:").append(items[3].getName()).append(" Описание заявки:")
+                                .append(items[3].getDesc()).append(" Код заявки:").append(items[3].getId()).append("\r\n")
+                                .append("---------------------------------------------------------\r\n")
+                                .append("0. Добавить заявку\r\n")
+                                .append("1. Посмотреть существующие заявки\r\n")
+                                .append("2. Редактировать заявку\r\n")
+                                .append("3. Удаление заявки\r\n")
+                                .append("4. Поиск заявки по Id\r\n")
+                                .append("5. Поиск заявки по имени\r\n")
+                                .append("6. Выход из меню\r\n")
+                                .append("------------ Выход из меню --------------\r\n")
+                                .toString()
+                )
+        );
+        // возвращаем обратно стандартный вывод в консоль.
+        System.setOut(stdout);
+
+    }
 }

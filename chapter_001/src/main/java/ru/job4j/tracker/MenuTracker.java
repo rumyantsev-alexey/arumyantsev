@@ -5,14 +5,15 @@ package ru.job4j.tracker;
  * @author Alex Rumyantcev
  * @version $Id$
  */
-class EditItem implements UserAction{
+class EditItem extends AbstractBaseAction{
 
     /**
-     * Возврат значения пункта меню "Редактирование"
-     * @return значение
+     * Конструктор
+     * @param key номер пункта меню
+     * @param name название пункта меню
      */
-    public int key(){
-        return 2;
+    public EditItem(int key,String name){
+        super(key,name);
     }
 
     /**
@@ -35,14 +36,6 @@ class EditItem implements UserAction{
         }
         System.out.println("---------------------------------------------------------");
     }
-
-    /**
-     * Отображение назавния пункта меню
-     * @return название
-     */
-    public String info(){
-        return String.format("%s. %s", this.key(),"Редактировать заявку");
-    }
 }
 
 /**
@@ -50,14 +43,15 @@ class EditItem implements UserAction{
  * @author Alex Rumyantcev
  * @version $Id$
  */
-class FindByName implements UserAction{
+class FindByName extends AbstractBaseAction{
 
     /**
-     * Возврат значения пункта меню "Поиск по имени"
-     * @return значение
+     * Конструктор
+     * @param key номер пункта меню
+     * @param name название пункта меню
      */
-    public int key(){
-        return 5;
+    public FindByName(int key,String name){
+        super(key,name);
     }
 
     /**
@@ -77,14 +71,6 @@ class FindByName implements UserAction{
                 System.out.println("Имя:"+item.getName()+" Описание:"+item.getDesc()+" Id:"+item.getId());
         }
         System.out.println("---------------------------------------------------------");
-    }
-
-    /**
-     * Отображение названия пункта меню
-     * @return название
-     */
-    public String info(){
-        return String.format("%s. %s", this.key(),"Поиск заявки по имени");
     }
 }
 
@@ -135,13 +121,13 @@ public class MenuTracker {
      * значений выбора пользователя
      */
     public void fillActions(){
-        this.actions[0]=new AddItem();
-        this.actions[1]=new ShowItems();
-        this.actions[2]=new EditItem();
-        this.actions[3]=new DelItem();
-        this.actions[4]=new FindById();
-        this.actions[5]=new FindByName();
-        this.actions[6]=new Exit();
+        this.actions[0]=new AddItem(0,"Добавить заявку");
+        this.actions[1]=new ShowItems(1,"Посмотреть существующие заявки");
+        this.actions[2]=new EditItem(2,"Редактировать заявку");
+        this.actions[3]=new DelItem(3,"Удаление заявки");
+        this.actions[4]=new FindById(4,"Поиск заявки по Id");
+        this.actions[5]=new FindByName(5,"Поиск заявки по имени");
+        this.actions[6]=new Exit(6,"Выход из меню");
         for(int i=0;i<menulenght;i++)
             this.ranges[i]=this.actions[i].key();
     }
@@ -171,15 +157,16 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-   private class AddItem implements UserAction{
+   private class AddItem extends AbstractBaseAction{
 
         /**
-         * Возврат значения пункта меню "Добавление заявки"
-         * @return значение
+         * Конструктор
+         * @param key номер пункта меню
+         * @param name название пункта меню
          */
-        public int key(){
-            return 0;
-        }
+    public AddItem(int key, String name){
+        super(key,name);
+    }
 
         /**
          * Добавление заявки
@@ -194,14 +181,6 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("------------ Введена новая заявка с Id : " + item.getId() + "-----------");
         }
-
-        /**
-         * Отображение названия пункта меню
-         * @return название
-         */
-        public String info(){
-            return String.format("%s. %s", this.key(),"Добавить заявку");
-        }
     }
 
     /**
@@ -209,14 +188,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-    private static class ShowItems implements UserAction{
+    private static class ShowItems extends AbstractBaseAction{
 
         /**
-         * Возврат значения пункта меню "Показ всех заявок"
-         * @return значение
+         * Конструктор
+         * @param key номер пункта меню
+         * @param name название пункта меню
          */
-        public int key(){
-            return 1;
+        public ShowItems(int key, String name){
+            super(key,name);
         }
 
         /**
@@ -230,14 +210,6 @@ public class MenuTracker {
                 System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s",item.getName(),item.getDesc(),item.getId()));
             System.out.println("---------------------------------------------------------");
         }
-
-        /**
-         * Отображение названия пункта меню
-         * @return название
-        */
-        public String info(){
-            return String.format("%s. %s", this.key(),"Посмотреть существующие заявки");
-        }
     }
 
     /**
@@ -245,14 +217,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-    private class DelItem implements UserAction{
+    private class DelItem extends AbstractBaseAction{
 
         /**
-         * Возврат значения пункта меню "Удаление заявки"
-         * @return значение
+         * Конструктор
+         * @param key номер пункта меню
+         * @param name название пункта меню
          */
-        public int key(){
-            return 3;
+        public DelItem(int key, String name){
+            super(key,name);
         }
 
         /**
@@ -272,14 +245,6 @@ public class MenuTracker {
             }
             System.out.println("---------------------------------------------------------");
         }
-
-        /**
-         * Отображение названия пункта меню
-        * @return название
-        */
-        public String info(){
-            return String.format("%s. %s", this.key(),"Удаление заявки");
-        }
     }
 
     /**
@@ -287,14 +252,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-   private static class FindById implements UserAction{
+   private static class FindById extends AbstractBaseAction{
 
         /**
-         * Возврат значения пункта меню "Поиск по Id"
-         * @return значение
+         * Конструктор
+         * @param key номер пункта меню
+         * @param name название пункта меню
          */
-        public int key(){
-            return 4;
+        public FindById(int key, String name){
+            super(key,name);
         }
 
         /**
@@ -315,13 +281,6 @@ public class MenuTracker {
             System.out.println("---------------------------------------------------------");
         }
 
-        /**
-         * Отображение названия пункта меню
-        * @return название
-        */
-        public String info(){
-            return String.format("%s. %s", this.key(),"Поиск заявки по Id");
-        }
     }
 
     /**
@@ -329,33 +288,26 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-    private class Exit implements UserAction{
+    private class Exit extends AbstractBaseAction {
 
         /**
-         * Возврат значения пункта меню "Выход из меню"
-         * @return значение
+         * Конструктор
+         * @param key номер пункта меню
+         * @param name название пункта меню
          */
-        public int key(){
-            return 6;
+        public Exit(int key, String name) {
+            super(key, name);
         }
 
         /**
          * Выход из меню
-         * @param input интерфейс ввода
+         *
+         * @param input   интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input,Tracker tracker){
+        public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Выход из меню --------------");
             setExit(true);
         }
-
-    /**
-     * Отображение названия пункта меню
-     * @return название
-     */
-        public String info(){
-            return String.format("%s. %s", this.key(),"Выход из меню");
-        }
     }
-
 }

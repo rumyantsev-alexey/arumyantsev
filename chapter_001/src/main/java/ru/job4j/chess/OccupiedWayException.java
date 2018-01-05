@@ -5,5 +5,5 @@ package ru.job4j.chess;
  * @author Alex Rumyantcev
  * @version $Id$
  */
-public class OccupiedWayException  extends Exception{
+public class OccupiedWayException  extends Exception {
 }

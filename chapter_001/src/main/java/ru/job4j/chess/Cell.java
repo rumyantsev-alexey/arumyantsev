@@ -9,24 +9,24 @@ public class Cell {
     private int x;
     private int y;
 
-    public Cell(int x, int y){
-        this.x=x;
-        this.y=y;
+    public Cell(final int x, final int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
      * Получить координату Х клетки
-     * @return
+     * @return значение Ч
      */
-    public int getX(){
+    public int getX() {
         return this.x;
     }
 
     /**
      * Получить координату Y клетки
-     * @return
+     * @return значение Y
      */
-    public int getY(){
+    public int getY() {
         return this.y;
     }
 }

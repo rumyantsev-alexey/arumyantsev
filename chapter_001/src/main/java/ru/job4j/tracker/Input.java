@@ -20,6 +20,6 @@ public interface Input {
      * @param range допустимые ответы
      * @return ответ
      */
-    int ask(String question,int[] range);
+    int ask(String question, int[] range);
 
 }

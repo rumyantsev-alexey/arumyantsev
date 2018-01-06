@@ -5,19 +5,19 @@ package ru.job4j.tracker;
  * @author Alex Rumyantcev
  * @version $Id$
  */
-public class StubInput implements Input{
+public class StubInput implements Input {
 
     // массив ответов имитации пользователя
-    private String [] answers;
+    private String[] answers;
     // позиция следующего ответа в массиве ответов
-    private int position=0;
+    private int position = 0;
 
     /**
      * конструктор класс с инициализацией массива ответов
      * @param answers массив ответов
      */
-    public StubInput(String[] answers){
-        this.answers=answers;
+    public StubInput(final String[] answers) {
+        this.answers = answers;
     }
 
     /**
@@ -25,7 +25,7 @@ public class StubInput implements Input{
      * @param question текст вопроса к пользователю
      * @return ответ пользователя на вопрос
      */
-    public String ask(String question){
+    public String ask(final String question) {
         return answers[position++];
     }
 
@@ -36,17 +36,19 @@ public class StubInput implements Input{
      * @return ответ пользователя на вопрос
      * @exception MenuOutException пользователь выбрал несуществующий пункт меню
      */
-    public int ask(String question,int[] range){
-        int key=Integer.valueOf(this.ask(question));
-        boolean exist=false;
-        for(int value: range)
-            if (value==key){
-                exist=true;
+    public int ask(final String question, final int[] range) {
+        int key = Integer.valueOf(this.ask(question));
+        boolean exist = false;
+        for (int value: range) {
+            if (value == key) {
+                exist = true;
                 break;
             }
-        if(exist)
+        }
+        if (exist) {
             return key;
-        else
+        } else {
             throw new MenuOutException("Нет такого пункта менню");
+        }
     }
 }

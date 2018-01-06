@@ -15,16 +15,16 @@ public class ValidateInput extends ConsoleInput {
      * @exception MenuOutException выход из диапазона меню
      * @exception NumberFormatException ввели не число
      */
-    public int ask(String question,int[] range){
-        boolean invalid=true;
-        int value=-1;
-        do{
-            try{
-                value=super.ask(question,range);
-                invalid=false;
-            } catch(MenuOutException moe){
+    public int ask(final String question, final int[] range) {
+        boolean invalid = true;
+        int value = -1;
+        do {
+            try {
+                value = super.ask(question, range);
+                invalid = false;
+            } catch (MenuOutException moe) {
                 System.out.println("Нет такого пункта меню. Введите правильное число.");
-            } catch(NumberFormatException nfe){
+            } catch (NumberFormatException nfe) {
                 System.out.println("Введите ЧИСЛО в требуемом диапазоне.");
             }
         } while (invalid);

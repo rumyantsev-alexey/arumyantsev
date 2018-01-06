@@ -5,15 +5,15 @@ package ru.job4j.tracker;
  * @author Alex Rumyantcev
  * @version $Id$
  */
-class EditItem extends AbstractBaseAction{
+class EditItem extends AbstractBaseAction {
 
     /**
      * Конструктор
      * @param key номер пункта меню
      * @param name название пункта меню
      */
-    public EditItem(int key,String name){
-        super(key,name);
+    public EditItem(final int key, final String name) {
+        super(key, name);
     }
 
     /**
@@ -21,14 +21,14 @@ class EditItem extends AbstractBaseAction{
      * @param input интерфейс ввода
      * @param tracker хранилище заявок
      */
-    public void execute(Input input,Tracker tracker){
+    public void execute(final Input input, final Tracker tracker) {
         System.out.println("------------ Редактирование заявки --------------");
-        String str_id=input.ask("Введите Id заявки:");
-        Item item=tracker.findById(str_id);
-        if(item==null)
+        String str_id = input.ask("Введите Id заявки:");
+        Item item = tracker.findById(str_id);
+        if (item == null) {
             System.out.println("Нет такой заявки!!!!!");
-        else {
-            System.out.println("Имя заявки:"+item.getName()+" Описание:"+item.getDesc());
+        } else {
+            System.out.println(String.format("Имя заявки:%s Описание заявки:%s", item.getName(), item.getDesc()));
             item.setName(input.ask("Введите новое имя заявки:"));
             item.setDesc(input.ask("Введите новое описание:"));
             tracker.update(item);
@@ -43,15 +43,15 @@ class EditItem extends AbstractBaseAction{
  * @author Alex Rumyantcev
  * @version $Id$
  */
-class FindByName extends AbstractBaseAction{
+class FindByName extends AbstractBaseAction {
 
     /**
      * Конструктор
      * @param key номер пункта меню
      * @param name название пункта меню
      */
-    public FindByName(int key,String name){
-        super(key,name);
+   FindByName(final int key, final String name) {
+        super(key, name);
     }
 
     /**
@@ -59,16 +59,17 @@ class FindByName extends AbstractBaseAction{
      * @param input интерфейс ввода
      * @param tracker хранилище заявок
      */
-    public void execute(Input input,Tracker tracker){
+    public void execute(final Input input, final Tracker tracker) {
         System.out.println("------------ Поиск заявки по имени --------------");
-        String str_id=input.ask("Введите имя заявки:");
-        Item[] items=tracker.findByName(str_id);
-        if(items[0]==null)
+        String str_id = input.ask("Введите имя заявки:");
+        Item[] items = tracker.findByName(str_id);
+        if (items[0] == null) {
             System.out.println("Нет такой заявки!!!!!");
-        else {
+        } else {
             System.out.println("Заявки найдены!!!");
-            for(Item item: items)
-                System.out.println("Имя:"+item.getName()+" Описание:"+item.getDesc()+" Id:"+item.getId());
+            for (Item item: items) {
+                System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s", item.getName(), item.getDesc(), item.getId()));
+            }
         }
         System.out.println("---------------------------------------------------------");
     }
@@ -82,73 +83,77 @@ class FindByName extends AbstractBaseAction{
  */
 public class MenuTracker {
     // количество пунктов меню
-    private final int menulenght=7;
+    private final int menulenght = 7;
     // возможные значения для выбора пунктов меню
-    private int[] ranges =new int[menulenght];
+    private int[] ranges = new int[menulenght];
     // Система ввода пользователя
     private Input input;
     // Хранилище заявок
     private Tracker tracker;
     // Возможные действия, выбранные из меню
-    private UserAction[] actions=new UserAction[menulenght];
+    private UserAction[] actions = new UserAction[menulenght];
     // признак выхода из меню
-    private boolean vihod=false;
+    private boolean vihod = false;
 
     /**
      * Конструктор, с инициализацией параметров
      * @param input система ввода
      * @param tracker хранилище заявок
      */
-    public MenuTracker(Input input, Tracker tracker){
-        this.input=input;
-        this.tracker=tracker;
+    public MenuTracker(final Input input, final Tracker tracker) {
+        this.input = input;
+        this.tracker = tracker;
     }
 
-    public int[] getRanges(){
+    public int[] getRanges() {
         return this.ranges;
     }
 
-    public boolean getExit(){
+    public boolean getExit() {
         return this.vihod;
     }
 
-    public void setExit(boolean exit){
-        this.vihod=exit;
+    public void setExit(final boolean exit) {
+        this.vihod = exit;
     }
 
     /**
      * метод реализующий заполнение меню действий и возможных
      * значений выбора пользователя
      */
-    public void fillActions(){
-        this.actions[0]=new AddItem(0,"Добавить заявку");
-        this.actions[1]=new ShowItems(1,"Посмотреть существующие заявки");
-        this.actions[2]=new EditItem(2,"Редактировать заявку");
-        this.actions[3]=new DelItem(3,"Удаление заявки");
-        this.actions[4]=new FindById(4,"Поиск заявки по Id");
-        this.actions[5]=new FindByName(5,"Поиск заявки по имени");
-        this.actions[6]=new Exit(6,"Выход из меню");
-        for(int i=0;i<menulenght;i++)
-            this.ranges[i]=this.actions[i].key();
+    public void fillActions() {
+        this.actions[0] = new AddItem(0, "Добавить заявку");
+        this.actions[1] = new ShowItems(1, "Посмотреть существующие заявки");
+        this.actions[2] = new EditItem(2, "Редактировать заявку");
+        this.actions[3] = new DelItem(3, "Удаление заявки");
+        this.actions[4] = new FindById(4, "Поиск заявки по Id");
+        this.actions[5] = new FindByName(5, "Поиск заявки по имени");
+        this.actions[6] = new Exit(6, "Выход из меню");
+        for (int i = 0; i < menulenght; i++) {
+            this.ranges[i] = this.actions[i].key();
+        }
     }
 
     /**
      * метод реализующий различные действия при выборе из меню
      * @param key выбор в меню
      */
-   public void select(int key){
-        if(key<7 && this.actions[key]!=null)
-            this.actions[key].execute(this.input,this.tracker);
-        else
+   public void select(final int key) {
+        if (key < 7 && this.actions[key] != null) {
+            this.actions[key].execute(this.input, this.tracker);
+        } else {
             System.out.println("Неверный выбор!!");
+        }
     }
 
     /**
      * метод, реализующий показ меню
      */
-    public void show(){
-        for(UserAction action:this.actions){
-            if(action!=null) System.out.println(action.info());
+    public void show() {
+        for (UserAction action:this.actions){
+            if (action != null) {
+                System.out.println(action.info());
+            }
         }
     }
 
@@ -157,15 +162,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-   private class AddItem extends AbstractBaseAction{
+   private class AddItem extends AbstractBaseAction {
 
         /**
          * Конструктор
          * @param key номер пункта меню
          * @param name название пункта меню
          */
-    public AddItem(int key, String name){
-        super(key,name);
+    AddItem(final int key, final String name) {
+        super(key, name);
     }
 
         /**
@@ -173,13 +178,13 @@ public class MenuTracker {
          * @param input интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input,Tracker tracker){
+        public void execute(final Input input, final Tracker tracker) {
             System.out.println("------------ Добавление новой заявки --------------");
-            String name=input.ask("Введите имя заявки:");
-            String desc=input.ask("Введите описание заявки:");
+            String name = input.ask("Введите имя заявки:");
+            String desc = input.ask("Введите описание заявки:");
             Item item = new Item(name, desc);
             tracker.add(item);
-            System.out.println("------------ Введена новая заявка с Id : " + item.getId() + "-----------");
+            System.out.println(String.format("------------ Введена новая заявка с Id : %s-----------", item.getId()));
         }
     }
 
@@ -188,15 +193,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-    private static class ShowItems extends AbstractBaseAction{
+    private static class ShowItems extends AbstractBaseAction {
 
         /**
          * Конструктор
          * @param key номер пункта меню
          * @param name название пункта меню
          */
-        public ShowItems(int key, String name){
-            super(key,name);
+        ShowItems(final int key, final String name) {
+            super(key, name);
         }
 
         /**
@@ -204,10 +209,11 @@ public class MenuTracker {
          * @param input интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input,Tracker tracker){
+        public void execute(final Input input, final Tracker tracker) {
             System.out.println("------------ Все зарегистрированные заявки --------------");
-            for (Item item:tracker.findAll())
-                System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s",item.getName(),item.getDesc(),item.getId()));
+            for (Item item:tracker.findAll()) {
+                System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s", item.getName(), item.getDesc(), item.getId()));
+            }
             System.out.println("---------------------------------------------------------");
         }
     }
@@ -217,15 +223,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-    private class DelItem extends AbstractBaseAction{
+    private class DelItem extends AbstractBaseAction {
 
         /**
          * Конструктор
          * @param key номер пункта меню
          * @param name название пункта меню
          */
-        public DelItem(int key, String name){
-            super(key,name);
+        public DelItem(final int key, final String name) {
+            super(key, name);
         }
 
         /**
@@ -233,13 +239,13 @@ public class MenuTracker {
          * @param input интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input,Tracker tracker){
+        public void execute(final Input input, final Tracker tracker) {
             System.out.println("------------ Удаление заявки --------------");
-            String str_id=input.ask("Введите Id заявки:");
-            Item item=tracker.findById(str_id);
-            if(item==null)
+            String str_id = input.ask("Введите Id заявки:");
+            Item item = tracker.findById(str_id);
+            if (item == null) {
                 System.out.println("Нет такой заявки!!!!!");
-            else {
+            } else {
                 tracker.delete(item);
                 System.out.println("Заявка удалена!!!");
             }
@@ -252,15 +258,15 @@ public class MenuTracker {
      * @author Alex Rumyantcev
      * @version $Id$
      */
-   private static class FindById extends AbstractBaseAction{
+   private static class FindById extends AbstractBaseAction {
 
         /**
          * Конструктор
          * @param key номер пункта меню
          * @param name название пункта меню
          */
-        public FindById(int key, String name){
-            super(key,name);
+        public FindById(final int key, final String name) {
+            super(key, name);
         }
 
         /**
@@ -268,19 +274,18 @@ public class MenuTracker {
          * @param input интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input,Tracker tracker){
+        public void execute(final Input input, final Tracker tracker) {
             System.out.println("------------ Поиск заявки по Id --------------");
-            String str_id=input.ask("Введите Id заявки:");
-            Item item=tracker.findById(str_id);
-            if(item==null)
+            String str_id = input.ask("Введите Id заявки:");
+            Item item = tracker.findById(str_id);
+            if (item == null) {
                 System.out.println("Нет такой заявки!!!!!");
-            else {
+            } else {
                 System.out.println("Заявка найдена!!!");
-                System.out.println("Имя:"+item.getName()+" Описание:"+item.getDesc()+" Id:"+item.getId());
+                System.out.println(String.format("Имя заявки:%s Описание заявки:%s Код заявки:%s", item.getName(), item.getDesc(), item.getId()));
             }
             System.out.println("---------------------------------------------------------");
         }
-
     }
 
     /**
@@ -295,7 +300,7 @@ public class MenuTracker {
          * @param key номер пункта меню
          * @param name название пункта меню
          */
-        public Exit(int key, String name) {
+        public Exit(final int key, final String name) {
             super(key, name);
         }
 
@@ -305,7 +310,7 @@ public class MenuTracker {
          * @param input   интерфейс ввода
          * @param tracker хранилище заявок
          */
-        public void execute(Input input, Tracker tracker) {
+        public void execute(final Input input, final Tracker tracker) {
             System.out.println("------------ Выход из меню --------------");
             setExit(true);
         }

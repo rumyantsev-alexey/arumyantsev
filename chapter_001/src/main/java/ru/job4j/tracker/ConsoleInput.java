@@ -9,14 +9,14 @@ import java.util.Scanner;
  */
 public class ConsoleInput implements Input  {
 
-    private Scanner scanner= new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     /**
      * Реализация основного метода ask
      * @param question текст вопроса к пользователю
      * @return ответ пользователя на вопрос
      */
-    public String ask(String question){
+    public String ask(final String question) {
         System.out.print(question);
         return scanner.nextLine();
     }
@@ -28,18 +28,20 @@ public class ConsoleInput implements Input  {
      * @return ответ пользователя на вопрос
      * @exception MenuOutException пользователь выбрал несуществующий пункт меню
      */
-    public int ask(String question,int[] range){
-        int key=Integer.valueOf(this.ask(question));
-        boolean exist=false;
-        for(int value: range)
-            if (value==key){
-            exist=true;
-            break;
+    public int ask(final String question, final int[] range) {
+        int key = Integer.valueOf(this.ask(question));
+        boolean exist = false;
+        for (int value: range) {
+            if (value == key) {
+                exist = true;
+                break;
             }
-        if(exist)
+        }
+        if (exist) {
             return key;
-        else
+        } else {
             throw new MenuOutException("Нет такого пункта менню");
+        }
     }
 
 }

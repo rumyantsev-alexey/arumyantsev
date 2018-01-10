@@ -1,0 +1,34 @@
+package ru.job4j.coffe;
+
+import java.util.ArrayList;
+
+/**
+ * Класс, описывающий кофейный аппарат
+ * @author Alex Rumyantcev
+ * @version $Id$
+ */
+public class CoffeMachine {
+
+    // массив номинала монет для сдачи в порядке убывания
+    final static int[] COINS = {10, 5, 2, 1};
+
+    /**
+     *
+     * @param value сумма, закуинутая в аппарат
+     * @param price стоимость покупки
+     * @return массив монеток для сдачи
+     */
+    ArrayList changes(final int value, final int price) {
+        ArrayList<Integer> change = new ArrayList<>();
+        int ostatok = value - price;
+        for (int coin: COINS) {
+            int celoe = ostatok / coin;
+            while (celoe-- > 0) {
+                change.add(coin);
+                ostatok -= coin;
+            }
+        }
+        return  change;
+    }
+}
+

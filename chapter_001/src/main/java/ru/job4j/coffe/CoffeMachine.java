@@ -18,15 +18,19 @@ public class CoffeMachine {
      * @param price стоимость покупки
      * @return массив монеток для сдачи
      */
-    ArrayList changes(final int value, final int price) {
+    ArrayList changes(final int value, final int price) throws NoMoneyException {
         ArrayList<Integer> change = new ArrayList<>();
         int ostatok = value - price;
-        for (int coin: COINS) {
-            int celoe = ostatok / coin;
-            while (celoe-- > 0) {
-                change.add(coin);
-                ostatok -= coin;
+        if (ostatok > 0) {
+            for (int coin : COINS) {
+                int celoe = ostatok / coin;
+                while (celoe-- > 0) {
+                    change.add(coin);
+                    ostatok -= coin;
+                }
             }
+        } else if (ostatok < 0) {
+            throw new NoMoneyException();
         }
         return  change;
     }

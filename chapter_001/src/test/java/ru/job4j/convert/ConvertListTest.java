@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Arrays;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -55,5 +56,17 @@ public class ConvertListTest {
         result=ConvertList.toArray(source, 3);
         // сравниваем значения элемента
         assertThat(result[2][1], is(source.get(13)));
+    }
+
+    /**
+     * Тест перевода списка массивов в один список.
+     */
+    @Test
+    public void getListOfArrayConvertToList() {
+        List<int[]> list = new ArrayList<>();
+        list.add(new int[]{1, 2});
+        list.add(new int[]{3, 4, 5, 6});
+        List<Integer> result = ConvertList.Convert(list);
+        assertThat(result, is(Arrays.asList(1, 2, 3, 4, 5, 6)));
     }
 }

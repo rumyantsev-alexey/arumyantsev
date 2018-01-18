@@ -11,6 +11,21 @@ import java.util.List;
 public class ConvertList {
 
     /**
+     * Метод для перевода списка массивов в единый список.
+     * @param list список массивов
+     * @return результирующий список
+     */
+    public static List<Integer> Convert ( final List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] array: list) {
+            for (int i = 0; i < array.length; i++) {
+                result.add(array[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
      * Метод для перевода 2д массива в список.
      * @param array 2д массив
      * @return полученный список

@@ -3,22 +3,22 @@ package ru.job4j.coffe;
 import java.util.ArrayList;
 
 /**
- * Класс, описывающий кофейный аппарат
+ * Класс, описывающий кофейный аппарат.
  * @author Alex Rumyantcev
  * @version $Id$
  */
 public class CoffeMachine {
 
     // массив номинала монет для сдачи в порядке убывания
-    final static int[] COINS = {10, 5, 2, 1};
+    private static final int[] COINS = {10, 5, 2, 1};
 
     /**
-     *
+     * Метод, считающий сдачу в монетках доступного номинала.
      * @param value сумма, закуинутая в аппарат
      * @param price стоимость покупки
      * @return массив монеток для сдачи
      */
-    ArrayList changes(final int value, final int price) throws NoMoneyException {
+    public ArrayList changes(final int value, final int price) throws NoMoneyException {
         ArrayList<Integer> change = new ArrayList<>();
         int ostatok = value - price;
         if (ostatok > 0) {

@@ -1,5 +1,8 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * интерфейс для ввода
  * @author Alex Rumyantcev
@@ -20,6 +23,6 @@ public interface Input {
      * @param range допустимые ответы
      * @return ответ
      */
-    int ask(String question, int[] range);
+    int ask(String question, ArrayList<Integer> range);
 
 }

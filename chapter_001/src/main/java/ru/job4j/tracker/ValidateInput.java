@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+
 /**
  * Дочерний класс от ConsoleInput, для проверки ввода корректного значения при выборе меню
  * @author Alex Rumyantcev
@@ -15,7 +17,7 @@ public class ValidateInput extends ConsoleInput {
      * @exception MenuOutException выход из диапазона меню
      * @exception NumberFormatException ввели не число
      */
-    public int ask(final String question, final int[] range) {
+    public int ask(final String question, final ArrayList<Integer> range) {
         boolean invalid = true;
         int value = -1;
         do {

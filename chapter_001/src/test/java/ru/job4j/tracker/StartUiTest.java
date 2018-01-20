@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -39,7 +40,7 @@ public class StartUiTest {
         //   создаём StartUI и вызываем метод init()
         new StartUI(input, tracker).init();
         // проверяем, что пятый элемент массива в трекере содержит имя, введённое при эмуляции.
-        assertThat(tracker.findAll()[4].getName(), is("test name"));
+        assertThat(tracker.findAll().get(4).getName(), is("test name"));
     }
 
     // Тест пункта меню Редактирование заявки
@@ -70,7 +71,7 @@ public class StartUiTest {
         // Визуально видно что найден второй элемент
         new StartUI(input, tracker).init();
         // проверяем что элемент найденный по имени второй заявки является вторым элементом
-        assertThat(tracker.findByName(items[1].getName())[0], is(items[1]));
+        assertThat(tracker.findByName(items[1].getName()).get(0), is(items[1]));
     }
 
     // Тест пункта меню Найти по Id
@@ -137,7 +138,7 @@ public class StartUiTest {
         // удаляем 3й элемент
         Input input = new StubInput(new String[]{"1", "6"});
         new StartUI(input, tracker).init();
-        Item[] items=tracker.findAll();
+        ArrayList<Item> items=tracker.findAll();
         assertThat(
                 new String(out.toByteArray()),
                 is(
@@ -150,14 +151,14 @@ public class StartUiTest {
                                 .append("5. Поиск заявки по имени\r\n")
                                 .append("6. Выход из меню\r\n")
                                 .append("------------ Все зарегистрированные заявки --------------\r\n")
-                                .append("Имя заявки:").append(items[0].getName()).append(" Описание заявки:")
-                                .append(items[0].getDesc()).append(" Код заявки:").append(items[0].getId()).append("\r\n")
-                                .append("Имя заявки:").append(items[1].getName()).append(" Описание заявки:")
-                                .append(items[1].getDesc()).append(" Код заявки:").append(items[1].getId()).append("\r\n")
-                                .append("Имя заявки:").append(items[2].getName()).append(" Описание заявки:")
-                                .append(items[2].getDesc()).append(" Код заявки:").append(items[2].getId()).append("\r\n")
-                                .append("Имя заявки:").append(items[3].getName()).append(" Описание заявки:")
-                                .append(items[3].getDesc()).append(" Код заявки:").append(items[3].getId()).append("\r\n")
+                                .append("Имя заявки:").append(items.get(0).getName()).append(" Описание заявки:")
+                                .append(items.get(0).getDesc()).append(" Код заявки:").append(items.get(0).getId()).append("\r\n")
+                                .append("Имя заявки:").append(items.get(1).getName()).append(" Описание заявки:")
+                                .append(items.get(1).getDesc()).append(" Код заявки:").append(items.get(1).getId()).append("\r\n")
+                                .append("Имя заявки:").append(items.get(2).getName()).append(" Описание заявки:")
+                                .append(items.get(2).getDesc()).append(" Код заявки:").append(items.get(2).getId()).append("\r\n")
+                                .append("Имя заявки:").append(items.get(3).getName()).append(" Описание заявки:")
+                                .append(items.get(3).getDesc()).append(" Код заявки:").append(items.get(3).getId()).append("\r\n")
                                 .append("---------------------------------------------------------\r\n")
                                 .append("0. Добавить заявку\r\n")
                                 .append("1. Посмотреть существующие заявки\r\n")

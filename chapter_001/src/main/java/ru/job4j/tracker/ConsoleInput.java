@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -28,10 +30,10 @@ public class ConsoleInput implements Input  {
      * @return ответ пользователя на вопрос
      * @exception MenuOutException пользователь выбрал несуществующий пункт меню
      */
-    public int ask(final String question, final int[] range) {
+    public int ask(final String question, final ArrayList<Integer> range) {
         int key = Integer.valueOf(this.ask(question));
         boolean exist = false;
-        for (int value: range) {
+        for (Integer value: range) {
             if (value == key) {
                 exist = true;
                 break;

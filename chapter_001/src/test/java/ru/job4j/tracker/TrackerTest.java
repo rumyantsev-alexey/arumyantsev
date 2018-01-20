@@ -31,7 +31,7 @@ public class TrackerTest {
         // добавляем заявку в трекер
         tracker.add(item);
         // проверяем что она есть в списке заявок
-        assertThat(tracker.findAll()[0], is(item));
+        assertThat(tracker.findAll().get(0), is(item));
     }
     // тест метода FindById
     @Test
@@ -67,7 +67,7 @@ public class TrackerTest {
         tracker.add(items[2]);
         tracker.add(items[3]);
         // проверяем что элемнт найденный по имени второй заявки является вторым элементом
-        assertThat(tracker.findByName(items[1].getName())[0], is(items[1]));
+        assertThat(tracker.findByName(items[1].getName()).get(0), is(items[1]));
     }
     @Test
     // тест метода del
@@ -87,7 +87,7 @@ public class TrackerTest {
         // удаляем 3й элемент
         tracker.delete(items[2]);
         // проверяем встал ли на его место 4й
-        assertThat(tracker.findAll()[2].getName(), is(items[3].getName()));
+        assertThat(tracker.findAll().get(2).getName(), is(items[3].getName()));
     }
 
 }

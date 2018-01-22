@@ -13,6 +13,14 @@ public class User implements Comparable<User> {
         this.age = age;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
     // переопределяем сортировку объектов User на сортировку по возрасту
     @Override
     public int compareTo(User o) {

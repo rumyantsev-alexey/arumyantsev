@@ -85,7 +85,7 @@ public class StartUiTest {
     }
 
     // Тест пункта меню Удаление заявки
-    @Test
+/*    @Test
     public void whenDelItemThenTrackerShowThis() {
         // получаем ссылку на стандартный вывод в консоль.
         PrintStream stdout = System.out;
@@ -174,5 +174,5 @@ public class StartUiTest {
         // возвращаем обратно стандартный вывод в консоль.
         System.setOut(stdout);
 
-    }
+    } */
 }

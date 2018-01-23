@@ -4,28 +4,29 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Класс сравнения двух списков
+ * Класс сравнения двух списков.
  */
 public class ListCompare implements Comparator<List<Integer>> {
 
     /**
-     * Метод сравнения двух списков
+     * Метод сравнения двух списков.
      * @param left первый список
      * @param right второй список
      * @return результат сравнения
      */
     @Override
-    public int compare(List<Integer> left, List<Integer> right) {
+    public int compare(final List<Integer> left, final List<Integer> right) {
         Integer lz = left.size();
         Integer rz = right.size();
-        if (lz!=rz) {
-            return lz.compareTo(rz);
-        }
-        for (int i=0; i<lz; i++) {
-            if (left.get(i)!=right.get(i)) {
-                return left.get(i).compareTo(right.get(i));
+        Integer lg = 0;
+        Integer rg = 0;
+        for (int i =  0; lz == rz && i < lz; i++) {
+            lg = left.get(i);
+            rg = right.get(i);
+            if (lg != rg) {
+                break;
             }
         }
-        return 0;
+        return lz != rz ? lz.compareTo(rz) : lg.compareTo(rg);
     }
 }

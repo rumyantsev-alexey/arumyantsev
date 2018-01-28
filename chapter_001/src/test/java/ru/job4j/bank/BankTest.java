@@ -69,7 +69,7 @@ public class BankTest {
      * Тест метода deleteAccountFromUser()
      * Удаляем счет клиента и проверяем остался ли он в хранилище
      */
-    public void deleteAccountFromUser() throws NoSuchUserException{
+    public void deleteAccountFromUser() throws NoSuchUserException, NoSuchAccountException{
         bank.deleteAccountFromUser("bv 654365", new Account("jhg876677000",4465.76d));
         assertThat(bank.getUsers().get(new User("dima","bv 654365")).contains(new Account("jhg876677000",4465.76d)), is(false));
     }

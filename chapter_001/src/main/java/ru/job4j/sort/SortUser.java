@@ -41,7 +41,14 @@ public class SortUser {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                return o1.getName().equals(o2.getName())? o1.getAge().compareTo(o2.getAge()): o1.getName().compareTo(o2.getName());
+                int result;
+                // если имена одинаковые - то сравниваем по возрасту
+                if (o1.getName().equals(o2.getName())) {
+                    result = o1.getAge().compareTo(o2.getAge());
+                } else {
+                    result = o1.getName().compareTo(o2.getName());
+                }
+                return result;
             }
         });
         return users;

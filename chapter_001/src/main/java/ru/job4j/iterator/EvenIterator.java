@@ -4,30 +4,33 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Класс определяет итератор, который ходит по 2х мерному массиву, заданному в конструкторе
+ * Класс определяет итератор, который ходит по четным числам в массиве, заданном в конструкторе
  */
-public class MatrixIterator implements Iterator<Integer> {
-    // Внутреннее представление 2х мерного массива
+public class EvenIterator implements Iterator {
+    // Внутреннее представление состоящее из четных чисел из исходного массива
     private int [] array;
     // Указатель на текущую позицию итератора
     private int pointer = 0;
 
     /**
      * Конструктор с входящим массивов
-     * @param input входной массив
+     * @param numbers входной массив
      */
-    MatrixIterator( int [][] input) {
+    EvenIterator (final int[] numbers) {
         // определяем размер внутреннего массива
         int arraylen=0;
-        for( int i=0; i < input.length; i++) {
-            arraylen+=input[i].length;
+        for( int i=0; i < numbers.length; i++) {
+            if (numbers[i]%2==0) {
+                arraylen++;
+            }
         }
         array = new int[arraylen];
         // перекидываем данные во внутренний массив
         int t = 0;
-        for( int i=0; i < input.length; i++) {
-            for (int j=0; j < input[i].length; j++)
-                array[t++]=input[i][j];
+        for( int i=0; i < numbers.length; i++) {
+            if (numbers[i]%2==0) {
+                array[t++] = numbers[i];
+            }
         }
     }
 

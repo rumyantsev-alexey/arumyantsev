@@ -1,5 +1,6 @@
 package ru.job4j.department;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -13,7 +14,7 @@ public class SortDepart {
      * @param name текстовое название
      * @return объект отдел
      */
-    private static Depart convertOne(String name) {
+    private Depart convertOne(String name) {
         Depart result = new Depart();
         for (String subst : name.split("/")) {
             result.getNames().add(subst);
@@ -26,10 +27,10 @@ public class SortDepart {
      * @param names массив текста с наименованиями отделов
      * @return список отдела в виде списка объектов
      */
-    public static ArrayList<Depart> convert ( String [] names) {
+    public ArrayList<Depart> convert ( String [] names) {
         ArrayList<Depart> result = new ArrayList<>();
         for (String name: names) {
-            result.add(SortDepart.convertOne(name));
+            result.add(convertOne(name));
         }
         return result;
     }
@@ -39,7 +40,7 @@ public class SortDepart {
      * @param names первичный список отделов
      * @return дополненый списко отделов
      */
-    public static ArrayList<Depart> normalization ( ArrayList<Depart> names) {
+    public ArrayList<Depart> normalization ( ArrayList<Depart> names) {
         ArrayList<Depart> result = new ArrayList<>(names);
         Depart mid =  new Depart();
         for (Depart name2: names) {
@@ -59,7 +60,7 @@ public class SortDepart {
      * @param names исходный список
      * @return результат сортировки
      */
-    public static ArrayList<Depart> sortNatural(ArrayList<Depart> names) {
+    public ArrayList<Depart> sortNatural(ArrayList<Depart> names) {
         Comparator<Depart> comp = new Comparator<Depart>() {
             @Override
             public int compare(Depart o1, Depart o2) {
@@ -76,21 +77,21 @@ public class SortDepart {
      * @param names исходный список
      * @return результат сортировки
      */
-    public static ArrayList<Depart> sortDec(ArrayList<Depart> names) {
+    public ArrayList<Depart> sortDec(ArrayList<Depart> names) {
         Comparator<Depart> comp = new Comparator<Depart>() {
             @Override
             public int compare(Depart o1, Depart o2) {
                 int result = 0;
-                int sz = o1.getNames().size() < o2.getNames().size() ? o1.getNames().size() : o2.getNames().size();
+                int sz = o1.size() < o2.size() ? o1.size() : o2.size();
                 for (int i = 0; i < sz; i++) {
-                    if (o1.getNames().get(i).equals(o2.getNames().get(i))) {
+                    if (o1.get(i).equals(o2.get(i))) {
                         continue;
                     }
-                    result = o1.getNames().get(i).compareTo(o2.getNames().get(i)) == -1 ? 1 : -1;
+                    result = o1.get(i).compareTo(o2.get(i)) == -1 ? 1 : -1;
                     break;
                 }
-                if (result == 0 && o1.getNames().size() != o2.getNames().size()) {
-                    result = o1.getNames().size() < o2.getNames().size() ? -1 : 1;
+                if (result == 0 && o1.size() != o2.size()) {
+                    result = o1.size() < o2.size() ? -1 : 1;
                 }
                 return result;
             }

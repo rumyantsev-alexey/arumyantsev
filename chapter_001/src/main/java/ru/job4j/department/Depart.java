@@ -32,6 +32,14 @@ public class Depart implements Comparable {
         }
     }
 
+    public int size() {
+        return names.size();
+    }
+
+    public String get( int i) {
+        return names.get(i);
+    }
+
     // Определяем natural order
     @Override
     public int compareTo(Object o) {

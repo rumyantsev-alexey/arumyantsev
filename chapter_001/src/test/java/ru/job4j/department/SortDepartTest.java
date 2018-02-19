@@ -13,6 +13,7 @@ public class SortDepartTest {
 
     // список отделов в виде списка
     ArrayList<Depart> departs = new ArrayList<>();
+    SortDepart sdepart = new SortDepart();
     // список отделов в виде текста
     String [] departS = {
             "K1/SK1",
@@ -30,7 +31,7 @@ public class SortDepartTest {
      */
     @Before
     public void initArray() {
-        departs = SortDepart.convert(departS);
+        departs = sdepart.convert(departS);
     }
 
     /**
@@ -43,7 +44,7 @@ public class SortDepartTest {
         for (Depart dep : departs) {
             System.out.println(dep);
         }
-        departs = SortDepart.normalization(departs);
+        departs = sdepart.normalization(departs);
         System.out.println("Список после добавления:");
         for (Depart dep : departs) {
             System.out.println(dep);
@@ -59,12 +60,12 @@ public class SortDepartTest {
      */
     @Test
     public void sortNatural() {
-        departs = SortDepart.normalization(departs);
+        departs = sdepart.normalization(departs);
         System.out.println("Исходный список:");
         for (Depart dep : departs) {
             System.out.println(dep);
         }
-        departs = SortDepart.sortNatural(departs);
+        departs = sdepart.sortNatural(departs);
         System.out.println("Список после сортировки по возрастанию:");
         for (Depart dep : departs) {
             System.out.println(dep);
@@ -79,12 +80,12 @@ public class SortDepartTest {
      */
     @Test
     public void sortDec()  {
-        departs = SortDepart.normalization(departs);
+        departs = sdepart.normalization(departs);
         System.out.println("Исходный список:");
         for (Depart dep : departs) {
             System.out.println(dep);
         }
-        departs = SortDepart.sortDec(departs);
+        departs = sdepart.sortDec(departs);
         System.out.println("Список после сортировки по убыванию:");
         for (Depart dep : departs) {
             System.out.println(dep);

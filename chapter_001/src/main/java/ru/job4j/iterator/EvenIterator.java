@@ -38,7 +38,7 @@ public class EvenIterator implements Iterator {
     @Override
     public Integer next() {
         int result = findNextEven(pointer);
-        if (result > -1){
+        if (hasNext()){
             pointer = result + 1;
             result = inner[result];
         } else {

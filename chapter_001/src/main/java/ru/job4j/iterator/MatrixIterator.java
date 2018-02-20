@@ -8,39 +8,43 @@ import java.util.NoSuchElementException;
  */
 public class MatrixIterator implements Iterator<Integer> {
     // Внутреннее представление 2х мерного массива
-    private int [] array;
-    // Указатель на текущую позицию итератора
-    private int pointer = 0;
+    private int [][] inner;
+    // Указатели на текущую позицию итератора
+    private int rawpointer = 0;
+    private int colpointer = 0;
 
     /**
      * Конструктор с входящим массивов
      * @param input входной массив
      */
-    MatrixIterator( int [][] input) {
-        // определяем размер внутреннего массива
-        int arraylen=0;
-        for( int i=0; i < input.length; i++) {
-            arraylen+=input[i].length;
-        }
-        array = new int[arraylen];
-        // перекидываем данные во внутренний массив
-        int t = 0;
-        for( int i=0; i < input.length; i++) {
-            for (int j=0; j < input[i].length; j++)
-                array[t++]=input[i][j];
-        }
+    public MatrixIterator( int [][] input) {
+        this.inner = input;
     }
 
     @Override
     public boolean hasNext() {
-        return pointer < array.length;
+        boolean result = false;
+        int len = inner.length;
+        if (rawpointer < len-1) {
+            result=true;
+        } else {
+            if (rawpointer == len-1 && colpointer < inner[rawpointer].length ) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     @Override
     public Integer next() {
+        int len = inner.length;
         Integer result = null;
-        if (pointer < array.length){
-            result = array[pointer++];
+        if (rawpointer < len && colpointer < inner[rawpointer].length) {
+            result = inner[rawpointer][colpointer++];
+            if (colpointer == inner[rawpointer].length) {
+                colpointer = 0;
+                rawpointer ++;
+            }
         } else {
             throw new NoSuchElementException();
         }

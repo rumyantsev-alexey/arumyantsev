@@ -7,8 +7,7 @@ import java.util.NoSuchElementException;
  * Класс определяет итератор, который ходит по четным числам в массиве, заданном в конструкторе
  */
 public class EvenIterator implements Iterator {
-    // Внутреннее представление состоящее из четных чисел из исходного массива
-    private int [] array;
+    private int [] inner;
     // Указатель на текущую позицию итератора
     private int pointer = 0;
 
@@ -16,34 +15,32 @@ public class EvenIterator implements Iterator {
      * Конструктор с входящим массивов
      * @param numbers входной массив
      */
-    EvenIterator (final int[] numbers) {
-        // определяем размер внутреннего массива
-        int arraylen=0;
-        for( int i=0; i < numbers.length; i++) {
-            if (numbers[i]%2==0) {
-                arraylen++;
+    public EvenIterator (final int[] numbers) {
+        this.inner = numbers;
+    }
+
+    private int findNextEven( int point) {
+        int result = -1;
+        for (int i = point; i < inner.length; i++) {
+            if ( inner[i] % 2 == 0) {
+                result = i;
+                break;
             }
         }
-        array = new int[arraylen];
-        // перекидываем данные во внутренний массив
-        int t = 0;
-        for( int i=0; i < numbers.length; i++) {
-            if (numbers[i]%2==0) {
-                array[t++] = numbers[i];
-            }
-        }
+        return result;
     }
 
     @Override
     public boolean hasNext() {
-        return pointer < array.length;
+        return findNextEven(pointer) > -1;
     }
 
     @Override
     public Integer next() {
-        Integer result = null;
-        if (pointer < array.length){
-            result = array[pointer++];
+        int result = findNextEven(pointer);
+        if (result > -1){
+            pointer = result + 1;
+            result = inner[result];
         } else {
             throw new NoSuchElementException();
         }

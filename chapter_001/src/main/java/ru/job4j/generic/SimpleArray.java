@@ -65,8 +65,7 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     public void delete(int index) {
         if ( index < count) {
-                Object [] temp = array;
-                System.arraycopy(temp,index+1,array,index,count-index);
+                System.arraycopy(array,index+1,array,index,count-index-1);
                 count--;
         } else {
             throw new IndexOutOfBoundsException();

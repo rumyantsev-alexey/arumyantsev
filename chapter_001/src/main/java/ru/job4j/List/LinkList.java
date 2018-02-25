@@ -33,6 +33,26 @@ public class LinkList<E> implements Iterable<E>  {
         return size;
     }
 
+    public Node<E> getFirstNode() {
+        return firstNode;
+    }
+
+    public void setFirstNode(Node<E> firstNode) {
+        this.firstNode = firstNode;
+    }
+
+    public Node<E> getLastNode() {
+        return lastNode;
+    }
+
+    public void setLastNode(Node<E> lastNode) {
+        this.lastNode = lastNode;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     /**
      * Метод добавляет объект в хранилище
      * @param model объект для добавления

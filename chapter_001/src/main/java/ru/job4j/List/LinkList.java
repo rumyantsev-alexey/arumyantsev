@@ -110,9 +110,10 @@ public class LinkList<E> implements Iterable<E>  {
             @Override
             public E next() {
                 if (hasNext()) {
+                    E result = pointNode.getData();
                     pointer++;
                     pointNode = pointNode.getRight();
-                    return pointNode.getLeft().getData();
+                    return result;
                 } else {
                     throw new NoSuchElementException();
                 }

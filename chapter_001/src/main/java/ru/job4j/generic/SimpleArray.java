@@ -102,11 +102,10 @@ public class SimpleArray<T> implements Iterable<T> {
 
             @Override
             public T next() {
-                if (pointer < count) {
-                    return (T) array[pointer++];
-                } else {
+                if (! hasNext()) {
                     throw new NoSuchElementException();
                 }
+                return (T) array[pointer++];
             }
         };
     }

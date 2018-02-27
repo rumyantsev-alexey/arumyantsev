@@ -26,6 +26,20 @@ public class LinkList<E> implements Iterable<E>  {
     }
 
     /**
+     * Класс узла связанного списка
+     * Модификатор default выбран т к данный класс испольхуется в других структурах пакета
+     * @param <E> тип
+     */
+    static class Node<E> {
+        E data;
+        Node<E> left;
+        Node<E> right;
+
+        Node(E model) {
+            data = model;
+        }
+    }
+    /**
      * Метод подсчета текущего размера хранилища данных
      * @return размер
      */
@@ -62,9 +76,9 @@ public class LinkList<E> implements Iterable<E>  {
             this.firstNode = new Node<E>(model);
             this.lastNode = this.firstNode;
         } else {
-            this.lastNode.setRight( new Node<E> (model));
-            this.lastNode.getRight().setLeft( this.lastNode);
-            this.lastNode = this.lastNode.getRight();
+            this.lastNode.right = new Node<E> (model);
+            this.lastNode.right.left = this.lastNode;
+            this.lastNode = this.lastNode.right;
         }
         size++;
         modCount++;
@@ -89,6 +103,34 @@ public class LinkList<E> implements Iterable<E>  {
         }
     }
 
+    /**
+     * Метод удаляет объект из хранилища по значению
+     * @param value значение
+     * @return удалось ли удаление
+     */
+    public boolean remove(E value) {
+        boolean result = false;
+        Node<E> current = this.firstNode;
+        Iterator<E> iter = this.iterator();
+        while (iter.hasNext()) {
+            if (current.data.equals(value)) {
+                if (current.left != null) {
+                    current.left.right = current.right;
+                }
+                if (current.right != null) {
+                    current.right.left = current.left;
+                }
+                result = true;
+                size--;
+                modCount++;
+                break;
+            }
+            iter.next();
+            current = current.right;
+        }
+        return result;
+    }
+
     @Override
     /**
      *  Метод создает итератор для контейнера
@@ -110,9 +152,9 @@ public class LinkList<E> implements Iterable<E>  {
             @Override
             public E next() {
                 if (hasNext()) {
-                    E result = pointNode.getData();
+                    E result = pointNode.data;
                     pointer++;
-                    pointNode = pointNode.getRight();
+                    pointNode = pointNode.right;
                     return result;
                 } else {
                     throw new NoSuchElementException();

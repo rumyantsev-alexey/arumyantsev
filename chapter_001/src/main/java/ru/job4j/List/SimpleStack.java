@@ -25,8 +25,8 @@ public class SimpleStack<T> {
      */
     public T poll() {
         if (stack.size() > 0) {
-            T result = stack.getLastNode().getData();
-            stack.setLastNode(stack.getLastNode().getLeft());
+            T result = stack.getLastNode().data;
+            stack.setLastNode(stack.getLastNode().left);
             stack.setSize(stack.size()-1);
             return result;
         } else {

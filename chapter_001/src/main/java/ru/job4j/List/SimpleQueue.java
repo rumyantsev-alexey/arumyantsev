@@ -25,8 +25,8 @@ public class SimpleQueue<T> {
      */
     public T poll() {
         if (queue.size() > 0) {
-            T result = queue.getFirstNode().getData();
-            queue.setFirstNode(queue.getFirstNode().getRight());
+            T result = queue.getFirstNode().data;
+            queue.setFirstNode(queue.getFirstNode().right);
             queue.setSize(queue.size()-1);
             return result;
         } else {

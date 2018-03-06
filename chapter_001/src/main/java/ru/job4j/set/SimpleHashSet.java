@@ -22,7 +22,7 @@ public class SimpleHashSet<E> {
      * @return номер ячейки в хеш таблице
      */
     private int convertHash(E value) {
-        return value.hashCode() % BUCKETS;
+        return Math.abs(value.hashCode() % BUCKETS);
     }
 
     public int size() {

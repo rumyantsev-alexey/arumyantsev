@@ -111,30 +111,21 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
         return rsl;
     }
 
-    public boolean isBinary() {
-        return isBin(root);
-    }
-
     /**
      * Метод проверяет количество потомков у узла и если их меньше 3х товозвращает успех
-     * @param uzel узел
      * @return количество потомков меньше 3х
      */
-    private boolean isBin(Node<E> uzel) {
+    public boolean isBinary() {
         boolean result = true;
-        if (uzel.leaves().isEmpty()) {
-            result = true;
-        } else {
-            if (uzel.leaves().size() <= 2) {
-                for(Node<E> child: uzel.leaves()) {
-                    result = result & isBin(child);
-                }
-            } else {
+        Iterator<E> itr = iterator();
+        while (result && itr.hasNext()) {
+            if (findBy(itr.next()).get().leaves().size() > 2) {
                 result = false;
             }
         }
-    return result;
+        return result;
     }
+
 
     @Override
     /**

@@ -1,6 +1,8 @@
 package ru.job4j.threads;
 
 import org.junit.Test;
+
+import static java.lang.Thread.State.TERMINATED;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -23,6 +25,29 @@ public class ThreadsTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        assertThat(t.counts, is(49));
+        assertThat(t.countw, is(50));
+    }
+
+    @Test
+    /**
+     * Тест выводит ссобщение о начале подсчета, потом ожидает окончание потоков и выводит сообщение об окончании
+     */
+    public void testWaitOutput() {
+        Thread cs = new Thread(t. new countSpaces());
+        Thread cw = new Thread(t. new countWords());
+        System.out.println("Begin count spaces");
+        System.out.println("Begin count words");
+        cs.start();
+        cw.start();
+        while (cs.getState() != TERMINATED) {
+
+        }
+        System.out.println("End count spaces");
+        while (cw.getState() != TERMINATED) {
+
+        }
+        System.out.println("End count words");
         assertThat(t.counts, is(49));
         assertThat(t.countw, is(50));
     }

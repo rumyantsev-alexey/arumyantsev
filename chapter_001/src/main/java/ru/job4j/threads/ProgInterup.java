@@ -4,14 +4,13 @@ package ru.job4j.threads;
  * Класс содержит два внутренних класса для демонстрации прерывания одного потока другим через определенное время
  */
 public class ProgInterup {
-    // флаг прерывания второго потока
-    private boolean timeout;
+    // поток который надо прервать
+    private Thread thread;
     // таймер окончания работы первого потока
     private long timer;
     // текст для работы второго потока
     private String text;
     // количество символов подсчитанных вторым потоком в тексте
-    int count;
 
     /**
      * Конструктор
@@ -21,8 +20,10 @@ public class ProgInterup {
     public ProgInterup (String text, long time) {
         this.text = text;
         this.timer = time;
-        this.timeout = false;
-        this.count = 0;
+    }
+
+    public void setTread(Thread thread) {
+        this.thread = thread;
     }
 
     /**
@@ -32,12 +33,12 @@ public class ProgInterup {
         @Override
         public void run() {
             long begintime = System.currentTimeMillis();
-            System.out.println(" Begin time");
+            System.out.println(String.format("Begin time. (Timer:%s)", timer));
             while (System.currentTimeMillis() - begintime < timer) {
 
             }
-            timeout = true;
-            System.out.println(" End time");
+            System.out.println(String.format("End time. (Timer:%s)", timer));
+            thread.interrupt();
         }
     }
 
@@ -45,19 +46,25 @@ public class ProgInterup {
      * Класс определяющий поток, подсчитывающий количество символов в тексте
      */
     public class CountChar implements  Runnable {
+        private int count = 0;
+
+        public int getCount() {
+            return count;
+        }
+
         @Override
         public void run() {
-            System.out.println(" Begin chars count");
-            for (int i = 0; i < text.length() && ! timeout; i++) {
+            System.out.println(String.format(" Begin chars count. (Timer: %s)", timer));
+            for (int i = 0; i < text.length(); i++) {
                 count++;
                 try {
                     Thread.sleep(2);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println(String.format("Chars count interrupt. (Timer:%s)", timer));
+                    break;
                 }
             }
-            System.out.println( timeout ? String.format("Chars count interrupt. %s chars count.", count) : String.format("End chars count. %s chars count.", count));
+            System.out.println( String.format("End chars count. %s chars count. (Timer:%s)", count, timer));
         }
     }
-
 }

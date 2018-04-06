@@ -55,7 +55,7 @@ public class ProgInterup {
         @Override
         public void run() {
             System.out.println(String.format(" Begin chars count. (Timer: %s)", timer));
-            for (int i = 0; i < text.length(); i++) {
+            for (int i = 0; i < text.length() && ! Thread.interrupted(); i++) {
                 count++;
                 try {
                     Thread.sleep(2);
@@ -63,6 +63,9 @@ public class ProgInterup {
                     System.out.println(String.format("Chars count interrupt. (Timer:%s)", timer));
                     break;
                 }
+            }
+            if (Thread.interrupted()) {
+                System.out.println(String.format("Chars count interrupt. (Timer:%s)", timer));
             }
             System.out.println( String.format("End chars count. %s chars count. (Timer:%s)", count, timer));
         }

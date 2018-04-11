@@ -1,6 +1,7 @@
 package ru.job4j.tree;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Класс моделирующий структуру дерева
@@ -95,35 +96,33 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
      * @return искомый узел в оболочке
      */
     public Optional<Node<E>> findBy(E value) {
-        Optional<Node<E>> rsl = Optional.empty();
+        return convertTreeToCollect().stream().filter((s) -> s.eqValue(value)).findFirst();
+    }
+
+    /**
+     * Метод конвертирует дерево в коллекцию, для удобства дальнейшей обработки
+     * @return полученная коллекция
+     */
+    private Collection<Node<E>> convertTreeToCollect() {
+        Collection<Node<E>> result = new ArrayList<>();
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
             Node<E> el = data.poll();
-            if (el.eqValue(value)) {
-                rsl = Optional.of(el);
-                break;
-            }
+            result.add(el);
             for (Node<E> child : el.leaves()) {
                 data.offer(child);
             }
         }
-        return rsl;
+        return result;
     }
 
     /**
-     * Метод проверяет количество потомков у узла и если их меньше 3х товозвращает успех
+     * Метод проверяет количество потомков у узла и если их меньше 3х то возвращает успех
      * @return количество потомков меньше 3х
      */
     public boolean isBinary() {
-        boolean result = true;
-        Iterator<E> itr = iterator();
-        while (result && itr.hasNext()) {
-            if (findBy(itr.next()).get().leaves().size() > 2) {
-                result = false;
-            }
-        }
-        return result;
+        return convertTreeToCollect().stream().noneMatch((s) -> s.leaves().size() > 2);
     }
 
 
@@ -134,26 +133,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             int position = 0;
-            // список значений элементов в дереве
-            LinkedList<E> data = new LinkedList<>();
             int expectedModCount = modCount;
-            {
-                // переделываем дерево в список
-                reBuild(root);
-            }
-
-            /**
-             * Метод разбирает узел и его потомков в список
-             * @param uzel
-             */
-            private void reBuild(Node<E> uzel) {
-                data.add(uzel.getValue());
-                if (!uzel.leaves().isEmpty()) {
-                    for (Node<E> child : uzel.leaves()) {
-                            reBuild(child);
-                    }
-                }
-            }
+            // список значений элементов в дереве
+            List<E> data = convertTreeToCollect().stream().map((s) -> s.value).collect(Collectors.toList());
 
             @Override
             public boolean hasNext() {

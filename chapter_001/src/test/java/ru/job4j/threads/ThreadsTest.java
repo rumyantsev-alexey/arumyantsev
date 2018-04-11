@@ -40,12 +40,16 @@ public class ThreadsTest {
         System.out.println("Begin count words");
         cs.start();
         cw.start();
-        while (cs.getState() != TERMINATED) {
-
+        try {
+            cs.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         System.out.println("End count spaces");
-        while (cw.getState() != TERMINATED) {
-
+        try {
+            cw.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         System.out.println("End count words");
         assertThat(t.counts, is(49));

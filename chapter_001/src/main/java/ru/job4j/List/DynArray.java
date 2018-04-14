@@ -1,15 +1,19 @@
 package ru.job4j.List;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@ThreadSafe
 /**
  * Класс представляет собой динамический список типа E с базовыми функциями
  * @param <E> необходимый тип данных
  */
 public class DynArray<E> implements Iterable<E> {
-
+    @GuardedBy("this")
     // массив данных
     private Object[] container = new Object [10];
     // кол-во внесенных данных
@@ -37,11 +41,11 @@ public class DynArray<E> implements Iterable<E> {
     }
 
     /**
-     * Метод добавляет объект в хранилище
+     * Метод добавляет объект в хранилище (синхронизирован)
      * В случаи необходимости он увеличивает размер хранилища
      * @param obj объект для добавления
      */
-    public void add(E obj) {
+    public synchronized void add(E obj) {
         if ( count == this.container.length ) {
             Object [] temp = new Object[container.length*2+1];
             System.arraycopy(container,0,temp,0,count);

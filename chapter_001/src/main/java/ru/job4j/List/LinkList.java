@@ -1,15 +1,19 @@
 package ru.job4j.List;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@ThreadSafe
 /**
  * Класс представляет собой динамический список типа E с базовыми функциями
  * @param <E> необходимый тип данных
  */
 public class LinkList<E> implements Iterable<E>  {
-
+    @GuardedBy("this")
     // ссылка на первый узел списка
     private Node<E> firstNode;
     // ссылка на последний узел списка
@@ -51,7 +55,7 @@ public class LinkList<E> implements Iterable<E>  {
         return firstNode;
     }
 
-    public void setFirstNode(Node<E> firstNode) {
+    public synchronized void setFirstNode(Node<E> firstNode) {
         this.firstNode = firstNode;
     }
 
@@ -59,19 +63,19 @@ public class LinkList<E> implements Iterable<E>  {
         return lastNode;
     }
 
-    public void setLastNode(Node<E> lastNode) {
+    public synchronized void setLastNode(Node<E> lastNode) {
         this.lastNode = lastNode;
     }
 
-    public void setSize(int size) {
+    public synchronized void setSize(int size) {
         this.size = size;
     }
 
     /**
-     * Метод добавляет объект в хранилище
+     * Метод добавляет объект в хранилище (синхронизрован)
      * @param model объект для добавления
      */
-    public void add(E model) {
+    public synchronized void add(E model) {
         if (size == 0) {
             this.firstNode = new Node<E>(model);
             this.lastNode = this.firstNode;
@@ -104,11 +108,11 @@ public class LinkList<E> implements Iterable<E>  {
     }
 
     /**
-     * Метод удаляет объект из хранилища по значению
+     * Метод удаляет объект из хранилища по значению (синхронизирован)
      * @param value значение
      * @return удалось ли удаление
      */
-    public boolean remove(E value) {
+    public synchronized boolean remove(E value) {
         boolean result = false;
         Node<E> current = this.firstNode;
         Iterator<E> iter = this.iterator();

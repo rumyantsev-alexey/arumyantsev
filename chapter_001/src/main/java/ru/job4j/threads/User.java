@@ -26,9 +26,6 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User o) {
-        if (o == null) {
-            throw new NullPointerException();
-        }
-        return this.getId().compareTo(o.getId());
+        return o == null ? 1 : this.getId().compareTo(o.getId());
     }
 }

@@ -3,7 +3,7 @@ package ru.job4j.threads;
 /**
  * Класс Пользователь для хранилища
  */
-public class User implements Comparable<User> {
+public class User {
     private Integer id;
     private Integer amount;
 
@@ -25,7 +25,17 @@ public class User implements Comparable<User> {
     }
 
     @Override
-    public int compareTo(User o) {
-        return o == null ? 1 : this.getId().compareTo(o.getId());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

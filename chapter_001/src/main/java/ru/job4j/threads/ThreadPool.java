@@ -54,9 +54,6 @@ public class ThreadPool {
         Work (Thread w) {
             work = w;
         }
-        public Thread getWork() {
-            return work;
-        }
     }
 
     /**
@@ -67,7 +64,7 @@ public class ThreadPool {
         synchronized (tempPreQueue) {
             tempPreQueue.offer(work);
         }
-        System.out.println(work.getWork().getName() + " in buffer");
+        System.out.println(work.work.getName() + " in buffer");
     }
 
     /**
@@ -101,7 +98,7 @@ public class ThreadPool {
      * @return истина если нет работающих потоков
      */
     public boolean isEmpty() {
-        return workPool.stream().anyMatch( s -> !s.getWork().isAlive());
+        return workPool.stream().anyMatch( s -> !s.work.isAlive());
     }
 
     /**
@@ -111,11 +108,11 @@ public class ThreadPool {
         System.out.println("pool module starting...");
         while (!Thread.currentThread().isInterrupted()) {
             for (int i = 0; i < workPool.size() && tempPreQueue.size() > 0; i++) {
-                if (!workPool.get(i).getWork().isAlive()) {
+                if (!workPool.get(i).work.isAlive()) {
                     workPool.set(i, tempPreQueue.poll());
-                    System.out.println(workPool.get(i).getWork().getName() + " in pool");
-                    workPool.get(i).getWork().start();
-                    System.out.println(workPool.get(i).getWork().getName() + " starting");
+                    System.out.println(workPool.get(i).work.getName() + " in pool");
+                    workPool.get(i).work.start();
+                    System.out.println(workPool.get(i).work.getName() + " starting");
                 }
             }
             try {
@@ -133,7 +130,7 @@ public class ThreadPool {
     private void checkStatus() {
         System.out.println("check module starting...");
         while (!Thread.currentThread().isInterrupted()) {
-            if (workPool.stream().filter(s -> !s.getWork().isAlive()).count() > 0) {
+            if (workPool.stream().filter(s -> !s.work.isAlive()).count() > 0) {
                 synchronized (this) {
                     this.notify();
                 }

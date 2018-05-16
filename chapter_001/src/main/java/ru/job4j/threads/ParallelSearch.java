@@ -9,6 +9,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @ThreadSafe
 /**
@@ -22,10 +23,10 @@ public class ParallelSearch {
     private volatile boolean finish = false;
 
     @GuardedBy("this")
-    private volatile Queue<String> files = new LinkedList<>();
+    private volatile ConcurrentLinkedQueue<String> files = new ConcurrentLinkedQueue<>();
 
     @GuardedBy("this")
-    private volatile Queue<String> paths = new LinkedList<>();
+    private volatile ConcurrentLinkedQueue<String> paths = new ConcurrentLinkedQueue<>();
 
 
     /**
@@ -52,9 +53,7 @@ public class ParallelSearch {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 if (exts.stream().anyMatch(s -> file.getFileName().toString().endsWith(s))) {
-                    synchronized (this) {
-                        files.offer(file.toString());
-                    }
+                    files.offer(file.toString());
                 }
                 return FileVisitResult.CONTINUE;
             }
@@ -83,11 +82,9 @@ public class ParallelSearch {
                 System.out.println("Files filter starting...");
                 while (!Thread.currentThread().isInterrupted() || !finish) {
                     while (files.size() > 0) {
-                        synchronized (this) {
-                            s = files.poll();
-                            if (s.indexOf(text) > -1) {
-                                paths.offer(s);
-                            }
+                        s = files.poll();
+                        if (s.indexOf(text) > -1) {
+                            paths.offer(s);
                         }
                     }
                 }

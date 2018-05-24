@@ -2,6 +2,9 @@ package ru.job4j.bombermen;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Класс реализует игру Bombermen
@@ -12,6 +15,8 @@ public class Bombermen implements Runnable{
     private final int countWall;
     private final int countMonster;
     private final Board board;
+    // буфер обмена направлением движения между потоками
+    private final SynchronousQueue<Direction> dir = new SynchronousQueue<>();
     // буфер для потоков
     private final LinkedList<Thread> bufThread = new LinkedList<>();
     private final Hero hero;
@@ -22,7 +27,7 @@ public class Bombermen implements Runnable{
         this.countWall = countWall;
         this.countMonster = countMonster;
         this.board = new Board(sizeX, sizeY);
-        this.hero = new Hero(this.board, 0, 0);
+        this.hero = new Hero(this.board, 0, 0, dir);
     }
 
     /**
@@ -57,6 +62,7 @@ public class Bombermen implements Runnable{
             cell = new Cell(rn.nextInt(sizeX), rn.nextInt(sizeY));
         } while (board.isLock(cell));
         hero.setCurXY(cell);
+        board.lock(cell);
         bufThread.add(new Thread(hero, "Hero"));
         System.out.println(String.format("Stand HERO in %s", hero));
 
@@ -84,10 +90,11 @@ public class Bombermen implements Runnable{
         }
         // 10 раз двигаем героя
         for (int i = 0; i < 10; i++) {
-            hero.setDirect(this.getDirect());
             try {
+                dir.put(getDirect());
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         // останавливаем все потоки
@@ -108,5 +115,4 @@ public class Bombermen implements Runnable{
         Random rn = new Random();
         return Direction.values()[rn.nextInt(4)+1];
     }
-
 }

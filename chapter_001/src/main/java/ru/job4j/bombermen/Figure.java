@@ -9,10 +9,7 @@ public abstract class Figure {
     // тип фигуры
     private final Type type ;
     // игровая доска
-    protected final Board board;
-    // направление движения фигуры
-    // поле волатильное и не финальное так как служит для управления фигурой из вне
-    private volatile Direction direct = Direction.STOP ;
+    private final Board board;
 
     /**
      * Конструктор с параметрами
@@ -35,28 +32,8 @@ public abstract class Figure {
         return curXY;
     }
 
-    public void setDirect(Direction direct) {
-        this.direct = direct;
-    }
-
-    public Direction getDirect() {
-        return direct;
-    }
-
-    /**
-     * Метод перемещает фигуру с текущих координат в новые (в текущей версии не используется)
-     * @param cell новые координаты
-     * @return успешность
-     */
-    public boolean move(final Cell cell) {
-        boolean result = false;
-        if ( !board.isLock(cell) && this.type != Type.WALL) {
-            board.unlock(curXY);
-            curXY = cell;
-            board.lock(curXY);
-            result = true;
-        }
-        return result;
+    public Board getBoard() {
+        return board;
     }
 
     /**

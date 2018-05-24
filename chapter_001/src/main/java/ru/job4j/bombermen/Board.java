@@ -1,6 +1,7 @@
 package ru.job4j.bombermen;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -16,6 +17,11 @@ public class Board implements Runnable{
     // стек для запросов на разблокировку ячеек
     private final ConcurrentLinkedQueue<Cell > unlock = new ConcurrentLinkedQueue<>();
 
+    /**
+     * Конструктор с начальной инициализацией доски
+     * @param sizeX размер по оси X
+     * @param sizeY размер по оси Y
+     */
     Board (final int sizeX, final int sizeY) {
         board = new ReentrantLock[sizeX][sizeY];
         sizeXY = new Cell( sizeX,sizeY);
@@ -24,6 +30,29 @@ public class Board implements Runnable{
                 board[i][j] = new ReentrantLock();
             }
         }
+    }
+
+    /**
+     * Метод реализует перемещение фигуры из начальной точки а конечную
+     * @param source начальная точка
+     * @param dest конечная точка
+     * @return успех перемещения
+     * @throws InterruptedException прокидываем наверх прерывание для краткости кода
+     */
+    public boolean move(final Cell source, final Cell dest) throws InterruptedException {
+        boolean result = false;
+        if (dest.getX() < getSizeXY().getX() && dest.getX() >= 0 && dest.getY() < getSizeXY().getY()
+                && dest.getY() >= 0 && board[dest.getX()][dest.getY()].tryLock(500, TimeUnit.MILLISECONDS)) {
+
+            this.unlock(source);
+            board[dest.getX()][dest.getY()].unlock();
+            this.lock(dest);
+            result = true;
+            System.out.println(String.format("Move from %s to %s", source, dest));
+        } else {
+            System.out.println("No move");
+        }
+        return result;
     }
 
     /**
@@ -53,14 +82,6 @@ public class Board implements Runnable{
 
     public Cell getSizeXY() {
         return sizeXY;
-    }
-
-    /**
-     * Метод возвращает игровую доску (актуален только в текущей версии)
-     * @return игровая доска
-     */
-    public ReentrantLock[][] getBoard() {
-        return board;
     }
 
     @Override

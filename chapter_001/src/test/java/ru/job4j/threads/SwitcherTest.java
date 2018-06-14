@@ -29,7 +29,7 @@ public class SwitcherTest {
         pool.shutdownNow();
         assertThat(pool.isShutdown(), is(true));
         try {
-            pool.awaitTermination(10000, TimeUnit.MILLISECONDS);
+            pool.awaitTermination(15000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

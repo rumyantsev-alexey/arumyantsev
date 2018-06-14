@@ -40,7 +40,7 @@ public class Switcher {
             boolean result;
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    result = lckOne.tryLock(500, TimeUnit.MILLISECONDS);
+                    result = lckOne.tryLock(300, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     continue;
@@ -53,7 +53,7 @@ public class Switcher {
                     lckOne.unlock();
                 }
                 try {
-                    result = lckTwo.tryLock(500, TimeUnit.MILLISECONDS);
+                    result = lckTwo.tryLock(300, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     continue;
@@ -83,7 +83,7 @@ public class Switcher {
 
                  }
                 try {
-                    result = lckTwo.tryLock(500, TimeUnit.MILLISECONDS);
+                    result = lckTwo.tryLock(300, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     continue;
@@ -96,7 +96,7 @@ public class Switcher {
                     lckTwo.unlock();
                 }
                 try {
-                    result = lckOne.tryLock(500, TimeUnit.MILLISECONDS);
+                    result = lckOne.tryLock(300, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     continue;

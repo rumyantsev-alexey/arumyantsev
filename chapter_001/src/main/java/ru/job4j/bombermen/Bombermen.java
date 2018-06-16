@@ -45,7 +45,7 @@ public class Bombermen implements Runnable{
             try {
                 System.out.println(String.format("Step # %s", i+1));
                 dir.put(getDirect());
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 break;
             }

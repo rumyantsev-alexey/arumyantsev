@@ -66,4 +66,9 @@ public class Hero implements Runnable {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return this.figure.toString();
+    }
 }

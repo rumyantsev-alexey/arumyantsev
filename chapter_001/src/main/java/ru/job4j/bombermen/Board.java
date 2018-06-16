@@ -74,11 +74,17 @@ public class Board {
         if (!board[source.getX()][source.getY()].isLocked()) {
             board[source.getX()][source.getY()].lock();
         }
-        if (checkXY(dest) && !board[dest.getX()][dest.getY()].isLocked()) {
-            board[dest.getX()][dest.getY()].lock();
-            board[source.getX()][source.getY()].unlock();
-            result = true;
-            System.out.println(String.format("Move from %s to %s", source, dest));
+        System.out.println("Moving...");
+        if (checkXY(dest)) {
+            try {
+                result = board[dest.getX()][dest.getY()].tryLock(500, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            if (result) {
+                board[source.getX()][source.getY()].unlock();
+                System.out.println(String.format("Move from %s to %s", source, dest));
+            }
         } else {
             System.out.println("No move");
         }

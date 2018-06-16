@@ -5,13 +5,16 @@ import java.util.concurrent.SynchronousQueue;
 /**
  * Класс реализует героя в игре
  */
-public class Hero extends Figure implements Runnable {
+public class Hero implements Runnable {
 
     // буфер обмена направлением движения между потоками
     private final SynchronousQueue<Direction> dir;
+    private final Figure figure;
+    private final Board board;
 
-    Hero (final Board board, final int initX, final int initY, final SynchronousQueue<Direction> dir) {
-        super(Type.HERO, board, initX, initY);
+    Hero (final int initX, final int initY, final Board board, final SynchronousQueue<Direction> dir) {
+        figure = new Figure(Type.HERO, new Cell(initX, initY));
+        this.board = board;
         this.dir = dir;
     }
 
@@ -22,20 +25,25 @@ public class Hero extends Figure implements Runnable {
      */
     public void run() {
         Direction d;
-        System.out.println(String.format("%s begining",Thread.currentThread().getName()));
+        this.board.move(figure.getCurXY(), figure.getCurXY());
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 d = dir.take();
                 System.out.println(String.format("Direction: %s", d));
-                if (this.getBoard().move(this.getCurXY(), cellDirect(this.getCurXY(), d))) {
-                    this.setCurXY(cellDirect(this.getCurXY(), d));
+                if (this.board.move(this.figure.getCurXY(), cellDirect(this.figure.getCurXY(), d))) {
+                    this.figure.setCurXY(cellDirect(this.figure.getCurXY(), d));
                 }
             } catch (InterruptedException e) {
-                break;
+                Thread.currentThread().interrupt();
+                continue;
             }
-            System.out.println(String.format("Hero here %s", this));
+            System.out.println(String.format("Hero here %s", this.figure.getCurXY()));
         }
         System.out.println(String.format("%s ended", Thread.currentThread().getName()));
+    }
+
+    public void setCurXY(final Cell cell) {
+        this.figure.setCurXY(cell);
     }
 
     /**
@@ -58,10 +66,4 @@ public class Hero extends Figure implements Runnable {
         }
         return result;
     }
-
-    @Override
-    void action(Cell cell) {
-
-    }
-
 }

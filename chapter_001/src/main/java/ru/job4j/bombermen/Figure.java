@@ -3,44 +3,29 @@ package ru.job4j.bombermen;
 /**
  * Абстрактный класс Фигура - основа для всех фигур в игре
  */
-public abstract class Figure {
+public class Figure {
     // текущие координаты фигуры - не финальные так как могут меняться во время игры
     private Cell curXY;
     // тип фигуры
     private final Type type ;
-    // игровая доска
-    private final Board board;
 
     /**
      * Конструктор с параметрами
      * @param type тип фигуры
-     * @param board доска
-     * @param initX
-     * @param initY
+     * @param cell
      */
-    Figure (final Type type, final Board board, final int initX, final int initY) {
+    Figure (final Type type, final Cell cell) {
         this.type = type;
-        this.board = board;
-        this.curXY = new Cell(initX, initY);
-    }
-
-    public void setCurXY(final Cell curXY) {
-        this.curXY = curXY;
+        this.curXY = cell;
     }
 
     public Cell getCurXY() {
         return curXY;
     }
 
-    public Board getBoard() {
-        return board;
+    public void setCurXY(final Cell cell) {
+        curXY = cell;
     }
-
-    /**
-     * Абстрактный метод должен реализовывать некие действия фигуры
-     * @param cell координаты на которые надо воздействовать
-     */
-    abstract void action(final Cell cell);
 
     @Override
     public String toString() {

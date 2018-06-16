@@ -12,7 +12,7 @@ public class BombermenTest {
 
     @Test
     public void testBombermen() {
-        Bombermen b = new Bombermen(5, 5, 8,0);
+        Bombermen b = new Bombermen(5, 5, 8);
         Thread thread = new Thread(b);
         b.init();
         thread.start();
@@ -23,5 +23,4 @@ public class BombermenTest {
         }
         assertThat(thread.getState(), is(Thread.State.TERMINATED));
     }
-
 }

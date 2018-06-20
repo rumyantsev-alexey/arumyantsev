@@ -1,6 +1,6 @@
 package ru.job4j.threads;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -10,10 +10,9 @@ public class Switcher {
     //количество символов передаваемых потоком за один цикл
     private static final int COUNT = 10;
     private final StringBuffer string = new StringBuffer();
-    private volatile int cntOne  = COUNT;
-    private volatile int cntTwo  = COUNT;
-    private final ReentrantLock lckOne = new ReentrantLock();
-    private final ReentrantLock lckTwo = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition condA = lock.newCondition();
+    private final Condition condB = lock.newCondition();
 
     /**
      * Метод возвращет текущую строку
@@ -37,35 +36,19 @@ public class Switcher {
     protected Thread thread1 = new Thread(new Runnable() {
         @Override
         public void run() {
-            boolean result;
             while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    result = lckOne.tryLock(300, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    continue;
-                }
-                if (result) {
-                    while (cntOne > 0 && !Thread.currentThread().isInterrupted()) {
-                        add(1);
-                        cntOne--;
-                    }
-                    lckOne.unlock();
-                }
-                try {
-                    result = lckTwo.tryLock(300, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    continue;
-                }
-                if (result) {
-                    cntTwo = COUNT;
-                    lckTwo.unlock();
+                lock.lock();
+                for (int i = 0; i < COUNT; i++) {
+                    add(1);
                 }
                 System.out.println("Thread1 - current string - "+string);
-                while (cntTwo > 0 && !Thread.currentThread().isInterrupted()) {
-
+                condB.signalAll();
+                try {
+                    condA.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                lock.unlock();
             }
             System.out.println("Thread1 end");
         }
@@ -77,35 +60,20 @@ public class Switcher {
     protected  Thread thread2 = new Thread(new Runnable() {
         @Override
         public void run() {
-            boolean result;
             while (!Thread.currentThread().isInterrupted()) {
-                 while(cntOne > 0 && !Thread.currentThread().isInterrupted()) {
-
-                 }
+                lock.lock();
                 try {
-                    result = lckTwo.tryLock(300, TimeUnit.MILLISECONDS);
+                    condB.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     continue;
                 }
-                if (result) {
-                    while (cntTwo > 0 && !Thread.currentThread().isInterrupted()) {
-                        add(2);
-                        cntTwo--;
-                    }
-                    lckTwo.unlock();
-                }
-                try {
-                    result = lckOne.tryLock(300, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    continue;
-                }
-                if (result) {
-                    cntOne = COUNT;
-                    lckOne.unlock();
+                for (int i = 0; i < COUNT; i++) {
+                    add(2);
                 }
                 System.out.println("Thread2 - current string - "+ string);
+                condA.signalAll();
+                lock.unlock();
             }
             System.out.println("Thread2 end");
         }

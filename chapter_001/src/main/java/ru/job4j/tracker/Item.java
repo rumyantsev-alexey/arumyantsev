@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.Random;
+
 /**
  * базовый класс заявки
  * @author Alex Rumyantcev
@@ -11,6 +13,7 @@ public class Item {
     private String desc; // описание заявки
     private long created; // время создания заявки
     private String[] commets; // комментарии к заявке (пока не используется)
+    private Random rn = new Random();
 
     /**
      * конструктор завки с инициализацией параметров
@@ -21,6 +24,21 @@ public class Item {
         this.name = name;
         this.desc = desc;
         this.created = System.currentTimeMillis();  // генерим время создания заявки
+        this.id = generateId();
+    }
+
+    Item() {
+
+    }
+
+    /**
+     * Метод генерирует уникальный ключ для заявки.
+     * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
+     * @return Уникальный ключ.
+     */
+    private String generateId() {
+        //Реализовать метод генерации.
+        return String.valueOf(rn.nextInt(10000));
     }
 
     @Override

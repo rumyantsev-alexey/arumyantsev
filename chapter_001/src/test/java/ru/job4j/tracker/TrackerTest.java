@@ -1,15 +1,23 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class TrackerTest {
+    Tracker tracker = Tracker.initTracker("D:/projects/arumyantsev/chapter_001/src/main/java/ru/job4j/tracker/config.properties");
+
+    @Before
+    public void initTracker() {
+        tracker.checkAll();
+        tracker.delTable();
+        tracker.checkAll();
+    }
 
     // тест методов add и update
     @Test
     public void whenUpdateNameThenReturnNewName() {
-        Tracker tracker = new Tracker();
         Item previous = new Item("test1", "testDescription");
         // Добавляем заявку в трекер. Теперь в объект проинициализирован id.
         tracker.add(previous);
@@ -23,17 +31,18 @@ public class TrackerTest {
         assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
     }
     // тест метода findAll
+
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
         // создаем заявку
         Item item = new Item("test1", "testDescription");
         // добавляем заявку в трекер
         tracker.add(item);
         // проверяем что она есть в списке заявок
-        assertThat(tracker.findAll().get(0), is(item));
+        assertThat(tracker.findById(item.getId()), is(item));
     }
     // тест метода FindById
+
     @Test
     public void whenFindByIdThenTrackerHasTrue() {
         Item[] items = new Item[4];
@@ -42,7 +51,6 @@ public class TrackerTest {
         items[1] = new Item("testname2", "testDesc2");
         items[2] = new Item("testname3", "testDesc3");
         items[3] = new Item("testname4", "testDesc5");
-        Tracker tracker = new Tracker();
         // добавляем заявки в трекер
         tracker.add(items[0]);
         tracker.add(items[1]);
@@ -51,16 +59,16 @@ public class TrackerTest {
         // проверяем что элемнт найденный по id третей заявки является третьим элементом
         assertThat(tracker.findById(items[2].getId()), is(items[2]));
     }
+
     // тест метода FindByName
     @Test
     public void whenFindByNameThenTrackerHasTrue() {
         Item[] items = new Item[4];
         // создаем тестовые заявки
         items[0] = new Item("testname1", "testDesc1");
-        items[1] = new Item("testname2", "testDesc2");
+        items[1] = new Item("testname244", "testDesc2");
         items[2] = new Item("testname3", "testDesc3");
         items[3] = new Item("testname4", "testDesc5");
-        Tracker tracker = new Tracker();
         // добавляем заявки в трекер
         tracker.add(items[0]);
         tracker.add(items[1]);
@@ -69,6 +77,7 @@ public class TrackerTest {
         // проверяем что элемнт найденный по имени второй заявки является вторым элементом
         assertThat(tracker.findByName(items[1].getName()).get(0), is(items[1]));
     }
+
     @Test
     // тест метода del
     public void whenDelItemThenTrackerDoesIt() {

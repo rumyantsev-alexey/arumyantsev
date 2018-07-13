@@ -114,7 +114,7 @@ public class Tracker implements AutoCloseable {
     public void  delTable() {
         try (Connection con = DriverManager.getConnection(url + db, user, pass);
              Statement st = con.createStatement()) {
-            st.execute("drop table item cascade;");
+            st.execute("delete from item;");
         } catch (SQLException e) {
             log.log(Level.WARNING, "Delete table error:", e);
         }
@@ -173,10 +173,16 @@ public class Tracker implements AutoCloseable {
      */
     public boolean update(final Item item) {
         boolean result = false;
-        if (delete(item)) {
-            if (add(item)) {
-                result = true;
-            }
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             PreparedStatement st = con.prepareStatement("update item set name = ?, des = ?, created = ? where id = ? ;");) {
+            st.setString(4, item.getId());
+            st.setString(1, item.getName());
+            st.setString(2, item.getDesc());
+            st.setTimestamp(3, new Timestamp(item.getCreat()));
+            st.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "Update record in DB error:", e);
         }
         return result;
     }

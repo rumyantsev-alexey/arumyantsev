@@ -6,10 +6,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class TrackerTest {
-    Tracker tracker = Tracker.initTracker("D:/projects/arumyantsev/chapter_001/src/main/java/ru/job4j/tracker/config.properties");
+    Tracker tracker = Tracker.initTracker("config.properties");
 
     @Before
-    public void initTracker() {
+    public void iniTracker() {
         tracker.checkAll();
         tracker.delTable();
         tracker.checkAll();
@@ -19,7 +19,6 @@ public class TrackerTest {
     @Test
     public void whenUpdateNameThenReturnNewName() {
         Item previous = new Item("test1", "testDescription");
-        // Добавляем заявку в трекер. Теперь в объект проинициализирован id.
         tracker.add(previous);
         // Создаем новую заявку.
         Item next = new Item("test2", "testDescription2");
@@ -30,8 +29,8 @@ public class TrackerTest {
         // Проверяем, что заявка с таким id имеет новые имя test2.
         assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
     }
-    // тест метода findAll
 
+    // тест метода findAll
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
         // создаем заявку
@@ -41,8 +40,8 @@ public class TrackerTest {
         // проверяем что она есть в списке заявок
         assertThat(tracker.findById(item.getId()), is(item));
     }
-    // тест метода FindById
 
+    // тест метода FindById
     @Test
     public void whenFindByIdThenTrackerHasTrue() {
         Item[] items = new Item[4];

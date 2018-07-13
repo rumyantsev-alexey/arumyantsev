@@ -27,7 +27,7 @@ public class Item {
         this.id = generateId();
     }
 
-    Item() {
+    public Item() {
 
     }
 
@@ -60,25 +60,33 @@ public class Item {
     public String getId() {
         return this.id;
     }
+
     public void setId(final String id) {
         this.id = id;
     }
+
     public String getName() {
         return this.name;
     }
-    public void setName(final String name){
+
+    public void setName(final String name) {
         this.name = name;
     }
+
     public String getDesc() {
         return this.desc;
     }
+
     public void setDesc(final String desc) {
         this.desc = desc;
     }
+
     public long getCreat() {
         return this.created;
     }
+
     public void setCreat(final long creat) {
         this.created = creat;
     }
+
 }

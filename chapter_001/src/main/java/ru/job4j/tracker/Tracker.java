@@ -5,14 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.*;
-import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Класс дл хранилища заявок и работы с ним
+ * Класс дл хранилища заявок и работы с ним.
  * @author Alex Rumyantcev
  * @version $Id$
  */
-
 public class Tracker implements AutoCloseable {
     private static String driver;
     private static String url;
@@ -22,6 +22,7 @@ public class Tracker implements AutoCloseable {
     private static String pathsql;
     private static Properties prt = new Properties();
     private Connection con = null;
+    private static final Logger log = Logger.getLogger(Tracker.class.getName());
 
     @Override
     public void close() throws Exception {
@@ -29,15 +30,15 @@ public class Tracker implements AutoCloseable {
     }
 
     /**
-     * Метод считывает параметры, проверяет корректность драйверов и БД
+     * Метод считывает параметры, проверяет корректность драйверов и БД.
      * @param propert путь к файлу с параметрами
      * @return трекер с параметрами
      */
-    public static Tracker initTracker(String propert) {
+    public static Tracker initTracker(final String propert) {
         boolean result = false;
         Tracker tracker = new Tracker();
-        try {
-            prt.load(new FileInputStream(propert));
+        try (InputStream inputStream = Tracker.class.getClassLoader().getResourceAsStream(propert)) {
+            prt.load(inputStream);
             tracker.driver = prt.getProperty("driver");
             tracker.url = prt.getProperty("url");
             tracker.user = prt.getProperty("user");
@@ -49,19 +50,19 @@ public class Tracker implements AutoCloseable {
             tracker.con.close();
             result = true;
         } catch (SQLException e) {
-            System.out.println("DB connection error");
+            log.log(Level.WARNING, "DB connection error:", e);
         } catch (ClassNotFoundException e) {
-            System.out.println("DB drivers error");
-        } catch( FileNotFoundException e) {
-            System.out.println("Property file not found");
+            log.log(Level.WARNING, "DB drivers error:", e);
+        } catch (FileNotFoundException e) {
+            log.log(Level.WARNING, "Property file not found:", e);
         } catch (IOException e) {
-            System.out.println("Property file error");
+            log.log(Level.WARNING, "Property file error:", e);
         }
-        return result? tracker: null;
+        return result ? tracker : null;
     }
 
     /**
-     * Метод проверяет существование БД, создает ее (если она не существует) и также создает если необходимо таблицы
+     * Метод проверяет существование БД, создает ее (если она не существует) и также создает если необходимо таблицы.
      * @return истина если удалось создать таблицы
      */
     public boolean checkAll() {
@@ -78,14 +79,14 @@ public class Tracker implements AutoCloseable {
     private boolean checkDB() {
         boolean result = false;
         try (Connection con = DriverManager.getConnection(url, user, pass);
-        Statement st = con.createStatement();) {
-            ResultSet resultSet = st.executeQuery("select count(*) from pg_catalog.pg_database where datname = '"+ db + "';");
+            Statement st = con.createStatement();
+            ResultSet resultSet = st.executeQuery("select count(*) from pg_catalog.pg_database where datname = '" + db + "';")) {
             resultSet.next();
             if (resultSet.getInt(1) > 0) {
                 result = true;
             }
         } catch (SQLException e) {
-            System.out.println("Check DB error");
+            log.log(Level.WARNING, "Check DB error:", e);
         }
         return result;
     }
@@ -97,27 +98,25 @@ public class Tracker implements AutoCloseable {
     private boolean  initDB() {
         boolean result = false;
         try (Connection con = DriverManager.getConnection(url, user, pass);
-        Statement st = con.createStatement();){
-            st.execute("CREATE DATABASE "+ db + ";");
+        Statement st = con.createStatement();) {
+            st.execute("CREATE DATABASE " + db + ";");
             result = true;
         } catch (SQLException e) {
-            System.out.println("Create DB error");
+            log.log(Level.WARNING, "Create DB error:", e);
         }
         return result;
     }
 
     /**
      * Метод удаляет таблицу item
-     * нужен для тестов
+     *  (нужен для тестов)
      */
     public void  delTable() {
-        boolean result = false;
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
-             Statement st = con.createStatement();){
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             Statement st = con.createStatement()) {
             st.execute("drop table item cascade;");
-            result = true;
         } catch (SQLException e) {
-            System.out.println("Delete table error");
+            log.log(Level.WARNING, "Delete table error:", e);
         }
     }
 
@@ -127,10 +126,10 @@ public class Tracker implements AutoCloseable {
      */
     private boolean initTables() {
         boolean result = false;
-        List <String> op = null;
+        List<String> op = null;
         try {
             op = Files.readAllLines(Paths.get(pathsql));
-            try (Connection con = DriverManager.getConnection(url+db, user, pass);) {
+            try (Connection con = DriverManager.getConnection(url + db, user, pass);) {
                 for (String str : op) {
                     if (str.length() > 0) {
                         try (Statement st = con.createStatement()) {
@@ -140,10 +139,10 @@ public class Tracker implements AutoCloseable {
                 }
                 result = true;
             } catch (SQLException e) {
-                System.out.println("Create table SQL create script error");
+                log.log(Level.WARNING, "Create table SQL create script error:", e);
             }
         } catch (IOException e) {
-            System.out.println("Read SQL create script error");
+            log.log(Level.WARNING, "Read SQL create script error:", e);
         }
         return result;
     }
@@ -154,8 +153,8 @@ public class Tracker implements AutoCloseable {
      */
     public boolean add(final Item item) {
         boolean result = false;
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
-             PreparedStatement st = con.prepareStatement("insert into item values (?,?,?,?);");){
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             PreparedStatement st = con.prepareStatement("insert into item values (?,?,?,?);");) {
             st.setString(1, item.getId());
             st.setString(2, item.getName());
             st.setString(3, item.getDesc());
@@ -163,7 +162,7 @@ public class Tracker implements AutoCloseable {
             st.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            System.out.println("Add record in DB error");
+            log.log(Level.WARNING, "Add record in DB error:", e);
         }
         return result;
     }
@@ -188,13 +187,13 @@ public class Tracker implements AutoCloseable {
      */
     public boolean delete(final Item item) {
         boolean result = false;
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
-             PreparedStatement st = con.prepareStatement("delete from item where id = ?;")){
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             PreparedStatement st = con.prepareStatement("delete from item where id = ?;")) {
             st.setString(1, item.getId());
             st.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            System.out.println("Delete record in DB error");
+            log.log(Level.WARNING, "Delete record in DB error:", e);
         }
         return result;
     }
@@ -205,9 +204,9 @@ public class Tracker implements AutoCloseable {
      */
     public ArrayList<Item> findAll() {
         ArrayList<Item> result = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
              Statement st = con.createStatement();
-             ResultSet res = st.executeQuery("select * from item;");){
+             ResultSet res = st.executeQuery("select * from item;");) {
             while (res.next()) {
                 Item item = new Item();
                 item.setId(res.getString(1));
@@ -217,7 +216,7 @@ public class Tracker implements AutoCloseable {
                 result.add(item);
             }
         } catch (SQLException e) {
-            System.out.println("findAll DB error");
+            log.log(Level.WARNING,"findAll DB error:", e);
         }
         return result;
     }
@@ -229,20 +228,21 @@ public class Tracker implements AutoCloseable {
      */
     public ArrayList<Item> findByName(final String key) {
         ArrayList<Item> result = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
-             PreparedStatement st = con.prepareStatement("select * from item where name = ? ;")){
-            st.setString(1,key);
-            ResultSet res = st.executeQuery();
-            while (res.next()) {
-                Item item = new Item();
-                item.setId(res.getString(1));
-                item.setName(res.getString(2));
-                item.setDesc(res.getString(3));
-                item.setCreat(res.getTimestamp(4).getTime());
-                result.add(item);
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             PreparedStatement st = con.prepareStatement("select * from item where name = ? ;")) {
+            st.setString(1, key);
+            try (ResultSet res = st.executeQuery()) {
+                while (res.next()) {
+                    Item item = new Item();
+                    item.setId(res.getString(1));
+                    item.setName(res.getString(2));
+                    item.setDesc(res.getString(3));
+                    item.setCreat(res.getTimestamp(4).getTime());
+                    result.add(item);
+                }
             }
         } catch (SQLException e) {
-            System.out.println("findByName DB error");
+            log.log(Level.WARNING, "findByName DB error:", e);
         }
         return result;
     }
@@ -254,18 +254,19 @@ public class Tracker implements AutoCloseable {
      */
     public Item findById(final String id) {
         Item item = new Item();
-        try (Connection con = DriverManager.getConnection(url+db, user, pass);
-             PreparedStatement st = con.prepareStatement("select * from item where id = ? ;");){
-            st.setString(1,id);
-            ResultSet res = st.executeQuery();
-            if (res.next()) {
-                item.setId(res.getString(1));
-                item.setName(res.getString(2));
-                item.setDesc(res.getString(3));
-                item.setCreat(res.getTimestamp(4).getTime());
+        try (Connection con = DriverManager.getConnection(url + db, user, pass);
+             PreparedStatement st = con.prepareStatement("select * from item where id = ? ;")) {
+            st.setString(1, id);
+            try (ResultSet res = st.executeQuery()) {
+                if (res.next()) {
+                    item.setId(res.getString(1));
+                    item.setName(res.getString(2));
+                    item.setDesc(res.getString(3));
+                    item.setCreat(res.getTimestamp(4).getTime());
+                }
             }
         } catch (SQLException e) {
-            System.out.println("findById DB error");
+            log.log(Level.WARNING, "findById DB error:", e);
         }
         return item;
     }

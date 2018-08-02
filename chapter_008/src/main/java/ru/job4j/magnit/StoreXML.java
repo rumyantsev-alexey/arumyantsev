@@ -60,10 +60,8 @@ public class StoreXML {
             } catch (SQLException e) {
                 log.log(Level.WARNING, "SQL error", e);
             }
-        } catch (IOException e) {
-            log.log(Level.WARNING, "IO error", e);
-        } catch (ClassNotFoundException e) {
-            log.log(Level.WARNING, "Properties IO error", e);
+        } catch (IOException | ClassNotFoundException e) {
+            log.log(Level.WARNING, e.getMessage(), e);
         }
         return result;
     }

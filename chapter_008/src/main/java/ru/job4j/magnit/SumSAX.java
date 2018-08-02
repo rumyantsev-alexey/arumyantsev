@@ -38,12 +38,8 @@ public class SumSAX {
         try {
             SAXParser saxParser = saxParsFact.newSAXParser();
             saxParser.parse(new File("ConvertXSQT.xml"), handler);
-        } catch (ParserConfigurationException e) {
-            log.log(Level.WARNING, "Parser Configuration error", e);
-        } catch (SAXException e) {
-            log.log(Level.WARNING, "SAX error", e);
-        } catch (IOException e) {
-            log.log(Level.WARNING, "IO error", e);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            log.log(Level.WARNING, e.getMessage(), e);
         }
         return sum;
     }

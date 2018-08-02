@@ -28,8 +28,6 @@ public class ConvertXSQT {
         try {
             transformer = factory.newTransformer(new StreamSource(scheme));
             transformer.transform(new StreamSource(source), new StreamResult(dest));
-        } catch (TransformerConfigurationException e) {
-            log.log(Level.WARNING, "XSLT conf error", e);
         } catch (TransformerException e) {
             log.log(Level.WARNING, "XSLT error", e);
         }

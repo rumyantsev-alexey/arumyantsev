@@ -17,15 +17,9 @@ public class Magnit {
         ConvertXSQT cxsqt = new ConvertXSQT();
         SumSAX ssax = new SumSAX();
 
-//        System.out.println("Step#1 begin:"+LocalTime.now());
         ssql.generate(1000000);
-//        System.out.println("Step#1 end:"+ LocalTime.now());
         sxml.generate();
-//        System.out.println("Step#2 end:"+ LocalTime.now());
         cxsqt.convert(new File("StoreXML.xml"), new File("ConvertXSQT.xml"), new File("convert.xsl"));
-/*        System.out.println("Step#3 end:"+LocalTime.now());
-        System.out.println (ssax.sum());
-        System.out.println("Step#4 end:"+LocalTime.now()); */
         assertThat(ssax.sum(), is(1784293664));
     }
 

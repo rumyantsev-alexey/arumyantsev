@@ -23,7 +23,6 @@ public class ParserSQLRU {
 
     private static final Logger log = LogManager.getLogger(ParserSQLRU.class.getName());
     private final SimpleDateFormat format = new SimpleDateFormat("d MMM yy, HH:mm", new Locale("ru", "RU"));
-    private Timestamp lastime;
 
     /**
      * Метод парсит сайт в поиске вакансий, младше заданного времени
@@ -35,14 +34,13 @@ public class ParserSQLRU {
         String link;
         Timestamp  created = lastime;
         List<Item> result = new LinkedList<>();
-        this.lastime = lastime;
-        for (int i = 1;  i < 200 && checkDate(created); i++) {
+        for (int i = 1;  i < 200 && checkDate(lastime, created); i++) {
             try {
                 Document doc = Jsoup.connect("http://www.sql.ru/forum/job-offers/" + i).get();
                 Elements elms = doc.getElementsByClass("postslisttopic");
                 for (Element el : elms) {
                     created = normalDate(el.parent().child(5).text());
-                    if (checkTitle(el.child(0).text()) && checkDate(created)) {
+                    if (checkTitle(el.child(0).text()) && checkDate(lastime, created)) {
                         subj = el.child(0).text();
                         link = el.child(0).attr("href");
                         result.add(new Item(subj, new URL(link), created));
@@ -57,10 +55,11 @@ public class ParserSQLRU {
 
     /**
      * Метод проверяет что дата меньше даты последней обработки
+     * @param lastime дата последней сессии
      * @param date проверяемая дата
      * @return
      */
-    private boolean checkDate(final Timestamp date) {
+    private boolean checkDate(final Timestamp lastime, final Timestamp date) {
         boolean result = false;
         if (lastime.before(date) || lastime == date) {
             result = true;

@@ -74,8 +74,8 @@ public class MemoryStore implements Store {
     }
 
     @Override
-    public String findById(int id) {
-        return db.get(id) != null? db.get(id).getName() : null;
+    public User findById(int id) {
+        return db.get(id);
     }
 
     /**
@@ -87,6 +87,36 @@ public class MemoryStore implements Store {
         for (int i=0; i < count; i++) {
             this.add("name" + rnd.nextInt(10000));
         }
+    }
+
+    /**
+     * Метод реализует изменение записи с помощью другой записи
+     * @param usr новая запись
+     * @return успех
+     */
+    public boolean updateByUser(final User usr) {
+        return db.replace(usr.getId(), findById(usr.getId()), usr);
+    }
+
+    /**
+     * Метод реализует создние записи с помощью заданных 3х полей
+     * @param name имя
+     * @param login логин
+     * @param email емейл
+     * @return успех
+     */
+    public boolean addFull(final String name, final String login, final String email) {
+        Random rnd = new Random();
+        User usr = new User();
+        usr.setName(name);
+        usr.setLogin(login);
+        usr.setEmail(email);
+        usr.setId(rnd.nextInt(10000));
+        usr.setRes(new Timestamp(System.currentTimeMillis()));
+        while (db.containsKey(usr.getId())) {
+            usr.setId(rnd.nextInt(10000));
+        }
+        return db.put(usr.getId(), usr) == null;
     }
 
 }

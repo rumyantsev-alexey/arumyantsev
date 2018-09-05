@@ -15,5 +15,5 @@ public interface Store {
 
     ArrayList<User> findAll();
 
-    String findById(int id);
+    User findById(int id);
 }

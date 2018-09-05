@@ -53,6 +53,10 @@ public class ValidateService {
         return ms.findAll();
     }
 
+    public User findById(final int id) {
+        return id > -1 ? ms.findById(id) : null;
+    }
+
     /**
      * Метод генерирует определенное количество записей в списке
      * @param count количество
@@ -63,4 +67,23 @@ public class ValidateService {
         }
     }
 
+    /**
+     * Метод реализует изменение записи с помощью другой записи
+     * @param usr новая запись
+     * @return успех
+     */
+    public boolean updateByUser(final User usr) {
+        return usr != null && ms.updateByUser(usr);
+    }
+
+    /**
+     * Метод реализует создние записи с помощью заданных 3х полей
+     * @param name имя
+     * @param login логин
+     * @param email емейл
+     * @return успех
+     */
+    public boolean addFull(final String name, final String login, final String email) {
+        return name != null && ms.addFull(name, login, email);
+    }
 }

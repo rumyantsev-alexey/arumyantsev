@@ -64,7 +64,7 @@ public class User {
 
     @Override
     public String toString() {
-        return id + " " + name +" " + login + " " + email + " " + res;
+        return String.format("<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>", id, name, login, email, res);
     }
 
     @Override

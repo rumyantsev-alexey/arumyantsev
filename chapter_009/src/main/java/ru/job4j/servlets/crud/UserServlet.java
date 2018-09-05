@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.function.BiPredicate;
 
 /**
- * Класс реализующий слой Presentation
+ * Класс реализующий сервлет обрабатывающий страницу со списоком записей
  */
 public class UserServlet extends HttpServlet {
-    private AntiSwitch asw = new AntiSwitch();
-    ValidateService vserv = ValidateService.getInstance();
+    private final AntiSwitch asw = new AntiSwitch();
+    private final ValidateService vserv = ValidateService.getInstance();
 
     /**
      * Метод инициализирующий меню выбора и генерирующий данные для примера
@@ -30,7 +30,7 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * Метод реализует обработку метода Get
+     * Метод реализует обработку метода Get для стрвницы со списком записей
      * @param req
      * @param resp
      * @throws ServletException
@@ -41,16 +41,41 @@ public class UserServlet extends HttpServlet {
         ArrayList<User> ulist = new ArrayList<>();
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.print("User's list:<br>");
+        writer.append(  "<head>" +
+                            "<title>User's list</title>" +
+                        "</head>"+
+                            "<table border = '1'>"+
+                        "<body>");
         ulist = vserv.findAll();
-        for(User u: ulist){
-            writer.println(u+"<br>");
+        for(User u: ulist) {
+            writer.append("<tr>");
+            writer.append(u.toString());
+            writer.append("<td>" +
+                    "<form method='get' action='/chapter_009/edit'>" +
+                    "<input type='hidden' name='id' value='" + u.getId() + "'/>" +
+                    "<input type='submit' value='Edit' />" +
+                    "</form>" +
+                    "</td>");
+            writer.append("<td>" +
+                    "<form method='post' action='/chapter_009/list'>" +
+                    "<input type='hidden' name='action' value='delete'>" +
+                    "<input type='hidden' name='id' value='" + u.getId() + "'/>" +
+                    "<input type='submit' name='but2' value='Delete'/>" +
+                    "</form>" +
+                    "</td>" +
+                    "</tr>");
+            writer.flush();
         }
+        writer.append("</br>" +
+                "<form method='get' action='/chapter_009/create'>" +
+                "<input type='submit' value='New user' />" +
+                "</form>" +
+                "</body>");
         writer.flush();
     }
 
     /**
-     *Метод реализует обработку метода Post
+     *Метод реализует обработку метода Post для страницы со списком записей
      * @param req
      * @param resp
      * @throws ServletException
@@ -58,15 +83,15 @@ public class UserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action;
-        String name;
-        int id;
         resp.setContentType("text/html");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        action = req.getParameter("action") == null? "--" : req.getParameter("action");
-        name = req.getParameter("name") == null? "--" : req.getParameter("name");
-        id = req.getParameter("id") == null? 0 : Integer.parseInt(req.getParameter("id"));
-        writer.print("Result operation " + action + ": " + asw.run(action, id, name));
+        String action = req.getParameter("action") == null? "--" : req.getParameter("action");
+        String name = req.getParameter("name") == null? "--" : req.getParameter("name");
+        int id = req.getParameter("id") == null? -1 : Integer.parseInt(req.getParameter("id"));
+        writer.append("Result operation " + action + ": " + asw.run(action, id, name) + "</br>");
+        writer.append(  "<form method='get' action='/chapter_009/list'>" +
+                            "<input type='submit' value='Back' />" +
+                        "</form>");
         writer.flush();
     }
 

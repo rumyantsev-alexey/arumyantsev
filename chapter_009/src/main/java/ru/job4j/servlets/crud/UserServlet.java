@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.function.BiPredicate;
 
 /**
@@ -38,40 +36,7 @@ public class UserServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ArrayList<User> ulist = new ArrayList<>();
-        resp.setContentType("text/html");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(  "<head>" +
-                            "<title>User's list</title>" +
-                        "</head>"+
-                            "<table border = '1'>"+
-                        "<body>");
-        ulist = vserv.findAll();
-        for(User u: ulist) {
-            writer.append("<tr>");
-            writer.append(u.toString());
-            writer.append("<td>" +
-                    "<form method='get' action='/chapter_009/edit'>" +
-                    "<input type='hidden' name='id' value='" + u.getId() + "'/>" +
-                    "<input type='submit' value='Edit' />" +
-                    "</form>" +
-                    "</td>");
-            writer.append("<td>" +
-                    "<form method='post' action='/chapter_009/list'>" +
-                    "<input type='hidden' name='action' value='delete'>" +
-                    "<input type='hidden' name='id' value='" + u.getId() + "'/>" +
-                    "<input type='submit' name='but2' value='Delete'/>" +
-                    "</form>" +
-                    "</td>" +
-                    "</tr>");
-            writer.flush();
-        }
-        writer.append("</br>" +
-                "<form method='get' action='/chapter_009/create'>" +
-                "<input type='submit' value='New user' />" +
-                "</form>" +
-                "</body>");
-        writer.flush();
+        resp.sendRedirect("list.jsp");
     }
 
     /**
@@ -83,16 +48,11 @@ public class UserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
         String action = req.getParameter("action") == null? "--" : req.getParameter("action");
         String name = req.getParameter("name") == null? "--" : req.getParameter("name");
         int id = req.getParameter("id") == null? -1 : Integer.parseInt(req.getParameter("id"));
-        writer.append("Result operation " + action + ": " + asw.run(action, id, name) + "</br>");
-        writer.append(  "<form method='get' action='/chapter_009/list'>" +
-                            "<input type='submit' value='Back' />" +
-                        "</form>");
-        writer.flush();
+        asw.run(action, id, name);
+        resp.sendRedirect("/chapter_009/list");
     }
 
     /**

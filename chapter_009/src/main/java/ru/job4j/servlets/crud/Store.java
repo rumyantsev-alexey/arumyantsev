@@ -5,15 +5,15 @@ import java.util.ArrayList;
 /**
  * Интерфейс описывающий функционал хранилища записей
  */
-public interface Store {
+public interface Store<K> {
 
-    boolean add(String name);
+    boolean add(K model);
 
-    boolean update(int id, String newname);
+    boolean update(K model);
 
     boolean delete(int id);
 
-    ArrayList<User> findAll();
+    ArrayList<K> findAll();
 
-    User findById(int id);
+    K findById(int id);
 }

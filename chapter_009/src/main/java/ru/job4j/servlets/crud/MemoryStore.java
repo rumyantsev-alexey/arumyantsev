@@ -1,15 +1,14 @@
 package ru.job4j.servlets.crud;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
- * Метод реализует постоянный слой и является реализацией интерфейса Story
+ * Класс реализует постоянный слой и является реализацией интерфейса Story
  */
-public class MemoryStore implements Store {
+public class MemoryStore implements Store<User> {
     private static final Logger log = Logger.getLogger(MemoryStore.class.getName());
     private ConcurrentHashMap<Integer, User> db = new ConcurrentHashMap<>();
     private static final MemoryStore mstory = new MemoryStore();
@@ -23,16 +22,12 @@ public class MemoryStore implements Store {
 
     /**
      * Метод реализует добавление записи в списоке
-     * @param name имя
+     * @param usr пользователь
      * @return успех
      */
     @Override
-    public boolean add(String name) {
+    public boolean add(User usr) {
         Random rnd = new Random();
-        User usr = new User();
-        usr.setName(name);
-        usr.setId(rnd.nextInt(10000));
-        usr.setRes(new Timestamp(System.currentTimeMillis()));
         while (db.containsKey(usr.getId())) {
             usr.setId(rnd.nextInt(10000));
         }
@@ -41,18 +36,17 @@ public class MemoryStore implements Store {
 
     /**
      * Метод реализует изменение записи в списке
-     * @param id айди записи
-     * @param newname новое имя
+     * @param usr запись
      * @return успех
      */
     @Override
-    public boolean update(int id, String newname) {
-        return db.replace(id, new User(id, newname)) != null;
+    public boolean update(User usr) {
+        return db.replace(usr.getId(), findById(usr.getId()), usr);
     }
 
     /**
      * Метод реализуют удаление записи из списка
-     * @param id
+     * @param id айди записи
      * @return успех
      */
     @Override
@@ -73,6 +67,11 @@ public class MemoryStore implements Store {
         return result;
     }
 
+    /**
+     * Метод возвращает запись по ее айди
+     * @param id айди записи
+     * @return запись
+     */
     @Override
     public User findById(int id) {
         return db.get(id);
@@ -84,39 +83,8 @@ public class MemoryStore implements Store {
      */
     public void generate(final int count) {
         Random rnd = new Random();
-        for (int i=0; i < count; i++) {
-            this.add("name" + rnd.nextInt(10000));
+        for (int i = 0; i < count; i++) {
+            this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "email" + rnd.nextInt(10000) + "@test.com" ));
         }
     }
-
-    /**
-     * Метод реализует изменение записи с помощью другой записи
-     * @param usr новая запись
-     * @return успех
-     */
-    public boolean updateByUser(final User usr) {
-        return db.replace(usr.getId(), findById(usr.getId()), usr);
-    }
-
-    /**
-     * Метод реализует создние записи с помощью заданных 3х полей
-     * @param name имя
-     * @param login логин
-     * @param email емейл
-     * @return успех
-     */
-    public boolean addFull(final String name, final String login, final String email) {
-        Random rnd = new Random();
-        User usr = new User();
-        usr.setName(name);
-        usr.setLogin(login);
-        usr.setEmail(email);
-        usr.setId(rnd.nextInt(10000));
-        usr.setRes(new Timestamp(System.currentTimeMillis()));
-        while (db.containsKey(usr.getId())) {
-            usr.setId(rnd.nextInt(10000));
-        }
-        return db.put(usr.getId(), usr) == null;
-    }
-
 }

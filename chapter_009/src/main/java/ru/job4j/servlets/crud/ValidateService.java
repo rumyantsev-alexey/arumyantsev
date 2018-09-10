@@ -7,7 +7,8 @@ import java.util.ArrayList;
  */
 public class ValidateService {
     private static final ValidateService vserv = new ValidateService();
-    private MemoryStore ms = MemoryStore.getInstance();
+//    private MemoryStore ms = MemoryStore.getInstance();
+    private DbStore ms = DbStore.getInstance();
 
     private ValidateService() {
 
@@ -23,7 +24,7 @@ public class ValidateService {
      * @return успех
      */
     public boolean add(String name) {
-        return name != null && ms.add(name);
+        return name != null && ms.add(new User(name,null, null));
     }
 
     /**
@@ -33,7 +34,7 @@ public class ValidateService {
      * @return успех
      */
     public boolean update(int id, String newname) {
-        return id > -1 && newname != null && ms.findById(id) != null && ms.update(id, newname);
+        return id > -1 && newname != null && ms.findById(id) != null && ms.update(new User(id, newname));
     }
 
     /**
@@ -73,7 +74,7 @@ public class ValidateService {
      * @return успех
      */
     public boolean updateByUser(final User usr) {
-        return usr != null && ms.updateByUser(usr);
+        return usr != null && ms.update(usr);
     }
 
     /**
@@ -81,9 +82,9 @@ public class ValidateService {
      * @param name имя
      * @param login логин
      * @param email емейл
-     * @return успех
+     * @return
      */
     public boolean addFull(final String name, final String login, final String email) {
-        return name != null && ms.addFull(name, login, email);
+        return name != null && ms.add(new User(name, login, email));
     }
 }

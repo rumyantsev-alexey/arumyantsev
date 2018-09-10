@@ -21,7 +21,7 @@ public class UserCreateServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect("create.jsp");
+        req.getRequestDispatcher("create.jsp").forward(req, resp);
     }
 
     /**

@@ -1,6 +1,7 @@
 package ru.job4j.servlets.crud;
 
 import java.sql.Timestamp;
+import java.util.Random;
 
 /**
  * Класс реализует структуру и функционал заиси в списке
@@ -19,6 +20,15 @@ public class User {
     public User(final Integer id, final String name) {
         this.id = id;
         this.name = name;
+        this.res = new Timestamp(System.currentTimeMillis());
+    }
+
+    public User(String name, String login, String email) {
+        Random rnd = new Random();
+        this.id = rnd.nextInt(10000);
+        this.name = name;
+        this.login = login;
+        this.email = email;
         this.res = new Timestamp(System.currentTimeMillis());
     }
 

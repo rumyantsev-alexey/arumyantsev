@@ -29,8 +29,13 @@ public class DbStore implements Store<User> {
         SOURCE.setMaxOpenPreparedStatements(100);
         try (Connection con = SOURCE.getConnection();
              Statement st = con.createStatement()) {
+            st.execute("create table if not exists role (id serial PRIMARY KEY, name VARCHAR );");
+            st.execute("create table if not exists pages (id serial PRIMARY KEY, name VARCHAR );");
+            st.execute("create table if not exists rights (role_id integer REFERENCES role (id)," +
+                    "pages_id integer REFERENCES pages (id) , UNIQUE (role_id, pages_id));");
             st.execute("create table if not exists users (id INTEGER PRIMARY KEY ," +
-                    "name VARCHAR , login VARCHAR , email VARCHAR , createDate TIMESTAMP );");
+                    "name VARCHAR , login VARCHAR , pass VARCHAR, email VARCHAR , createDate TIMESTAMP," +
+                    "role_id integer REFERENCES role (id) );");
         } catch (SQLException e) {
             log.log(Level.WARNING, "SQL error", e);
         }
@@ -49,13 +54,15 @@ public class DbStore implements Store<User> {
     public boolean add(User model) {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, email, createDate)" +
-                     "values (?,?,?,?,?)")) {
+             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, pass, email, createDate, role_id)" +
+                     "values (?,?,?,?,?,?,?)")) {
             st.setInt(1, model.getId());
             st.setString(2, model.getName());
             st.setString(3, model.getLogin());
-            st.setString(4, model.getEmail());
-            st.setTimestamp(5, model.getRes());
+            st.setString(4, model.getPass());
+            st.setString(5, model.getEmail());
+            st.setTimestamp(6, model.getRes());
+            st.setInt(7, model.getRole_id());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
@@ -74,11 +81,13 @@ public class DbStore implements Store<User> {
     public boolean update(User model) {
         boolean result = false;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("update users set name = ?, login = ?, email = ? where id = ?")) {
-            st.setInt(4, model.getId());
+             PreparedStatement st = con.prepareStatement("update users set name = ?, login = ?, email = ?, role_id = ?, pass = ? where id = ?")) {
+            st.setInt(6, model.getId());
             st.setString(1, model.getName());
             st.setString(2, model.getLogin());
             st.setString(3, model.getEmail());
+            st.setInt(4, model.getRole_id());
+            st.setString(5, model.getPass());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
@@ -117,14 +126,15 @@ public class DbStore implements Store<User> {
         ArrayList<User> result = new ArrayList<>();
         try (Connection con = SOURCE.getConnection();
              Statement st = con.createStatement();
-             ResultSet rst = st.executeQuery("select * from users")) {
+             ResultSet rst = st.executeQuery("select id, name, login, email, role_id, createDate from users")) {
             while (rst.next()) {
                 User user = new User();
                 user.setId(rst.getInt(1));
                 user.setName(rst.getString(2));
                 user.setLogin(rst.getString(3));
                 user.setEmail(rst.getString(4));
-                user.setRes(rst.getTimestamp(5));
+                user.setRole_id(rst.getInt(5));
+                user.setRes(rst.getTimestamp(6));
                 result.add(user);
             }
         } catch (SQLException e) {
@@ -142,7 +152,7 @@ public class DbStore implements Store<User> {
     public User findById(int id) {
         User user = new User();
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select * from users where id = ?")){
+             PreparedStatement st = con.prepareStatement("select id,name,login,email,role_id,createdate, pass from users where id = ?")){
             st.setInt(1, id);
              try (ResultSet rst = st.executeQuery()) {
                  if (rst.next()) {
@@ -150,7 +160,9 @@ public class DbStore implements Store<User> {
                      user.setName(rst.getString(2));
                      user.setLogin(rst.getString(3));
                      user.setEmail(rst.getString(4));
-                     user.setRes(rst.getTimestamp(5));
+                     user.setRole_id(rst.getInt(5));
+                     user.setRes(rst.getTimestamp(6));
+                     user.setPass(rst.getString(7));
                  }
              }
         } catch (SQLException e) {
@@ -165,9 +177,211 @@ public class DbStore implements Store<User> {
      */
     public void generate(final int count) {
         Random rnd = new Random();
-        for (int i = 0; i < count; i++) {
-            this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "email" + rnd.nextInt(10000) + "@test.com" ));
+        User user;
+        try (Connection connection = SOURCE.getConnection();
+             Statement st = connection.createStatement()) {
+            st.executeUpdate("delete from users");
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
         }
+        for (int i = 0; i < count; i++) {
+            user = new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000),
+                    "111", "email" + rnd.nextInt(10000) + "@test.com", 1111 );
+            user.setRole_id(1111);
+            this.add(user);
+        }
+    }
+
+    /**
+     * Метод реализует аутентификацию пользователя
+     * @param login логин
+     * @param pass пароль
+     * @return уровень доступа
+     */
+    @Override
+    public Integer checkLogin(final String login, final String pass) {
+        Integer result = 0;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select role_id from users where login = ? and pass = ?")){
+            st.setString(1, login);
+            st.setString(2, pass);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = rst.getInt(1);}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует поиск роли по ее айди
+     * @param role_id айди роли
+     * @return Имя роли
+     */
+    @Override
+    public String roleByRoleId(int role_id) {
+        String result = null;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select name from role where id = ?")){
+            st.setInt(1, role_id);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = rst.getString(1);}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод возвращает список ролей
+     * @return список ролей
+     */
+    @Override
+    public ArrayList<String> findAllRoles() {
+        ArrayList<String> result = new ArrayList<>();
+        try (Connection con = SOURCE.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rst = st.executeQuery("select name from role")) {
+            while (rst.next()) {
+                result.add(rst.getString(1));
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует поиск айди роли по ее названию
+     * @param role роль
+     * @return айди роли
+     */
+    @Override
+    public Integer roleidByRole(String role) {
+        Integer result = null;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select id from role where name = ?")){
+            st.setString(1, role);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = rst.getInt(1);}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует авторизацию пользовтеля по его роли
+     * @param role_id айди роли
+     * @param link пусть к странице
+     * @return успех
+     */
+    @Override
+    public boolean accessToPage(Integer role_id, String link) {
+        boolean result = false;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select * from rights where role_id = ? and pages_id = ?")){
+            st.setInt(1, role_id);
+            st.setInt(2, this.pageidByPage(link));
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = true;}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует добавление новой роди
+     * @param id айди роли
+     * @param name имя роли
+     * @return успех
+     */
+    @Override
+    public boolean addRole(Integer id, String name) {
+        boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("insert into role (id, name) values (?,?)")) {
+            st.setInt(1, id);
+            st.setString(2, name);
+            if (st.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует добавление пути к странице для определения прав ролей
+     * @param name путь
+     * @return успех
+     */
+    @Override
+    public boolean addPage(String name) {
+        boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("insert into pages (name) values (?)")) {
+            st.setString(1, name);
+            if (st.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод добавляет связь между ролью и определенной страницей
+     * @param role роль
+     * @param page страница
+     * @return успех
+     */
+    @Override
+    public boolean addLink(String role, String page) {
+        boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("insert into rights (role_id, pages_id) values (?, ?)")) {
+            st.setInt(1, this.roleidByRole(role));
+            st.setInt(2, this.pageidByPage(page));
+            if (st.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод реализует поиск айди страницы по ее имени
+     * @param page
+     * @return
+     */
+    @Override
+    public Integer pageidByPage(String page) {
+        Integer result = null;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select id from pages where name = ?")){
+            st.setString(1, page);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = rst.getInt(1);}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
     }
 }
 

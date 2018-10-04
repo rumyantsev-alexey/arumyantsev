@@ -37,7 +37,11 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("usrs", vserv.findAll());
-        req.getRequestDispatcher("list.jsp").forward(req, resp);
+        try {
+            req.getRequestDispatcher("list.jsp").forward(req, resp);
+        } catch (IllegalStateException e) {
+
+        }
     }
 
     /**
@@ -52,8 +56,17 @@ public class UserServlet extends HttpServlet {
         String action = req.getParameter("action") == null? "--" : req.getParameter("action");
         String name = req.getParameter("name") == null? "--" : req.getParameter("name");
         int id = req.getParameter("id") == null? -1 : Integer.parseInt(req.getParameter("id"));
-        asw.run(action, id, name);
-        resp.sendRedirect("/chapter_009/list");
+        try {
+            if (action.equals("logout")) {
+                req.getSession().invalidate();
+                resp.sendRedirect("login");
+            } else {
+                asw.run(action, id, name);
+            }
+            doGet(req, resp);
+        } catch (IllegalStateException e) {
+
+        }
     }
 
     /**
@@ -63,6 +76,7 @@ public class UserServlet extends HttpServlet {
     private BiPredicate<Integer, String> add() {
         return (integer, s) -> vserv.add(s);
     }
+
     private BiPredicate<Integer, String> update() {
         return (integer, s) -> vserv.update(integer, s);
     }

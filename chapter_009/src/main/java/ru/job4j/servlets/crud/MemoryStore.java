@@ -84,7 +84,53 @@ public class MemoryStore implements Store<User> {
     public void generate(final int count) {
         Random rnd = new Random();
         for (int i = 0; i < count; i++) {
-            this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "email" + rnd.nextInt(10000) + "@test.com" ));
+            this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "111", "email"
+                    + rnd.nextInt(10000) + "@test.com", 1111));
         }
+    }
+
+    @Override
+    public Integer checkLogin(String login, String pass) {
+        return null;
+    }
+
+    @Override
+    public String roleByRoleId(int role_id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> findAllRoles() {
+        return null;
+    }
+
+    @Override
+    public Integer roleidByRole(String role) {
+        return null;
+    }
+
+    @Override
+    public boolean accessToPage(Integer role_id, String link) {
+        return false;
+    }
+
+    @Override
+    public boolean addRole(Integer id, String name) {
+        return false;
+    }
+
+    @Override
+    public boolean addPage(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean addLink(String role, String page) {
+        return false;
+    }
+
+    @Override
+    public Integer pageidByPage(String page) {
+        return null;
     }
 }

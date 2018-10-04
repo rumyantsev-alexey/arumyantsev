@@ -22,8 +22,14 @@ public class UserUpdateServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("find", vserv.findById(Integer.parseInt(req.getParameter("id"))));
-        req.getRequestDispatcher("update.jsp").forward(req, resp);
+        if (req.getParameter("id") != null) {
+            req.setAttribute("find", vserv.findById(Integer.parseInt(req.getParameter("id"))));
+            req.setAttribute("roles", vserv.findAllRoles());
+            req.setAttribute("lor", vserv.roleByRoleId(vserv.findById(Integer.parseInt(req.getParameter("id"))).getRole_id()));
+            req.getRequestDispatcher("update.jsp").forward(req, resp);
+        } else {
+            resp.sendRedirect("list");
+        }
     }
 
     /**
@@ -39,9 +45,14 @@ public class UserUpdateServlet extends HttpServlet {
         usr.setId(Integer.parseInt(req.getParameter("id")));
         usr.setName(req.getParameter("name"));
         usr.setLogin(req.getParameter("login"));
+        usr.setPass(req.getParameter("pass"));
         usr.setEmail(req.getParameter("email"));
+        usr.setRole_id(vserv.roleidByRole(req.getParameter("role")));
         usr.setRes(Timestamp.valueOf(req.getParameter("res")));
         vserv.updateByUser(usr);
-        resp.sendRedirect("/chapter_009/list");
+        if ( ((User)req.getSession().getAttribute("fuser")).getLogin().equals(usr.getLogin())) {
+            req.getSession().setAttribute("fuser", usr);
+        }
+        req.getRequestDispatcher("list").forward(req, resp);
     }
 }

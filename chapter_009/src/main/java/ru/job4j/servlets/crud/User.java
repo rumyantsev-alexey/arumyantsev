@@ -10,11 +10,14 @@ public class User {
     private Integer  id;
     private String name;
     private String login;
+    private String pass;
     private String email;
+    private Integer role_id;
     private Timestamp res;
 
     public User() {
-
+        Random rnd = new Random();
+        this.id = rnd.nextInt(10000);
     }
 
     public User(final Integer id, final String name) {
@@ -23,12 +26,14 @@ public class User {
         this.res = new Timestamp(System.currentTimeMillis());
     }
 
-    public User(String name, String login, String email) {
+    public User(String name, String login, String pass, String email, Integer role_id) {
         Random rnd = new Random();
         this.id = rnd.nextInt(10000);
         this.name = name;
         this.login = login;
+        this.pass = pass;
         this.email = email;
+        this.role_id = role_id;
         this.res = new Timestamp(System.currentTimeMillis());
     }
 
@@ -72,9 +77,20 @@ public class User {
         this.res = res;
     }
 
-    @Override
-    public String toString() {
-        return String.format("<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>", id, name, login, email, res);
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public Integer getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(Integer role_id) {
+        this.role_id = role_id;
     }
 
     @Override

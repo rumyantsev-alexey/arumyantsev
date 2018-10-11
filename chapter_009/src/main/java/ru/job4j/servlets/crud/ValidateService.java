@@ -14,8 +14,8 @@ public class ValidateService {
     private static final ValidateService vserv = new ValidateService();
 //    private MemoryStore ms = MemoryStore.getInstance();
     private DbStore ms = DbStore.getInstance();
-    private ValidateService() {
-        initData();
+    protected ValidateService() {
+//        initData();
     }
 
     public static ValidateService getInstance() {

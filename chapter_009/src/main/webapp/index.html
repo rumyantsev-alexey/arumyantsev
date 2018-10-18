@@ -26,6 +26,18 @@
                 var name = $('#Name').val();
                 var lastname = $("#Lastname").val();
                 var sex = $('input:radio[name="sex"]:checked').val();
+                var desc = $("#desc").val();
+                var jsonUser = "{\"name\":\""+name+"\", \"lastname\":\"" + lastname + "\", \"sex\":\"" + sex + "\", \"desc\":\"" + desc + "\"}";
+                console.log(jsonUser);
+                $.ajax({
+                    url:"http://localhost:8080/chapter_009/ajax",
+                    method:'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:jsonUser,
+                    success: function(){
+                     }
+                });
                 $('#table1 tr:last').after('<tr><td>' + name + '</td><td>' + lastname + '</td><td>' + sex + '</td></tr>');
                 $('#form1').trigger('reset');
             }
@@ -38,7 +50,7 @@
         </div>
 
         <div class="container">
-            <form class="form-horizontal" action="/action_page.php" name="form1" id="form1">
+            <form class="form-horizontal" action="/chapter_009/ajax" name="form1" id="form1">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="Name">Имя:</label>
                     <div class="col-sm-10">

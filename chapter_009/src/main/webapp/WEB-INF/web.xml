@@ -33,6 +33,12 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>UServlet</servlet-name>
+        <servlet-class>ru.job4j.servlets.ajax.UServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/echo</url-pattern>
@@ -56,6 +62,11 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UServlet</servlet-name>
+        <url-pattern>/ajax</url-pattern>
     </servlet-mapping>
 
     <filter>

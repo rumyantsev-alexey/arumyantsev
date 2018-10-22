@@ -1,7 +1,5 @@
 package ru.job4j.servlets.ajax;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -17,7 +15,6 @@ import java.util.stream.Collectors;
  */
 public class UServlet extends HttpServlet {
     ConcurrentHashMap <Integer, User> data = new ConcurrentHashMap<>();
-    volatile int key = 0;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,11 +23,9 @@ public class UServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String jsonUser;
-        User usr = new User();
         ObjectMapper objectMapper = new ObjectMapper();
-        jsonUser = req.getReader().lines().collect(Collectors.joining());
-        usr = objectMapper.readValue(jsonUser, User.class);
-        data.put(key++, usr);
+        String jsonUser = req.getReader().lines().collect(Collectors.joining());
+        User usr = objectMapper.readValue(jsonUser, User.class);
+        data.put(data.size(), usr);
     }
 }

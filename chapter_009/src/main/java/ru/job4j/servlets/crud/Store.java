@@ -36,4 +36,18 @@ public interface Store<K> {
     
     Integer pageidByPage(String page);
 
+    String cityByCityId(int city_id);
+
+    Integer cityidByCity(String city);
+
+    boolean addCityCountry(String country, String city);
+
+    ArrayList<String> findAllCountry();
+
+    Integer countryidByCountry(String country);
+
+    ArrayList<String> findAllCityByCountry(String country);
+
+    String countryByCityid(Integer city_id);
+
 }

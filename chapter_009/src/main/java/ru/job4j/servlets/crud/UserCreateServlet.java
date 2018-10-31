@@ -22,6 +22,7 @@ public class UserCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("roles", vserv.findAllRoles());
+        req.setAttribute("countres", vserv.findAllCountry());
         req.getRequestDispatcher("create.jsp").forward(req, resp);
     }
 
@@ -35,7 +36,8 @@ public class UserCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         vserv.addFull(req.getParameter("name"), req.getParameter("login"), req.getParameter("pass"),
-            req.getParameter("email"), vserv.roleidByRole(req.getParameter("role")));
+            req.getParameter("email"), vserv.roleidByRole(req.getParameter("role")),
+                vserv.cityidByCity(req.getParameter("cname")));
         req.getRequestDispatcher("list").forward(req, resp);
     }
 }

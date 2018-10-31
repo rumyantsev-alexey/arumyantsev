@@ -15,7 +15,7 @@ public class ValidateService {
 //    private MemoryStore ms = MemoryStore.getInstance();
     private DbStore ms = DbStore.getInstance();
     protected ValidateService() {
-//        initData();
+    initData();
     }
 
     public static ValidateService getInstance() {
@@ -29,13 +29,26 @@ public class ValidateService {
         ms.addPage("/chapter_009/login");
         ms.addPage("/chapter_009/create");
         ms.addPage("/chapter_009/edit");
+        ms.addPage("/chapter_009/ajax");
         ms.addLink("Admin","/chapter_009/list" );
         ms.addLink("Admin","/chapter_009/create" );
         ms.addLink("Admin","/chapter_009/edit" );
         ms.addLink("Admin","/chapter_009/login" );
+        ms.addLink("Admin","/chapter_009/ajax" );
         ms.addLink("User","/chapter_009/list" );
         ms.addLink("User","/chapter_009/edit" );
         ms.addLink("User","/chapter_009/login" );
+        ms.addLink("User","/chapter_009/ajax" );
+        ms.addCityCountry("Russian", "Moscow");
+        ms.addCityCountry("Russian", "Piter");
+        ms.addCityCountry("Russian", "Samara");
+        ms.addCityCountry("Ukraine", "Kiev");
+        ms.addCityCountry("Ukraine", "Lvov");
+        ms.addCityCountry("Ukraine", "Dnepr");
+        ms.addCityCountry("USA", "Boston");
+        ms.addCityCountry("USA", "LA");
+        ms.addCityCountry("USA", "NY");
+//        generate(10);
     }
 
     /**
@@ -54,7 +67,7 @@ public class ValidateService {
      * @return успех
      */
     public boolean add(String name) {
-        return name != null && ms.add(new User(name,null, null,  null, null));
+        return name != null && ms.add(new User(name,null, null,  null, null, null));
     }
 
     /**
@@ -110,8 +123,8 @@ public class ValidateService {
      * @param email емейл
      * @return
      */
-    public boolean addFull(final String name, final String login, final String pass, final String email, final Integer role_id) {
-        return name != null && ms.add(new User(name, login, pass, email, role_id));
+    public boolean addFull(final String name, final String login, final String pass, final String email, final Integer role_id, final Integer city_id) {
+        return name != null && ms.add(new User(name, login, pass, email, role_id, city_id));
     }
 
     /**
@@ -160,4 +173,47 @@ public class ValidateService {
         return ms.accessToPage(role_id, link);
     }
 
-}
+    /**
+     * Метод реализует поиск города по его айди
+     * @param city_id
+     * @return
+     */
+    public String cityByCityId(int city_id) {
+        return ms.cityByCityId(city_id);
+    }
+
+    /**
+     * Метод реализует поиск айди города по его имени
+     * @param city
+     * @return
+     */
+    public Integer cityidByCity(String city) {
+        return ms.cityidByCity(city);
+    }
+
+    /**
+     * Метод ищет все города определенной страны
+     * @param country
+     * @return
+     */
+    public ArrayList<String> findAllCityByCountry(String country) {
+        return ms.findAllCityByCountry(country);
+    }
+
+    /**
+     * Метод выдает список всех стран
+     * @return
+     */
+    public ArrayList<String> findAllCountry() {
+        return ms.findAllCountry();
+    }
+
+    /**
+     * Метод выдает страну по айди города
+     * @param city_id
+     * @return
+     */
+    public String countryByCityid(Integer city_id) {
+        return ms.countryByCityid(city_id);
+    }
+    }

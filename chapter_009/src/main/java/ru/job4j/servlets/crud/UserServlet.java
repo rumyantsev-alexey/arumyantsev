@@ -24,7 +24,7 @@ public class UserServlet extends HttpServlet {
         asw.load("update", this.update());
         asw.load("delete", this.delete());
         asw.load("--", this.non());
-        vserv.generate(10);
+ //       vserv.generate(10);
     }
 
     /**

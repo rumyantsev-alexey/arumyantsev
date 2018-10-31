@@ -85,7 +85,7 @@ public class MemoryStore implements Store<User> {
         Random rnd = new Random();
         for (int i = 0; i < count; i++) {
             this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "111", "email"
-                    + rnd.nextInt(10000) + "@test.com", 1111));
+                    + rnd.nextInt(10000) + "@test.com", 1111, rnd.nextInt(7)));
         }
     }
 
@@ -131,6 +131,41 @@ public class MemoryStore implements Store<User> {
 
     @Override
     public Integer pageidByPage(String page) {
+        return null;
+    }
+
+    @Override
+    public String cityByCityId(int city_id) {
+        return null;
+    }
+
+    @Override
+    public Integer cityidByCity(String city) {
+        return null;
+    }
+
+    @Override
+    public boolean addCityCountry(String country, String city) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<String> findAllCountry() {
+        return null;
+    }
+
+    @Override
+    public Integer countryidByCountry(String country) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> findAllCityByCountry(String country) {
+        return null;
+    }
+
+    @Override
+    public String countryByCityid(Integer city_id) {
         return null;
     }
 }

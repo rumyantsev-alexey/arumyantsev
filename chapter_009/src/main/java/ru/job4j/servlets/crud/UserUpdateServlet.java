@@ -26,6 +26,10 @@ public class UserUpdateServlet extends HttpServlet {
             req.setAttribute("find", vserv.findById(Integer.parseInt(req.getParameter("id"))));
             req.setAttribute("roles", vserv.findAllRoles());
             req.setAttribute("lor", vserv.roleByRoleId(vserv.findById(Integer.parseInt(req.getParameter("id"))).getRole_id()));
+            req.setAttribute("city", vserv.cityByCityId(vserv.findById(Integer.parseInt(req.getParameter("id"))).getCity_id()));
+            req.setAttribute("country", vserv.countryByCityid(vserv.findById(Integer.parseInt(req.getParameter("id"))).getCity_id()));
+            req.setAttribute("countres", vserv.findAllCountry());
+            req.setAttribute("cites", vserv.findAllCityByCountry((String) req.getAttribute("country")));
             req.getRequestDispatcher("update.jsp").forward(req, resp);
         } else {
             resp.sendRedirect("list");
@@ -49,6 +53,7 @@ public class UserUpdateServlet extends HttpServlet {
         usr.setEmail(req.getParameter("email"));
         usr.setRole_id(vserv.roleidByRole(req.getParameter("role")));
         usr.setRes(Timestamp.valueOf(req.getParameter("res")));
+        usr.setCity_id(vserv.cityidByCity(req.getParameter("cname")));
         vserv.updateByUser(usr);
         if ( ((User)req.getSession().getAttribute("fuser")).getLogin().equals(usr.getLogin())) {
             req.getSession().setAttribute("fuser", usr);

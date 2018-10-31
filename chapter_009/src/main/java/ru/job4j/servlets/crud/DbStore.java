@@ -15,6 +15,9 @@ public class DbStore implements Store<User> {
     private static final DbStore INSTANCE = new DbStore();
     private static final Logger log = Logger.getLogger(DbStore.class.getName());
 
+    /**
+     * Конструктор с инициализаций DB
+     */
     private DbStore() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -29,13 +32,16 @@ public class DbStore implements Store<User> {
         SOURCE.setMaxOpenPreparedStatements(100);
         try (Connection con = SOURCE.getConnection();
              Statement st = con.createStatement()) {
+            st.execute("create table if not exists country (id serial PRIMARY KEY, name VARCHAR );");
+            st.execute("create table if not exists city (id serial PRIMARY KEY, name VARCHAR, " +
+                    "country_id integer REFERENCES country (id) );");
             st.execute("create table if not exists role (id serial PRIMARY KEY, name VARCHAR );");
             st.execute("create table if not exists pages (id serial PRIMARY KEY, name VARCHAR );");
             st.execute("create table if not exists rights (role_id integer REFERENCES role (id)," +
                     "pages_id integer REFERENCES pages (id) , UNIQUE (role_id, pages_id));");
             st.execute("create table if not exists users (id INTEGER PRIMARY KEY ," +
                     "name VARCHAR , login VARCHAR , pass VARCHAR, email VARCHAR , createDate TIMESTAMP," +
-                    "role_id integer REFERENCES role (id) );");
+                    "role_id integer REFERENCES role (id), city_id integer REFERENCES city (id) );");
         } catch (SQLException e) {
             log.log(Level.WARNING, "SQL error", e);
         }
@@ -54,8 +60,8 @@ public class DbStore implements Store<User> {
     public boolean add(User model) {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, pass, email, createDate, role_id)" +
-                     "values (?,?,?,?,?,?,?)")) {
+             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, pass, email, createDate, role_id, city_id)" +
+                     "values (?,?,?,?,?,?,?,?)")) {
             st.setInt(1, model.getId());
             st.setString(2, model.getName());
             st.setString(3, model.getLogin());
@@ -63,6 +69,7 @@ public class DbStore implements Store<User> {
             st.setString(5, model.getEmail());
             st.setTimestamp(6, model.getRes());
             st.setInt(7, model.getRole_id());
+            st.setInt(8, model.getCity_id());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
@@ -81,13 +88,14 @@ public class DbStore implements Store<User> {
     public boolean update(User model) {
         boolean result = false;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("update users set name = ?, login = ?, email = ?, role_id = ?, pass = ? where id = ?")) {
-            st.setInt(6, model.getId());
+             PreparedStatement st = con.prepareStatement("update users set name = ?, login = ?, email = ?, role_id = ?, pass = ?, city_id = ? where id = ?")) {
+            st.setInt(7, model.getId());
             st.setString(1, model.getName());
             st.setString(2, model.getLogin());
             st.setString(3, model.getEmail());
             st.setInt(4, model.getRole_id());
             st.setString(5, model.getPass());
+            st.setInt(6, model.getCity_id());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
@@ -126,7 +134,7 @@ public class DbStore implements Store<User> {
         ArrayList<User> result = new ArrayList<>();
         try (Connection con = SOURCE.getConnection();
              Statement st = con.createStatement();
-             ResultSet rst = st.executeQuery("select id, name, login, email, role_id, createDate from users")) {
+             ResultSet rst = st.executeQuery("select id, name, login, email, role_id, createDate, city_id from users")) {
             while (rst.next()) {
                 User user = new User();
                 user.setId(rst.getInt(1));
@@ -135,6 +143,7 @@ public class DbStore implements Store<User> {
                 user.setEmail(rst.getString(4));
                 user.setRole_id(rst.getInt(5));
                 user.setRes(rst.getTimestamp(6));
+                user.setCity_id(rst.getInt(7));
                 result.add(user);
             }
         } catch (SQLException e) {
@@ -152,7 +161,7 @@ public class DbStore implements Store<User> {
     public User findById(int id) {
         User user = new User();
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select id,name,login,email,role_id,createdate, pass from users where id = ?")){
+             PreparedStatement st = con.prepareStatement("select id,name,login,email,role_id,createdate, pass, city_id from users where id = ?")){
             st.setInt(1, id);
              try (ResultSet rst = st.executeQuery()) {
                  if (rst.next()) {
@@ -163,6 +172,7 @@ public class DbStore implements Store<User> {
                      user.setRole_id(rst.getInt(5));
                      user.setRes(rst.getTimestamp(6));
                      user.setPass(rst.getString(7));
+                     user.setCity_id(rst.getInt(8));
                  }
              }
         } catch (SQLException e) {
@@ -186,8 +196,8 @@ public class DbStore implements Store<User> {
         }
         for (int i = 0; i < count; i++) {
             user = new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000),
-                    "111", "email" + rnd.nextInt(10000) + "@test.com", 1111 );
-            user.setRole_id(1111);
+                    "111", "email" + rnd.nextInt(10000) + "@test.com", 1111, rnd.nextInt(6)+1 );
+//            user.setRole_id(1111);
             this.add(user);
         }
     }
@@ -222,18 +232,7 @@ public class DbStore implements Store<User> {
      */
     @Override
     public String roleByRoleId(int role_id) {
-        String result = null;
-        try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select name from role where id = ?")){
-            st.setInt(1, role_id);
-            try (ResultSet rst = st.executeQuery()) {
-                if (rst.next()) {
-                    result = rst.getString(1);}
-            }
-        } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
-        }
-        return result;
+        return nameById(role_id, "role");
     }
 
     /**
@@ -242,17 +241,7 @@ public class DbStore implements Store<User> {
      */
     @Override
     public ArrayList<String> findAllRoles() {
-        ArrayList<String> result = new ArrayList<>();
-        try (Connection con = SOURCE.getConnection();
-             Statement st = con.createStatement();
-             ResultSet rst = st.executeQuery("select name from role")) {
-            while (rst.next()) {
-                result.add(rst.getString(1));
-            }
-        } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
-        }
-        return result;
+        return findAllNames("role");
     }
 
     /**
@@ -262,18 +251,7 @@ public class DbStore implements Store<User> {
      */
     @Override
     public Integer roleidByRole(String role) {
-        Integer result = null;
-        try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select id from role where name = ?")){
-            st.setString(1, role);
-            try (ResultSet rst = st.executeQuery()) {
-                if (rst.next()) {
-                    result = rst.getInt(1);}
-            }
-        } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
-        }
-        return result;
+        return idByName(role, "role", "id");
     }
 
     /**
@@ -370,14 +348,179 @@ public class DbStore implements Store<User> {
      */
     @Override
     public Integer pageidByPage(String page) {
+        return idByName(page, "pages", "id");
+    }
+
+    /**
+     * Метод добавляет пару страна-город
+     * @param country страна
+     * @param city город
+     * @return
+     */
+    @Override
+    public boolean addCityCountry(String country, String city) {
+        boolean result = false;
+        if (countryidByCountry(country) == null) {
+            addCountry(country);
+        }
+        if (cityidByCity(city) == null || idByName(city, "city", "country_id") != countryidByCountry(country)) {
+            addCity(city, countryidByCountry(country));
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean addCity(String city, Integer country_id) {
+        boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("insert into city (name, country_id) values (?,?)")) {
+            st.setString(1, city);
+            st.setInt(2, country_id);
+            if (st.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    private boolean addCountry(String country) {
+        boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("insert into country (name) values (?)")) {
+            st.setString(1, country);
+            if (st.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод ищет город по айди
+     * @param city_id
+     * @return
+     */
+    @Override
+    public String cityByCityId(int city_id) {
+        return nameById(city_id, "city");
+    }
+
+    /**
+     * Метод ищет айди города по имени
+     * @param city
+     * @return
+     */
+    @Override
+    public Integer cityidByCity(String city) {
+        return idByName(city, "city", "id");
+    }
+
+    /**
+     * Метод возвращает список все стран
+     * @return
+     */
+    @Override
+    public ArrayList<String> findAllCountry() {
+        return findAllNames("country");
+    }
+
+    /**
+     * Метод ищет айди страны по имени
+     * @param country
+     * @return
+     */
+    @Override
+    public Integer countryidByCountry(String country) {
+        return idByName(country, "country", "id");
+    }
+
+    /**
+     * Метод ищет все города данной страны
+     * @param country
+     * @return
+     */
+    @Override
+    public ArrayList<String> findAllCityByCountry(String country) {
+        ArrayList<String> result = new ArrayList<>();
+        Integer country_id = countryidByCountry(country);
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select name from city where country_id = ?")){
+            st.setInt(1, country_id);
+            try (ResultSet rst = st.executeQuery()) {
+                while (rst.next()) {
+                    result.add(rst.getString(1));
+                }
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    /**
+     * Метод ищет страну по айди города
+     * @param city_id
+     * @return
+     */
+    @Override
+    public String countryByCityid(Integer city_id) {
+        String country = null;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select country_id from city where id = ?")){
+            st.setInt(1, city_id);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    country = nameById(rst.getInt(1), "country");
+                }
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return country;
+    }
+
+    private Integer idByName(String name, String table, String col) {
         Integer result = null;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select id from pages where name = ?")){
-            st.setString(1, page);
+             PreparedStatement st = con.prepareStatement("select " + col + " from " + table + " where name = ?")){
+            st.setString(1, name);
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
                     result = rst.getInt(1);}
             }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    private String nameById(Integer id, String table) {
+        String result = null;
+        try (Connection con = SOURCE.getConnection();
+             PreparedStatement st = con.prepareStatement("select name from " + table + " where id = ?")){
+            st.setInt(1, id);
+            try (ResultSet rst = st.executeQuery()) {
+                if (rst.next()) {
+                    result = rst.getString(1);}
+            }
+        } catch (SQLException e) {
+            log.log(Level.WARNING, "SQL error", e);
+        }
+        return result;
+    }
+
+    public ArrayList<String> findAllNames(String table) {
+        ArrayList<String> result = new ArrayList<>();
+        try (Connection con = SOURCE.getConnection();
+             Statement st = con.createStatement();
+            ResultSet rst = st.executeQuery("select name from " + table)) {
+                while (rst.next()) {
+                    result.add(rst.getString(1));
+                }
         } catch (SQLException e) {
             log.log(Level.WARNING, "SQL error", e);
         }

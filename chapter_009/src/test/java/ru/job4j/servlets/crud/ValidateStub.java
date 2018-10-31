@@ -26,7 +26,7 @@ public class ValidateStub extends ValidateService {
     }
 
     @Override
-    public boolean addFull(String name, String login, String pass, String email, Integer role_id) {
+    public boolean addFull(String name, String login, String pass, String email, Integer role_id, Integer city_id) {
         User user = new User();
         user.setId(this.ids++);
         user.setName(name);

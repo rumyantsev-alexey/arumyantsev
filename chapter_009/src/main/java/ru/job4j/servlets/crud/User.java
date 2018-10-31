@@ -14,6 +14,7 @@ public class User {
     private String email;
     private Integer role_id;
     private Timestamp res;
+    private Integer city_id;
 
     public User() {
         Random rnd = new Random();
@@ -26,7 +27,7 @@ public class User {
         this.res = new Timestamp(System.currentTimeMillis());
     }
 
-    public User(String name, String login, String pass, String email, Integer role_id) {
+    public User(String name, String login, String pass, String email, Integer role_id, Integer city_id) {
         Random rnd = new Random();
         this.id = rnd.nextInt(10000);
         this.name = name;
@@ -35,6 +36,7 @@ public class User {
         this.email = email;
         this.role_id = role_id;
         this.res = new Timestamp(System.currentTimeMillis());
+        this.city_id = city_id;
     }
 
     public int getId() {
@@ -91,6 +93,14 @@ public class User {
 
     public void setRole_id(Integer role_id) {
         this.role_id = role_id;
+    }
+
+    public Integer getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(Integer city_id) {
+        this.city_id = city_id;
     }
 
     @Override

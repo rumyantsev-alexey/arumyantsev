@@ -35,7 +35,7 @@
 
     <servlet>
         <servlet-name>UServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.ajax.UServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.crud.UServlet</servlet-class>
         <load-on-startup>3</load-on-startup>
     </servlet>
 

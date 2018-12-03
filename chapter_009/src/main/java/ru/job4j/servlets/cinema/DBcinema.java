@@ -19,36 +19,7 @@ public class DBcinema {
 
     private static final DBcinema INSTANCE = new DBcinema();
 
-    /**
-     * Конструктор с инициализаций DB
-     * clients - таблица с данными клиентов сделавших заказ
-     * zone - таблица кинозалов в кинотеатре с их параметрами
-     * session - таблица сеансов в кинотеатре с временем их начала
-     * cost_pattern - таблица с ценами на данный ряд мест в конкретном кинозале на конкретный сеанс
-     * busy_pattern - таблица занятости мест в конкретном кинозале на конкретный сеанс
-     */
-    private DBcinema() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection con = DriverManager.getConnection(url, username, password);
-             Statement st = con.createStatement()) {
-            st.execute("create table if not exists clients (id serial PRIMARY KEY, name VARCHAR(50), phone VARCHAR(30)," +
-                    " UNIQUE (name, phone));");
-            st.execute("create table if not exists zone (id serial PRIMARY KEY, name VARCHAR(50) UNIQUE, " +
-                    "size_row INTEGER, size_col INTEGER);");
-            st.execute("create table if not exists session (id serial PRIMARY KEY, name VARCHAR(50) UNIQUE, time VARCHAR(15) );");
-            st.execute("create table if not exists cost_pattern (id serial PRIMARY KEY , row INTEGER, cost INTEGER, " +
-                    "sess_id integer REFERENCES session (id) , zone_id integer REFERENCES zone(id),  UNIQUE(row, cost, sess_id, zone_id));");
-            st.execute("create table if not exists busy_pattern (id serial PRIMARY KEY , date VARCHAR(15), row INTEGER, " +
-                    "col INTEGER, sess_id integer REFERENCES session (id) , zone_id integer REFERENCES zone(id), " +
-                    "cli_id integer REFERENCES clients (id), UNIQUE(date, row, col, sess_id, zone_id));");
-        } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
-        }
-    }
+    private DBcinema() { }
 
     public static DBcinema getInstance() {
         return INSTANCE;

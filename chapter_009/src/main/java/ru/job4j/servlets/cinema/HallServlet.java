@@ -10,63 +10,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
  * Класс реализует сервлет, который реализует часть controller моделе MVC
  */
 public class HallServlet extends HttpServlet {
-    DBcinema db = DBcinema.getInstance();
+    private static final DBcinema db = DBcinema.getInstance();
+    private final AntiSwitch asw = new AntiSwitch();
 
     /**
-     * метод реализует первичное заполнение БД при загрузке сервлета
+     * Метод инициализирующий меню выбора
      * @throws ServletException
      */
     @Override
     public void init() throws ServletException {
-        Random rnd = new Random();
-        db.addZone("Green", 15,20);
-        db.addZone("Blue", 12,18);
-        db.addZone("Red", 5,10);
-        db.addSession("Morning", "11-00");
-        db.addSession("Afternoon", "15-00");
-        db.addSession("Evening", "21-00");
-        int rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 16; i++) {
-            db.addCostp(i,rr,1,1);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 13; i++) {
-            db.addCostp(i,rr,1,2);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 6; i++) {
-            db.addCostp(i,rr,1,3);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 16; i++) {
-            db.addCostp(i,rr,2,1);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 13; i++) {
-            db.addCostp(i,rr,2,2);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 6; i++) {
-            db.addCostp(i,rr,2,3);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 16; i++) {
-            db.addCostp(i,rr,3,1);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 13; i++) {
-            db.addCostp(i,rr,3,2);
-        }
-        rr = 10 + rnd.nextInt(100);
-        for(int i=1; i < 6; i++) {
-            db.addCostp(i,rr,3,3);
-        }
+        asw.load("getZone", this.getZone());
+        asw.load("getSession", this.getSession());
+        asw.load("getBusy", this.getBusy());
+        asw.load("getCost", this.getCost());
+        asw.load("saleZakaz", this.saleZakaz());
     }
 
     @Override
@@ -82,34 +46,47 @@ public class HallServlet extends HttpServlet {
         JsonNode actualObj = mapper.readTree(jsonData);
         resp.setContentType("text/plain");
         resp.setCharacterEncoding( "UTF-8" );
-        switch (actualObj.get("type").textValue()) {
-            case ("getZone"):
-                mapper.writeValue(out, db.findAllZones());
-                break;
-            case ("getSession"):
-                mapper.writeValue(out, db.findAllSessions());
-                break;
-            case("getBusy"):
-                mapper.writeValue(out, db.returnBusySeats(actualObj.get("calendar").textValue(), actualObj.get("zone").textValue(),
-                        actualObj.get("session").textValue()));
-                break;
-            case("getCost"):
-                mapper.writeValue(out, db.costPerRow(actualObj.get("zone").textValue(), actualObj.get("session").textValue()));
-                break;
-            case("saleZakaz"):
-                String result = "Payment failed!!!";
-                String name = actualObj.get("name").textValue();
-                String phone = actualObj.get("phone").textValue();
-                String calendar = actualObj.get("data").get("calendar").textValue();
-                String session = actualObj.get("data").get("session").textValue();
-                String zone = actualObj.get("data").get("zone").textValue();
+        asw.run(actualObj.get("type").textValue(), out, actualObj);
+    }
 
-                if (db.addClient(name, phone) && db.addBusyp(calendar, actualObj.get("data").get("seats"), db.colByName(session, "session", "id"),
-                        db.colByName(zone, "zone", "id"), db.colByName(name, "clients", "id"))){
-                    result= "Payment has passed";
-                }
-                out.print(result);
-                break;
+    private void writeObjectToWriter(PrintWriter out, Object obj) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(out, obj);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    private BiConsumer<PrintWriter, JsonNode> getZone() {
+        return (out, json) -> { writeObjectToWriter(out, db.findAllZones()); };
+    }
+
+    private BiConsumer<PrintWriter, JsonNode> getSession() {
+        return (out, json) -> { writeObjectToWriter(out, db.findAllSessions()); };
+    }
+
+    private BiConsumer<PrintWriter, JsonNode> getBusy() {
+        return (out, json) -> { writeObjectToWriter(out, db.returnBusySeats(json.get("calendar").textValue(), json.get("zone").textValue(),
+                json.get("session").textValue())); };
+    }
+
+    private BiConsumer<PrintWriter, JsonNode> getCost() {
+        return (out, json) -> { writeObjectToWriter(out, db.costPerRow(json.get("zone").textValue(), json.get("session").textValue())); };
+    }
+
+    private BiConsumer<PrintWriter, JsonNode> saleZakaz() {
+        return (out, json) -> {
+            String result = "Payment failed!!!";
+            if (db.addClient(json.get("name").textValue(), json.get("phone").textValue()) && db.addBusyp(json.get("data").get("calendar").textValue(),
+                    json.get("data").get("seats"),
+                    db.colByName(json.get("data").get("session").textValue(), "session", "id"),
+                    db.colByName(json.get("data").get("zone").textValue(), "zone", "id"),
+                    db.colByName(json.get("name").textValue(), "clients", "id"))){
+                result= "Payment has passed";
+            }
+            out.print(result);
+        };
+    }
+
 }

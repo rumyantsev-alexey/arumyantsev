@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 /**
  * Класс реализует интерфейс Store для hibernate
@@ -15,75 +17,32 @@ public class DBStore implements Store<ToDo> {
 
     @Override
     public boolean add(ToDo model) {
-        boolean result = false;
-        Session session = factory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            session.save(model);
-            transaction.commit();
-            result = true;
-        }catch(Exception e){
-            if(transaction !=null){
-                transaction.rollback();
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
-        return result;
+        return this.predic(
+                session -> (Integer) session.save(model) > 0
+        );
     }
 
     @Override
     public boolean update(ToDo model) {
-        boolean result = false;
-        Session session = factory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("UPDATE ToDo SET done = :done WHERE id = :Id");
-            query.setParameter("done", model.getDone());
-            query.setParameter("Id", model.getId());
-            if (query.executeUpdate() > 0) {
-                result = true;
+        return this.predic(
+            session -> {
+                Query query = session.createQuery("UPDATE ToDo SET done = :done WHERE id = :Id");
+                query.setParameter("done", model.getDone());
+                query.setParameter("Id", model.getId());
+                return query.executeUpdate() > 0;
             }
-            transaction.commit();
-        }catch(Exception e){
-            if(transaction !=null){
-                transaction.rollback();
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
-        return result;
+        );
     }
 
     @Override
     public boolean delete(int id) {
-        boolean result = false;
-        Session session = factory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("DELETE FROM ToDo WHERE id = :Id");
-            query.setParameter("Id",id);
-            if (query.executeUpdate() > 0) {
-                result = true;
+        return this.predic(
+                session -> {
+                    Query query = session.createQuery("DELETE FROM ToDo WHERE id = :Id");
+                    query.setParameter("Id",id);
+                    return query.executeUpdate() > 0;
             }
-            transaction.commit();
-        }catch(Exception e){
-            if(transaction !=null){
-                transaction.rollback();
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
-        return result;
+        );
     }
 
     @Override
@@ -115,6 +74,26 @@ public class DBStore implements Store<ToDo> {
         try{
             transaction = session.beginTransaction();
             result = (ToDo) session.get(ToDo.class, id);
+            transaction.commit();
+        }catch(Exception e){
+            if(transaction !=null){
+                transaction.rollback();
+                e.printStackTrace();
+            }
+            e.printStackTrace();
+        }finally{
+            session.close();
+        }
+        return result;
+    }
+
+    private  boolean predic(final Predicate<Session> command ) {
+        boolean result = false;
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        try{
+            transaction = session.beginTransaction();
+            result = command.test(session);
             transaction.commit();
         }catch(Exception e){
             if(transaction !=null){

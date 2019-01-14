@@ -8,15 +8,15 @@ import org.hibernate.cfg.Configuration;
  */
 public class HibernateSessionFactory {
 
-    private static SessionFactory sessionFactory =  new Configuration().configure().buildSessionFactory();
+    private static final SessionFactory INSTANCE =  new Configuration().configure().buildSessionFactory();
 
 
     public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return INSTANCE;
     }
 
     public static void shutdown() {
-        sessionFactory.close();
+        INSTANCE.close();
     }
 
 }

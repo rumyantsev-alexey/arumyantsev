@@ -38,7 +38,7 @@ public class DBStore implements Store<ToDo> {
         return this.tx(
                 session -> {
                     Query query = session.createQuery("DELETE FROM ToDo WHERE id = :Id");
-                    query.setParameter("Id",id);
+                    query.setParameter("Id", id);
                     return query.executeUpdate() > 0;
             }
         );
@@ -58,21 +58,21 @@ public class DBStore implements Store<ToDo> {
         );
     }
 
-    private <T> T tx(final Function<Session, T> command ) {
+    private <T> T tx(final Function<Session, T> command) {
         T result = null;
         Session session = factory.openSession();
         Transaction transaction = null;
-        try{
+        try {
             transaction = session.beginTransaction();
             result = command.apply(session);
             transaction.commit();
-        }catch(Exception e){
-            if(transaction !=null){
+        } catch (Exception e) {
+            if (transaction != null) {
                 transaction.rollback();
                 e.printStackTrace();
             }
             e.printStackTrace();
-        }finally{
+        } finally {
             session.close();
         }
         return result;

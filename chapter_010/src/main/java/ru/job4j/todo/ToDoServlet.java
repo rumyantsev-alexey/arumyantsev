@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public class ToDoServlet extends HttpServlet{
-    private static final Store<ToDo> store = new DBStore();
-    private static final AntiSwitch asw = new AntiSwitch();
+public class ToDoServlet extends HttpServlet {
+    private static final Store<ToDo> STORE = new DBStore();
+    private static final AntiSwitch ASW = new AntiSwitch();
 
     /**
      * Метод инициализирующий меню выбора
@@ -23,9 +23,9 @@ public class ToDoServlet extends HttpServlet{
      */
     @Override
     public void init() throws ServletException {
-        asw.load("loadList", this.loadList());
-        asw.load("newDo", this.newDo());
-        asw.load("updateList", this.updateList());
+        ASW.load("loadList", this.loadList());
+        ASW.load("newDo", this.newDo());
+        ASW.load("updateList", this.updateList());
     }
 
     @Override
@@ -35,13 +35,11 @@ public class ToDoServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
         String jsonData = req.getReader().lines().collect(Collectors.joining());
         PrintWriter out = resp.getWriter();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(jsonData);
-        asw.run(actualObj.get("type").textValue(), out, actualObj);
+        ASW.run(actualObj.get("type").textValue(), out, actualObj);
     }
 
     @Override
@@ -54,7 +52,7 @@ public class ToDoServlet extends HttpServlet{
         return (out, json) ->   {
                                     ObjectMapper mapper = new ObjectMapper();
                                     try {
-                                        mapper.writeValue(out, store.findAll());
+                                        mapper.writeValue(out, STORE.findAll());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -62,7 +60,7 @@ public class ToDoServlet extends HttpServlet{
     }
 
     private BiConsumer<PrintWriter, JsonNode> newDo() {
-        return (out, json) ->   {   store.add(new ToDo(json.get("text").textValue()));
+        return (out, json) ->   {   STORE.add(new ToDo(json.get("text").textValue()));
                                     out.print("Новая задача записана");
                                 };
     }
@@ -70,10 +68,10 @@ public class ToDoServlet extends HttpServlet{
     private BiConsumer<PrintWriter, JsonNode> updateList() {
         return (out, json) ->   {
                                     ToDo curr;
-                                    for(JsonNode chg : json.get("chgId")) {
-                                        curr = store.findById(chg.asInt());
+                                    for (JsonNode chg : json.get("chgId")) {
+                                        curr = STORE.findById(chg.asInt());
                                         curr.setDone(!curr.getDone());
-                                        store.update(curr);
+                                        STORE.update(curr);
                                         out.print("Изменения записаны");
                                     }
                                 };

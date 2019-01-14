@@ -53,5 +53,22 @@ public class ToDo {
         this.done = done;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
+        ToDo toDo = (ToDo) o;
+
+        return descr.equals(toDo.descr);
+    }
+
+    @Override
+    public int hashCode() {
+        return descr.hashCode();
+    }
 }

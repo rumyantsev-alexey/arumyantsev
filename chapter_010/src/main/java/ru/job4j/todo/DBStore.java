@@ -6,8 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 /**
  * Класс реализует интерфейс Store для hibernate
@@ -17,14 +16,14 @@ public class DBStore implements Store<ToDo> {
 
     @Override
     public boolean add(ToDo model) {
-        return this.predic(
+        return this.tx(
                 session -> (Integer) session.save(model) > 0
         );
     }
 
     @Override
     public boolean update(ToDo model) {
-        return this.predic(
+        return this.tx(
             session -> {
                 Query query = session.createQuery("UPDATE ToDo SET done = :done WHERE id = :Id");
                 query.setParameter("done", model.getDone());
@@ -36,7 +35,7 @@ public class DBStore implements Store<ToDo> {
 
     @Override
     public boolean delete(int id) {
-        return this.predic(
+        return this.tx(
                 session -> {
                     Query query = session.createQuery("DELETE FROM ToDo WHERE id = :Id");
                     query.setParameter("Id",id);
@@ -47,53 +46,25 @@ public class DBStore implements Store<ToDo> {
 
     @Override
     public ArrayList<ToDo> findAll() {
-        ArrayList<ToDo> result = new ArrayList<>();
-        Session session = factory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            result = (ArrayList<ToDo>) session.createQuery("FROM ToDo ORDER BY id").list();
-            transaction.commit();
-        }catch(Exception e){
-            if(transaction !=null){
-                transaction.rollback();
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
-        return result;
+        return this.tx(
+                session -> (ArrayList<ToDo>) session.createQuery("FROM ToDo ORDER BY id").list()
+        );
     }
 
     @Override
     public ToDo findById(int id) {
-        ToDo result = null;
-        Session session = factory.openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            result = (ToDo) session.get(ToDo.class, id);
-            transaction.commit();
-        }catch(Exception e){
-            if(transaction !=null){
-                transaction.rollback();
-                e.printStackTrace();
-            }
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
-        return result;
+        return this.tx(
+                session -> (ToDo) session.get(ToDo.class, id)
+        );
     }
 
-    private  boolean predic(final Predicate<Session> command ) {
-        boolean result = false;
+    private <T> T tx(final Function<Session, T> command ) {
+        T result = null;
         Session session = factory.openSession();
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
-            result = command.test(session);
+            result = command.apply(session);
             transaction.commit();
         }catch(Exception e){
             if(transaction !=null){

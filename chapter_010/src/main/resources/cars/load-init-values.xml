@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Add init data" author="Alex" runOnChange="true">
+
+        <!-- Loading of Data
+        <loadData encoding="UTF-8" file="/src/main/resources/zone.csv" tableName="zone" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+            <column name="size_row" type="NUMERIC"/>
+            <column name="size_col" type="NUMERIC"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="/src/main/resources/session.csv" tableName="session" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+            <column name="time" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="/src/main/resources/cost_pattern.csv" tableName="cost_pattern" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="row" type="NUMERIC"/>
+            <column name="cost" type="NUMERIC"/>
+            <column name="sess_id" type="NUMERIC"/>
+            <column name="zone_id" type="NUMERIC"/>
+        </loadData>
+-->
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/city.csv" tableName="city" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/mark.csv" tableName="mark" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/model.csv" tableName="model" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+            <column name="mark_id" type="NUMERIC"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/trans.csv" tableName="transmission" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/wheel.csv" tableName="wheel" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/btype.csv" tableName="bodytype" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/etype.csv" tableName="enginestype" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/dunit.csv" tableName="driveunit" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+        </loadData>
+
+        <loadData encoding="UTF-8" file="/src/main/resources/cars/user.csv" tableName="users" separator=",">
+            <column name="id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+            <column name="password" type="STRING"/>
+            <column name="email" type="STRING"/>
+            <column name="city_id" type="NUMERIC"/>
+        </loadData>
+    </changeSet>
+
+
+
+</databaseChangeLog>

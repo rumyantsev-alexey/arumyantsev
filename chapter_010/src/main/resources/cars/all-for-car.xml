@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="ru.job4j.cars.BodytypeEntity" table="bodytype" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.CarEntity" table="car" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="note" column="note"/>
+        <property name="price" column="price"/>
+        <property name="issue" column="issue"/>
+        <property name="enginecapacity" column="enginecapacity"/>
+        <property name="power" column="power"/>
+        <many-to-one name="user" column="users_id" not-null="true"
+                     class="ru.job4j.cars.UsersEntity"/>
+        <many-to-one name="city" column="city_id" not-null="true"
+                     class="ru.job4j.cars.CityEntity"/>
+        <many-to-one name="mark" column="mark_id" not-null="true"
+                     class="ru.job4j.cars.MarkEntity"/>
+        <many-to-one name="model" column="model_id" not-null="true"
+                     class="ru.job4j.cars.ModelEntity"/>
+        <many-to-one name="trans" column="transmission_id"
+                     class="ru.job4j.cars.TransmissionEntity"/>
+        <many-to-one name="btype" column="bodytype_id"
+                     class="ru.job4j.cars.BodytypeEntity"/>
+        <many-to-one name="etype" column="enginestype_id"
+                     class="ru.job4j.cars.EnginestypeEntity"/>
+        <many-to-one name="dunit" column="driveunit_id"
+                     class="ru.job4j.cars.DriveunitEntity"/>
+        <many-to-one name="wheel" column="wheel_id"
+                     class="ru.job4j.cars.WheelEntity"/>
+        <list name="fotos" cascade="all">
+            <key column="car_id"/>
+            <list-index column="id"/>
+            <one-to-many class="ru.job4j.cars.FotoEntity"/>
+        </list>
+    </class>
+
+    <class name="ru.job4j.cars.CityEntity" table="city" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.DriveunitEntity" table="driveunit" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.EnginestypeEntity" table="enginestype" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.FotoEntity" table="foto" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <property name="foto" column="foto" type="binary"/>
+        <many-to-one name="car" column="car_id" not-null="true"
+                     class="ru.job4j.cars.CarEntity"/>
+    </class>
+
+    <class name="ru.job4j.cars.MarkEntity" table="mark" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.ModelEntity" table="model" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <many-to-one name="mark" column="mark_id" not-null="true"
+                     class="ru.job4j.cars.MarkEntity"/>
+    </class>
+
+    <class name="ru.job4j.cars.TransmissionEntity" table="transmission" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+    </class>
+
+    <class name="ru.job4j.cars.UsersEntity" table="users" schema="public" catalog="cars">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <property name="password" column="password"/>
+        <property name="email" column="email"/>
+        <many-to-one name="city" column="city_id" not-null="true"
+                     class="ru.job4j.cars.CityEntity"/>
+    </class>
+
+    <class name="ru.job4j.cars.WheelEntity" table="wheel" schema="public" catalog="cars">
+        <id name="id" column="id"/>
+        <property name="name" column="name"/>
+    </class>
+
+</hibernate-mapping>

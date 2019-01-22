@@ -1,23 +1,69 @@
 package ru.job4j.cars;
 
 import java.util.List;
+import javax.persistence.*;
 
+@Entity
+@Table(name="car")
 public class CarEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+
+    @Column(name="note")
     private String note;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="users_id")
     private UsersEntity user;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="city_id")
     private CityEntity city;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="mark_id")
     private MarkEntity mark;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="model_id")
     private ModelEntity model;
+
+    @Column(name="price")
     private Integer price;
+
+    @Column(name="issue")
     private Integer issue;
+
+    @Column(name="enginecapacity")
     private Integer enginecapacity;
+
+    @Column(name="power")
     private Integer power;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="transmission_id")
     private TransmissionEntity trans;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="bodytype_id")
     private BodytypeEntity btype;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="enginestype_id")
     private EnginestypeEntity etype;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="driveunit_id")
     private DriveunitEntity dunit;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="wheel_id")
     private WheelEntity wheel;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy= "car")
     private List<FotoEntity> fotos;
 
     public CarEntity() {

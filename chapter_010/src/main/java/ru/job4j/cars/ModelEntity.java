@@ -1,8 +1,21 @@
 package ru.job4j.cars;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="model")
 public class ModelEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+
+    @Column(name="name")
     private String name;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="mark_id")
     private MarkEntity mark;
 
     public MarkEntity getMark() {

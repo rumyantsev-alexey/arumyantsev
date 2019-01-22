@@ -1,7 +1,17 @@
 package ru.job4j.cars;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="wheel")
 public class WheelEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+
+    @Column(name="name")
     private String name;
 
     public int getId() {

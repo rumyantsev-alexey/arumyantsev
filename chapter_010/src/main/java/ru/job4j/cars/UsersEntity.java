@@ -1,10 +1,27 @@
 package ru.job4j.cars;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="users")
 public class UsersEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+
+    @Column(name="name")
     private String name;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name="email")
     private String email;
+
+    @ManyToOne(cascade= {CascadeType.REFRESH})
+    @JoinColumn(name="city_id")
     private CityEntity city;
 
     public UsersEntity() {

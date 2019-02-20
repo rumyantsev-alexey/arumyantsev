@@ -26,7 +26,7 @@ public class DbStore<K> implements Store<K> {
      * Конструктор с определением полного и сокращенного имени класса
      * @param genclass
      */
-    public DbStore(Class<K> genclass) {
+    public DbStore(Class<? extends ProjectCars> genclass) {
         fullclass = genclass.getName();
         String[] names = fullclass.split("\\.");
         entityname = names[names.length - 1];

@@ -1,70 +1,82 @@
 package ru.job4j.cars;
 
+import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name="car")
-public class CarEntity {
+@Table(name = "car")
+public class CarEntity implements ProjectCars {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name="note")
+    @Column(name = "note")
     private String note;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="users_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "users_id")
     private UsersEntity user;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="city_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "city_id")
     private CityEntity city;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="mark_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "mark_id")
     private MarkEntity mark;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="model_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "model_id")
     private ModelEntity model;
 
-    @Column(name="price")
+    @Column(name = "price")
     private Integer price;
 
-    @Column(name="issue")
+    @Column(name = "issue")
     private Integer issue;
 
-    @Column(name="enginecapacity")
+    @Column(name = "dist")
+    private Integer dist;
+
+    @Column(name = "enginecapacity")
     private Integer enginecapacity;
 
-    @Column(name="power")
+    @Column(name = "power")
     private Integer power;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="transmission_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "transmission_id")
     private TransmissionEntity trans;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="bodytype_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "bodytype_id")
     private BodytypeEntity btype;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="enginestype_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "enginestype_id")
     private EnginestypeEntity etype;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="driveunit_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "driveunit_id")
     private DriveunitEntity dunit;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="wheel_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "wheel_id")
     private WheelEntity wheel;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy= "car")
-    private List<FotoEntity> fotos;
+    @Column(name = "created")
+    private Timestamp created;
+
+    @Column(name = "old")
+    private boolean old;
+
+    @OneToMany(mappedBy = "car", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Set<FotoEntity> fotos;
 
     public CarEntity() {
 
@@ -72,6 +84,32 @@ public class CarEntity {
 
     public CarEntity(final String note) {
         this.note = note;
+        this.old = false;
+        this.created = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
+    }
+
+    public Integer getDist() {
+        return dist;
+    }
+
+    public void setDist(Integer dist) {
+        this.dist = dist;
     }
 
     public String getNote() {
@@ -82,11 +120,11 @@ public class CarEntity {
         this.note = note;
     }
 
-    public List<FotoEntity> getFotos() {
+    public Set<FotoEntity> getFotos() {
         return fotos;
     }
 
-    public void setFotos(List<FotoEntity> fotos) {
+    public void setFotos(Set<FotoEntity> fotos) {
         this.fotos = fotos;
     }
 
@@ -204,23 +242,33 @@ public class CarEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         CarEntity carEntity = (CarEntity) o;
 
-        if (note != null ? !note.equals(carEntity.note) : carEntity.note != null) return false;
-        if (!user.equals(carEntity.user)) return false;
-        if (!city.equals(carEntity.city)) return false;
-        return model.equals(carEntity.model);
+        if (note != null ? !note.equals(carEntity.note) : carEntity.note != null) {
+            return false;
+        }
+        if (user != null ? !user.equals(carEntity.user) : carEntity.user != null) {
+            return false;
+        }
+        if (city != null ? !city.equals(carEntity.city) : carEntity.city != null) {
+            return false;
+        }
+        return model != null ? model.equals(carEntity.model) : carEntity.model == null;
     }
 
     @Override
     public int hashCode() {
         int result = note != null ? note.hashCode() : 0;
-        result = 31 * result + user.hashCode();
-        result = 31 * result + city.hashCode();
-        result = 31 * result + model.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (model != null ? model.hashCode() : 0);
         return result;
     }
 }

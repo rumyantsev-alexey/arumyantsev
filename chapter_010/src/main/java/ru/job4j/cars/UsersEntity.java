@@ -1,28 +1,32 @@
 package ru.job4j.cars;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name="users")
-public class UsersEntity {
+@Table(name = "users")
+public class UsersEntity implements ProjectCars {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @ManyToOne(cascade= {CascadeType.REFRESH})
-    @JoinColumn(name="city_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "city_id")
     private CityEntity city;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<CarEntity> car;
 
     public UsersEntity() {
 
@@ -33,6 +37,14 @@ public class UsersEntity {
         this.password = password;
         this.email = email;
         this.city = city;
+    }
+
+    public Set<CarEntity> getCar() {
+        return car;
+    }
+
+    public void setCar(Set<CarEntity> car) {
+        this.car = car;
     }
 
     public int getId() {
@@ -77,32 +89,26 @@ public class UsersEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         UsersEntity that = (UsersEntity) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        return city != null ? city.equals(that.city) : that.city == null;
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
+        return password != null ? password.equals(that.password) : that.password == null;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "UsersEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", city=" + city +
-                '}';
-    }
 }

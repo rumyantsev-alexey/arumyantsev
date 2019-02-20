@@ -5,7 +5,7 @@
      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.8.xsd">
 
     <!--    <include file="/src/main/resources/initbase.xml"/> -->
-    <!--        <include file="/src/main/resources/cars/cars-create-table.xml"/>-->
+        <include file="/src/main/resources/cars/cars-create-table.xml"/>
          <include file="/src/main/resources/cars/load-init-values.xml"/>
 </databaseChangeLog>
 

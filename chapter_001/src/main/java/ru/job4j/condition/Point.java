@@ -3,8 +3,8 @@ package ru.job4j.condition;
 public class Point {
     private int x;
     private int y;
-    private final int A=15;
-    private final int B=9;
+    private final int a = 15;
+    private final int b = 9;
 
 
     public  Point(int x, int y) {
@@ -20,6 +20,6 @@ public class Point {
         return this.y;
     }
     public boolean is(int x, int y) {
-        return y==A*x+B;
+        return y == a * x + b;
     }
 }

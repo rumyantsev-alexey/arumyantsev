@@ -17,7 +17,7 @@ public interface UserAction {
      * @param input интерфейс ввода
      * @param tracker хранилище заявок
      */
-    void execute (Input input, Tracker tracker);
+    void execute(Input input, Tracker tracker);
 
     /**
      * Возращает строку описания пункта меню

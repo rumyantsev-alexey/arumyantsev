@@ -17,7 +17,7 @@ public class ProgInterup {
      * @param text текст для подсчета
      * @param time время работы первого потока (в мс)
      */
-    public ProgInterup (String text, long time) {
+    public ProgInterup(String text, long time) {
         this.text = text;
         this.timer = time;
     }
@@ -35,7 +35,7 @@ public class ProgInterup {
             long begintime = System.currentTimeMillis();
             System.out.println(String.format("Begin time. (Timer:%s)", timer));
             while (System.currentTimeMillis() - begintime < timer) {
-
+                System.currentTimeMillis();
             }
             System.out.println(String.format("End time. (Timer:%s)", timer));
             thread.interrupt();
@@ -55,7 +55,7 @@ public class ProgInterup {
         @Override
         public void run() {
             System.out.println(String.format(" Begin chars count. (Timer: %s)", timer));
-            for (int i = 0; i < text.length() && ! Thread.interrupted(); i++) {
+            for (int i = 0; i < text.length() && !Thread.interrupted(); i++) {
                 count++;
                 try {
                     Thread.sleep(2);
@@ -67,7 +67,7 @@ public class ProgInterup {
             if (Thread.interrupted()) {
                 System.out.println(String.format("Chars count interrupt. (Timer:%s)", timer));
             }
-            System.out.println( String.format("End chars count. %s chars count. (Timer:%s)", count, timer));
+            System.out.println(String.format("End chars count. %s chars count. (Timer:%s)", count, timer));
         }
     }
 }

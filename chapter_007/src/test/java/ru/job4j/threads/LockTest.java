@@ -15,7 +15,7 @@ public class LockTest {
      * Метод реализует простую процедуру с lock
      */
     private void sample() {
-        System.out.println(String.format("Thread %s enter..",Thread.currentThread().getName()));
+        System.out.println(String.format("Thread %s enter..", Thread.currentThread().getName()));
         lock.lock();
         try {
             Thread.sleep(1000);
@@ -23,7 +23,7 @@ public class LockTest {
             e.printStackTrace();
         }
         lock.unlock();
-        System.out.println(String.format("Thread %s exit..",Thread.currentThread().getName()));
+        System.out.println(String.format("Thread %s exit..", Thread.currentThread().getName()));
     }
 
     /**
@@ -45,7 +45,7 @@ public class LockTest {
      */
     public void testLock() {
         Thread temp;
-        for( int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             temp = moreThreads();
             System.out.println(temp.getName() + " created");
             temp.start();

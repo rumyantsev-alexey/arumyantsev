@@ -1,4 +1,4 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -80,7 +80,7 @@ public class LinkList<E> implements Iterable<E>  {
             this.firstNode = new Node<E>(model);
             this.lastNode = this.firstNode;
         } else {
-            this.lastNode.right = new Node<E> (model);
+            this.lastNode.right = new Node<E>(model);
             this.lastNode.right.left = this.lastNode;
             this.lastNode = this.lastNode.right;
         }

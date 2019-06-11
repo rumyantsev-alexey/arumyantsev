@@ -9,15 +9,15 @@ import java.util.logging.Logger;
  * Класс реализует постоянный слой и является реализацией интерфейса Story
  */
 public class MemoryStore implements Store<User> {
-    private static final Logger log = Logger.getLogger(MemoryStore.class.getName());
+    private static final Logger LOG = Logger.getLogger(MemoryStore.class.getName());
     private ConcurrentHashMap<Integer, User> db = new ConcurrentHashMap<>();
-    private static final MemoryStore mstory = new MemoryStore();
+    private static final MemoryStore MSTORY = new MemoryStore();
 
     private MemoryStore() {
     }
 
     public static MemoryStore getInstance() {
-        return mstory;
+        return MSTORY;
     }
 
     /**
@@ -61,7 +61,7 @@ public class MemoryStore implements Store<User> {
     @Override
     public ArrayList<User> findAll() {
         ArrayList<User> result = new ArrayList<>();
-        for(User u: db.values()) {
+        for (User u: db.values()) {
             result.add(u);
         }
         return result;
@@ -84,7 +84,7 @@ public class MemoryStore implements Store<User> {
     public void generate(final int count) {
         Random rnd = new Random();
         for (int i = 0; i < count; i++) {
-            this.add(new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000), "111", "email"
+            this.add(new User("name" + rnd.nextInt(10000), "login" + rnd.nextInt(10000), "111", "email"
                     + rnd.nextInt(10000) + "@test.com", 1111, rnd.nextInt(7)));
         }
     }
@@ -95,7 +95,7 @@ public class MemoryStore implements Store<User> {
     }
 
     @Override
-    public String roleByRoleId(int role_id) {
+    public String roleByRoleId(int roleid) {
         return null;
     }
 
@@ -110,7 +110,7 @@ public class MemoryStore implements Store<User> {
     }
 
     @Override
-    public boolean accessToPage(Integer role_id, String link) {
+    public boolean accessToPage(Integer roleid, String link) {
         return false;
     }
 
@@ -135,7 +135,7 @@ public class MemoryStore implements Store<User> {
     }
 
     @Override
-    public String cityByCityId(int city_id) {
+    public String cityByCityId(int cityid) {
         return null;
     }
 
@@ -165,7 +165,7 @@ public class MemoryStore implements Store<User> {
     }
 
     @Override
-    public String countryByCityid(Integer city_id) {
+    public String countryByCityid(Integer cityid) {
         return null;
     }
 }

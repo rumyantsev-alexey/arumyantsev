@@ -18,11 +18,11 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 public class StartParser {
 
-    private static final Logger log = LogManager.getLogger(StartParser.class.getName());
+    private static final Logger LOG = LogManager.getLogger(StartParser.class.getName());
 
-    public static void main( final String [ ] args) {
+    public static void main(final String[ ] args) {
         String opt;
-        log.info("Begin job..");
+        LOG.info("Begin job..");
         opt = args.length != 0 ? args[0] : "app.properties";
 
         Properties prt = new Properties();
@@ -48,7 +48,7 @@ public class StartParser {
                 sched.scheduleJob(job, trigger);
                 sched.start();
             } catch (SchedulerException e) {
-                log.warn(e.getMessage(), e);
+                LOG.warn(e.getMessage(), e);
             }
         }
     }

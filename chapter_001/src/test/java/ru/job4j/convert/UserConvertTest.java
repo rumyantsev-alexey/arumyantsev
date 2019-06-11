@@ -18,10 +18,10 @@ public class UserConvertTest {
     public void getUsersListConvertToHashMapAndFindSomeUser() {
         List<User> users = new ArrayList<>();
         HashMap<Integer, User> result = new HashMap<>();
-        users.add(new User(45654,"Alex","London"));
-        users.add(new User(65789,"Dima", "Madrid"));
-        users.add(new User(88532, "Max","Tokyo"));
-        result=UserConvert.Process(users);
+        users.add(new User(45654, "Alex", "London"));
+        users.add(new User(65789, "Dima",  "Madrid"));
+        users.add(new User(88532,  "Max", "Tokyo"));
+        result = UserConvert.process(users);
         assertThat(result.get(65789).getName(), is("Dima"));
     }
 

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Сервлет реализует обработку пост запроса и его сохранение в базе
  */
 public class UServlet extends HttpServlet {
-    ConcurrentHashMap <Integer, User> data = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, User> data = new ConcurrentHashMap<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

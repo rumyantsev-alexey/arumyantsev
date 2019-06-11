@@ -13,7 +13,7 @@ public class Account {
     private double value;
 
     // конструктор по умолчанию
-    public Account(){
+    public Account() {
     }
 
     // конструктор с параметрами
@@ -39,8 +39,12 @@ public class Account {
     // переписываем сравнение.. сравниваем только по реквизитам
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Account account = (Account) o;
 

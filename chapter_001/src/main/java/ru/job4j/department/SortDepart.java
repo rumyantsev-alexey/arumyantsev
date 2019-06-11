@@ -27,7 +27,7 @@ public class SortDepart {
      * @param names массив текста с наименованиями отделов
      * @return список отдела в виде списка объектов
      */
-    public ArrayList<Depart> convert ( String [] names) {
+    public ArrayList<Depart> convert(String[] names) {
         ArrayList<Depart> result = new ArrayList<>();
         for (String name: names) {
             result.add(convertOne(name));
@@ -40,14 +40,14 @@ public class SortDepart {
      * @param names первичный список отделов
      * @return дополненый списко отделов
      */
-    public ArrayList<Depart> normalization ( ArrayList<Depart> names) {
+    public ArrayList<Depart> normalization(ArrayList<Depart> names) {
         ArrayList<Depart> result = new ArrayList<>(names);
         Depart mid =  new Depart();
         for (Depart name2: names) {
             mid = new Depart();
             for (String str: name2.getNames()) {
                 mid.getNames().add(str);
-                if (! result.contains(mid)) {
+                if (!result.contains(mid)) {
                     result.add(new Depart(mid));
                 }
             }

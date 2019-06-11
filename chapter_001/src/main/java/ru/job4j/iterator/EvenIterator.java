@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * Класс определяет итератор, который ходит по четным числам в массиве, заданном в конструкторе
  */
 public class EvenIterator implements Iterator {
-    private int [] inner;
+    private int[] inner;
     // Указатель на текущую позицию итератора
     private int pointer = 0;
 
@@ -15,14 +15,14 @@ public class EvenIterator implements Iterator {
      * Конструктор с входящим массивов
      * @param numbers входной массив
      */
-    public EvenIterator (final int[] numbers) {
+    public EvenIterator(final int[] numbers) {
         this.inner = numbers;
     }
 
-    private int findNextEven( int point) {
+    private int findNextEven(int point) {
         int result = -1;
         for (int i = point; i < inner.length; i++) {
-            if ( inner[i] % 2 == 0) {
+            if (inner[i] % 2 == 0) {
                 result = i;
                 break;
             }
@@ -38,7 +38,7 @@ public class EvenIterator implements Iterator {
     @Override
     public Integer next() {
         int result = findNextEven(pointer);
-        if (hasNext()){
+        if (hasNext()) {
             pointer = result + 1;
             result = inner[result];
         } else {

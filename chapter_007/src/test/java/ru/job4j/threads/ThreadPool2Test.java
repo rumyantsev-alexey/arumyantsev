@@ -14,7 +14,7 @@ public class ThreadPool2Test {
      */
     private Thread moreThreads() {
         Random rn = new Random();
-        return new Thread(String.format("Thread%s",rn.nextInt(1000))) {
+        return new Thread(String.format("Thread%s", rn.nextInt(1000))) {
             @Override
             public void run() {
                 try {
@@ -34,10 +34,10 @@ public class ThreadPool2Test {
     public void testThreadPool() {
         ThreadPool2 test = new ThreadPool2();
         Thread temp;
-        for( int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             temp = moreThreads();
             System.out.println(temp.getName() + " created");
-            test.add( new ThreadPool2.Work(temp));
+            test.add(new ThreadPool2.Work(temp));
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {

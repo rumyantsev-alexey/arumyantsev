@@ -22,7 +22,7 @@ public class Bid implements Comparable {
      * @param price
      * @param volume
      */
-    public Bid( String book,Type type, Action action, int price, int volume ) {
+    public Bid(String book, Type type, Action action, int price, int volume) {
         Random rn = new Random();
         this.book = book;
         this.type = type;
@@ -97,14 +97,24 @@ public class Bid implements Comparable {
      * Сравнение заявок происзодит по всем полям кроме id и type
      */
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Bid bid = (Bid) o;
 
-        if (!book.equals(bid.book)) return false;
-        if (action != bid.action) return false;
-        if (!price.equals(bid.price)) return false;
+        if (!book.equals(bid.book)) {
+            return false;
+        }
+        if (action != bid.action) {
+            return false;
+        }
+        if (!price.equals(bid.price)) {
+            return false;
+        }
         return volume.equals(bid.volume);
     }
 
@@ -124,10 +134,11 @@ public class Bid implements Comparable {
     public String toString() {
         StringBuilder str = new StringBuilder();
         switch (action) {
-            case BID:   str.append(String.format("%15s%15s%15s\n"," ", volume, price));
+            case BID:   str.append(String.format("%15s%15s%15s\n", " ", volume, price));
                         break;
-            case ASK:   str.append(String.format("%15s%15s%15s\n",price, volume, " "));
+            case ASK:   str.append(String.format("%15s%15s%15s\n", price, volume, " "));
                         break;
+            default:    break;
         }
         return str.toString();
     }

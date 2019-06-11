@@ -41,7 +41,7 @@ public class Switcher {
                 for (int i = 0; i < COUNT; i++) {
                     add(1);
                 }
-                System.out.println("Thread1 - current string - "+string);
+                System.out.println("Thread1 - current string - " + string);
                 condB.signalAll();
                 try {
                     condA.await();
@@ -71,7 +71,7 @@ public class Switcher {
                 for (int i = 0; i < COUNT; i++) {
                     add(2);
                 }
-                System.out.println("Thread2 - current string - "+ string);
+                System.out.println("Thread2 - current string - " + string);
                 condA.signalAll();
                 lock.unlock();
             }

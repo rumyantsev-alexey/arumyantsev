@@ -11,7 +11,7 @@ import java.util.Enumeration;
 /**
  * Класс реализует заглушку части системного функционала в сервлетах (для тестов)
  */
-public class HttpServletRequestSub extends HttpServletRequestWrapper{
+public class HttpServletRequestSub extends HttpServletRequestWrapper {
 
     private class RequestDispatcherSub implements RequestDispatcher {
 

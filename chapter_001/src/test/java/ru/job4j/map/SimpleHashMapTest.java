@@ -14,13 +14,15 @@ import static org.junit.Assert.*;
  */
 public class SimpleHashMapTest {
     // Определяем хешмеп и инициализируем его значениями
-    SimpleHashMap<String, Integer> test = new SimpleHashMap<String, Integer>(){{
-        insert("alex", 50);
-        insert("dima", 44);
-        insert("oleg", 32);
-        insert("maks", 77);
-        insert("anna", 68);
-    }};
+    SimpleHashMap<String, Integer> test = new SimpleHashMap<String, Integer>() {
+        {
+            insert("alex", 50);
+            insert("dima", 44);
+            insert("oleg", 32);
+            insert("maks", 77);
+            insert("anna", 68);
+        }
+    };
 
     @Test
     /**

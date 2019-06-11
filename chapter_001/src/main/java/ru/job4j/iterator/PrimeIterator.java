@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * Класс определяет итератор, который ходит по простым числам в массиве, заданном в конструкторе
  */
 public class PrimeIterator implements Iterator {
-    private int [] inner;
+    private int[] inner;
     // Указатель на текущую позицию итератора
     private int pointer = 0;
 
@@ -15,24 +15,24 @@ public class PrimeIterator implements Iterator {
      * Конструктор с входящим массивом
      * @param numbers входной массив
      */
-    public PrimeIterator (final int[] numbers) {
+    public PrimeIterator(final int[] numbers) {
         this.inner = numbers;
     }
 
-    private int findNextPrime( int point) {
+    private int findNextPrime(int point) {
         int result = -1;
         for (int i = point; i < inner.length; i++) {
-            if ( primenumber(inner[i])) {
+            if (primenumber(inner[i])) {
                 result = i;
                 break;
             }
         }
         return result;
     }
-    private boolean primenumber (int number) {
+    private boolean primenumber(int number) {
         boolean result = number > 1;
         for (int i = 2; i < number; i++) {
-            if (number%i == 0) {
+            if (number % i == 0) {
                 result = false;
                 break;
             }
@@ -48,7 +48,7 @@ public class PrimeIterator implements Iterator {
     @Override
     public Integer next() {
         int result = findNextPrime(pointer);
-        if (hasNext()){
+        if (hasNext()) {
             pointer = result + 1;
             result = inner[result];
         } else {

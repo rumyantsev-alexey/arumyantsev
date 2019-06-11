@@ -18,11 +18,11 @@ public class Threads {
     /**
      *  Класс подсчитывает количество пробелов в тексте, выводя счетчик после каждого найденного пробела
      */
-    public class countSpaces implements Runnable  {
+    public class CountSpaces implements Runnable  {
         @Override
         public void run() {
             counts = 0;
-            char [] txt = text.toCharArray();
+            char[] txt = text.toCharArray();
             System.out.println("Begin space's count");
             for (int i = 0; i < txt.length; i++) {
                 if (txt[i] == (char) 32) {
@@ -41,14 +41,14 @@ public class Threads {
     /**
      *  Класс подсчитывает количество слов в тексте, выводя счетчик после каждого найденного слова
      */
-    public class countWords implements Runnable  {
+    public class CountWords implements Runnable  {
         @Override
         public void run() {
             countw = 0;
-            char [] txt = text.toCharArray();
+            char[] txt = text.toCharArray();
             System.out.println("Begin word's count");
             for (int i = 1; i < txt.length; i++) {
-                if ( (txt[i] == (char) 46 || txt[i] == (char) 32) && txt[i-1] != (char) 32 && txt[i-1] != (char) 46) {
+                if ((txt[i] == (char) 46 || txt[i] == (char) 32) && txt[i - 1] != (char) 32 && txt[i - 1] != (char) 46) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {

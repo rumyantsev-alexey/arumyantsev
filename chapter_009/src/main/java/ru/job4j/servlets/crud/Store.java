@@ -20,7 +20,7 @@ public interface Store<K> {
 
     Integer checkLogin(String login, String pass);
 
-    String roleByRoleId(int role_id);
+    String roleByRoleId(int roleid);
 
     Integer roleidByRole(String role);
 
@@ -32,11 +32,11 @@ public interface Store<K> {
 
     boolean addLink(String role, String page);
 
-    boolean accessToPage(Integer role_id, String link);
+    boolean accessToPage(Integer roleid, String link);
     
     Integer pageidByPage(String page);
 
-    String cityByCityId(int city_id);
+    String cityByCityId(int cityid);
 
     Integer cityidByCity(String city);
 
@@ -48,6 +48,6 @@ public interface Store<K> {
 
     ArrayList<String> findAllCityByCountry(String country);
 
-    String countryByCityid(Integer city_id);
+    String countryByCityid(Integer cityid);
 
 }

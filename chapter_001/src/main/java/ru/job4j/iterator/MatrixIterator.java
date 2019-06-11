@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  */
 public class MatrixIterator implements Iterator<Integer> {
     // Внутреннее представление 2х мерного массива
-    private int [][] inner;
+    private int[][] inner;
     // Указатели на текущую позицию итератора
     private int rawpointer = 0;
     private int colpointer = 0;
@@ -17,7 +17,7 @@ public class MatrixIterator implements Iterator<Integer> {
      * Конструктор с входящим массивов
      * @param input входной массив
      */
-    public MatrixIterator( int [][] input) {
+    public MatrixIterator(int[][] input) {
         this.inner = input;
     }
 
@@ -25,10 +25,10 @@ public class MatrixIterator implements Iterator<Integer> {
     public boolean hasNext() {
         boolean result = false;
         int len = inner.length;
-        if (rawpointer < len-1) {
-            result=true;
+        if (rawpointer < len - 1) {
+            result = true;
         } else {
-            if (rawpointer == len-1 && colpointer < inner[rawpointer].length ) {
+            if (rawpointer == len - 1 && colpointer < inner[rawpointer].length) {
                 result = true;
             }
         }
@@ -43,7 +43,7 @@ public class MatrixIterator implements Iterator<Integer> {
             result = inner[rawpointer][colpointer++];
             if (colpointer == inner[rawpointer].length) {
                 colpointer = 0;
-                rawpointer ++;
+                rawpointer++;
             }
         } else {
             throw new NoSuchElementException();

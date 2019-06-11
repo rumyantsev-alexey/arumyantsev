@@ -18,7 +18,7 @@ public class DataBase {
     private String url;
     private String user;
     private String pass;
-    private static final Logger log = LogManager.getLogger(DataBase.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataBase.class.getName());
 
     /**
      * Метод предназначен для инициализации работы с бд
@@ -38,12 +38,12 @@ public class DataBase {
                 st.execute("create table if not exists vacancy (id integer, subj varchar(200), link varchar(200), created TIMESTAMP );");
                 st.execute("create table if not exists session (session TIMESTAMP, succ boolean );");
             } catch (SQLException e) {
-                log.error("SQL error", e);
+                LOG.error("SQL error", e);
             }
         } catch (IOException e) {
-            log.error("IO error", e);
+            LOG.error("IO error", e);
         } catch (ClassNotFoundException e) {
-            log.error("Properties IO error", e);
+            LOG.error("Properties IO error", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class DataBase {
             }
             stThree.executeUpdate("insert into session (session, succ) values ( NOW(), 'true')");
         } catch (SQLException e) {
-            log.error("SQL error", e);
+            LOG.error("SQL error", e);
         }
         return cnt;
     }
@@ -88,7 +88,7 @@ public class DataBase {
             st.execute("delete from vacancy;");
             st.execute("delete from session;");
         } catch (SQLException e) {
-            log.error("Delete table error:", e);
+            LOG.error("Delete table error:", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class DataBase {
                 result = rs.getTimestamp(1);
             }
         } catch (SQLException e) {
-            log.error("SQL error", e);
+            LOG.error("SQL error", e);
         }
         return  result;
     }

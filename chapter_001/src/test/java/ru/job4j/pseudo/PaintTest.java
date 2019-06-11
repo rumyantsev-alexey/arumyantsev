@@ -17,13 +17,13 @@ public class PaintTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     @Before
-    public void BeforeMetod(){
+    public void beforeMetod() {
         //Заменяем стандартный вывод на вывод в пямять для тестирования.
         System.setOut(new PrintStream(out));
     }
 
     @After
-    public void AfterMetod(){
+    public void afterMetod() {
         // возвращаем обратно стандартный вывод в консоль.
         System.setOut(stdout);
     }

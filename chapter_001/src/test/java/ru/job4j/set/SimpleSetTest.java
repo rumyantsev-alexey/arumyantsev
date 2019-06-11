@@ -46,7 +46,7 @@ public class SimpleSetTest {
     public void testIterator() {
         Iterator<Integer> simpleiter = simple.iterator();
         assertThat(simpleiter.hasNext(), is(true));
-        assertThat(simpleiter.next(),is(1));
+        assertThat(simpleiter.next(), is(1));
         simpleiter.next();
         assertThat(simpleiter.hasNext(), is(true));
         simpleiter.next();

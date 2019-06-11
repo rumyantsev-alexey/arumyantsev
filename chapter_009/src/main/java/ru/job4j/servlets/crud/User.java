@@ -12,9 +12,9 @@ public class User {
     private String login;
     private String pass;
     private String email;
-    private Integer role_id;
+    private Integer roleid;
     private Timestamp res;
-    private Integer city_id;
+    private Integer cityid;
 
     public User() {
         Random rnd = new Random();
@@ -27,16 +27,16 @@ public class User {
         this.res = new Timestamp(System.currentTimeMillis());
     }
 
-    public User(String name, String login, String pass, String email, Integer role_id, Integer city_id) {
+    public User(String name, String login, String pass, String email, Integer roleid, Integer cityid) {
         Random rnd = new Random();
         this.id = rnd.nextInt(10000);
         this.name = name;
         this.login = login;
         this.pass = pass;
         this.email = email;
-        this.role_id = role_id;
+        this.roleid = roleid;
         this.res = new Timestamp(System.currentTimeMillis());
-        this.city_id = city_id;
+        this.cityid = cityid;
     }
 
     public int getId() {
@@ -87,26 +87,30 @@ public class User {
         this.pass = pass;
     }
 
-    public Integer getRole_id() {
-        return role_id;
+    public Integer getRoleid() {
+        return roleid;
     }
 
-    public void setRole_id(Integer role_id) {
-        this.role_id = role_id;
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
     }
 
-    public Integer getCity_id() {
-        return city_id;
+    public Integer getCityid() {
+        return cityid;
     }
 
-    public void setCity_id(Integer city_id) {
-        this.city_id = city_id;
+    public void setCityid(Integer cityid) {
+        this.cityid = cityid;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 

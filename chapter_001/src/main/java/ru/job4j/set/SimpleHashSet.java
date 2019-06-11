@@ -1,6 +1,6 @@
 package ru.job4j.set;
 
-import ru.job4j.List.LinkList;
+import ru.job4j.list.LinkList;
 
 /**
  * Класс представляет собой множество с хеш таблицей типа E с базовыми функциями
@@ -34,10 +34,10 @@ public class SimpleHashSet<E> {
      * @param value текущий объект
      * @return успех добавления
      */
-     public boolean add (E value) {
+     public boolean add(E value) {
         boolean result = false;
-        LinkList <E> temp = new LinkList<>();
-        if (! contains(value)){
+        LinkList<E> temp = new LinkList<>();
+        if (!contains(value)) {
             if (hashtable[convertHash(value)] != null) {
                 hashtable[convertHash(value)].add(value);
             } else {
@@ -55,7 +55,7 @@ public class SimpleHashSet<E> {
      * @param value текущий объект
      * @return успех нахождения объекта
      */
-    public boolean contains (E value) {
+    public boolean contains(E value) {
         boolean result = false;
         if (hashtable[convertHash(value)] != null) {
             for (E obj: hashtable[convertHash(value)]) {
@@ -73,9 +73,9 @@ public class SimpleHashSet<E> {
      * @param value текущий объект
      * @return успех удаления объекта
      */
-    public boolean remove (E value) {
+    public boolean remove(E value) {
         boolean result = false;
-        if (contains(value)){
+        if (contains(value)) {
             hashtable[convertHash(value)].remove(value);
             size--;
             result = true;

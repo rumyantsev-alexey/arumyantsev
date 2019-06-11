@@ -11,14 +11,14 @@ import org.quartz.JobExecutionException;
  */
 public class ShedJob implements Job {
 
-    private static final Logger log = LogManager.getLogger(ShedJob.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ShedJob.class.getName());
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String opt = context.getJobDetail().getJobDataMap().getString("conf");
         DataBase db = new DataBase(opt);
         ParserSQLRU prs = new ParserSQLRU();
-        log.info("Last timestamp:" + db.getLastTime());
-        log.info(db.writeDB(prs.loadVac(db.getLastTime())) + " records saved");
+        LOG.info("Last timestamp:" + db.getLastTime());
+        LOG.info(db.writeDB(prs.loadVac(db.getLastTime())) + " records saved");
 
     }
 

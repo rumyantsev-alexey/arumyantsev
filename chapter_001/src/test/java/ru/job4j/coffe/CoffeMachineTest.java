@@ -23,9 +23,9 @@ public class CoffeMachineTest {
         // сумма, закинутая в автомат
         final int value = 50;
         // ожидаемый результат по сдачи
-        final ArrayList<Integer> result = new ArrayList<Integer>(Arrays.asList(10,5,2,1));
+        final ArrayList<Integer> result = new ArrayList<Integer>(Arrays.asList(10, 5, 2, 1));
 
-        CoffeMachine coffe=new CoffeMachine();
+        CoffeMachine coffe = new CoffeMachine();
 
         assertThat(coffe.changes(value, price), is(result));
 
@@ -43,9 +43,9 @@ public class CoffeMachineTest {
         // сумма, закинутая в автомат
         final int value = 20;
         // ожидаемый результат по сдачи
-        final ArrayList<Integer> result = new ArrayList<Integer>(Arrays.asList(10,5,2,1));
+        final ArrayList<Integer> result = new ArrayList<Integer>(Arrays.asList(10, 5, 2, 1));
 
-        CoffeMachine coffe=new CoffeMachine();
+        CoffeMachine coffe = new CoffeMachine();
 
         coffe.changes(value, price);
 
@@ -65,7 +65,7 @@ public class CoffeMachineTest {
         // ожидаемый результат по сдачи
         final ArrayList<Integer> result = new ArrayList<Integer>();
 
-        CoffeMachine coffe=new CoffeMachine();
+        CoffeMachine coffe = new CoffeMachine();
 
         assertThat(coffe.changes(value, price), is(result));
 

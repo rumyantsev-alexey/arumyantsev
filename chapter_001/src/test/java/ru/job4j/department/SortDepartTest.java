@@ -15,7 +15,7 @@ public class SortDepartTest {
     ArrayList<Depart> departs = new ArrayList<>();
     SortDepart sdepart = new SortDepart();
     // список отделов в виде текста
-    String [] departS = {
+    String[] departS = {
             "K1/SK1",
             "K1/SK2",
             "K1/SK1/SSK1",
@@ -27,7 +27,7 @@ public class SortDepartTest {
 
 
     /**
-     * Конвертируем текстовый список в List
+     * Конвертируем текстовый список в list
      */
     @Before
     public void initArray() {

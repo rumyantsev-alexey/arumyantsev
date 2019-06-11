@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class StoreSQL {
     private static String driver;
     private static String url;
-    private static final Logger log = Logger.getLogger(StoreSQL.class.getName());
+    private static final Logger LOG = Logger.getLogger(StoreSQL.class.getName());
 
     /**
      * Конструктор читает свойства, инициализирует драйвера и проверяет наличие таблицы
@@ -27,13 +27,13 @@ public class StoreSQL {
                 url = prt.getProperty("url");
                 Class.forName(driver);
                 try (Connection con = DriverManager.getConnection(url);
-                Statement st = con.createStatement() ) {
+                Statement st = con.createStatement()) {
                     st.execute("create table if not exists entry (field INTEGER );");
                 } catch (SQLException e) {
-                    log.log(Level.WARNING, "SQL error", e);
+                    LOG.log(Level.WARNING, "SQL error", e);
                 }
         } catch (IOException | ClassNotFoundException e) {
-           log.log(Level.WARNING, e.getMessage(), e);
+           LOG.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
@@ -48,13 +48,13 @@ public class StoreSQL {
             stOne.execute("delete from entry;");
             con.setAutoCommit(false);
             for (int i = 0; i < n; i++) {
-                stTwo.setInt(1, i+1);
+                stTwo.setInt(1, i + 1);
                 stTwo.executeUpdate();
             }
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException e) {
-        log.log(Level.WARNING, "SQL error", e);
+        LOG.log(Level.WARNING, "SQL error", e);
         }
     }
 }

@@ -36,25 +36,25 @@ public class TriangleTest {
         assertThat(rsl, closeTo(10, 0.01));
     }
     @Test
-    public void whenSemiPerimetrSetThreeDistance(){
-        double ab=3;
-        double ac=5;
-        double bc=8;
+    public void whenSemiPerimetrSetThreeDistance() {
+        double ab = 3;
+        double ac = 5;
+        double bc = 8;
         // Создаем объект треугольник и в качестве точек передает null.
         // так как нам не требуется их участие.
         Triangle triangle = new Triangle(null, null, null);
 
         //Посчитаем периметр без контроля реальности треугольника
-        double pp=triangle.period(ab,ac,bc);
-        assertThat(pp,closeTo(16D,0.1));
+        double pp = triangle.period(ab, ac, bc);
+        assertThat(pp, closeTo(16D, 0.1));
     }
     @Test
-    public void checkExistTriangle(){
-        double ab=3;
-        double ac=5;
-        double bc=6;
+    public void checkExistTriangle() {
+        double ab = 3;
+        double ac = 5;
+        double bc = 6;
         Triangle triangle = new Triangle(null, null, null);
-        assertThat(triangle.exist(ab,ac,bc), is(true));
+        assertThat(triangle.exist(ab, ac, bc), is(true));
 
     }
 }

@@ -37,12 +37,18 @@ public class Item {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Item item = (Item) o;
 
-        if (subj != null ? !subj.equals(item.subj) : item.subj != null) return false;
+        if (subj != null ? !subj.equals(item.subj) : item.subj != null) {
+            return false;
+        }
         return link != null ? link.equals(item.link) : item.link == null;
     }
 

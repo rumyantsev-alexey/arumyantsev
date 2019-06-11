@@ -14,7 +14,7 @@ public class Stock {
      * @param book название эммитента
      */
     public void  addBook(String book) {
-        if (! glasses.containsKey(book)) {
+        if (!glasses.containsKey(book)) {
             glasses.put(book, new Glass(book));
         }
     }

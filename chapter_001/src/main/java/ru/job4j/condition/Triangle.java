@@ -26,7 +26,7 @@ public class Triangle {
      * @return расстояние между точками left и right.
      */
     public double distance(Point left, Point right) {
-        return Math.sqrt(Math.pow(left.getX()-right.getX(),2)+Math.pow(left.getY()-right.getY(),2));
+        return Math.sqrt(Math.pow(left.getX() - right.getX(), 2) + Math.pow(left.getY() - right.getY(), 2));
     }
 
     /**
@@ -42,7 +42,7 @@ public class Triangle {
      * @return Периметр
      */
     public double period(double ab, double ac, double bc) {
-        return ab+ac+bc;
+        return ab + ac + bc;
     }
 
     /**
@@ -61,11 +61,11 @@ public class Triangle {
         double ab = this.distance(this.a, this.b);
         double ac = this.distance(this.a, this.c);
         double bc = this.distance(this.b, this.c);
-        double p = this.period(ab, ac, bc)/2;
+        double p = this.period(ab, ac, bc) / 2;
         if (this.exist(ab, ac, bc)) {
             // написать формулу для расчета площади треугольника.
             //rsl = ...
-            rsl=Math.sqrt(p*(p-ab)*(p-ac)*(p-bc));
+            rsl = Math.sqrt(p * (p - ab) * (p - ac) * (p - bc));
         }
         return rsl;
     }
@@ -81,6 +81,6 @@ public class Triangle {
      * @return
      */
     public boolean exist(double ab, double ac, double bc) {
-        return (ab<ac+bc)& (ac<ab+bc)&(bc<ac+ab) ? true : false;
+        return (ab < ac + bc) & (ac < ab + bc) & (bc < ac + ab) ? true : false;
     }
 }

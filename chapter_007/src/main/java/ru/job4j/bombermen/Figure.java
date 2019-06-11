@@ -7,14 +7,14 @@ public class Figure {
     // текущие координаты фигуры - не финальные так как могут меняться во время игры
     private Cell curXY;
     // тип фигуры
-    private final Type type ;
+    private final Type type;
 
     /**
      * Конструктор с параметрами
      * @param type тип фигуры
      * @param cell
      */
-    Figure (final Type type, final Cell cell) {
+    Figure(final Type type, final Cell cell) {
         this.type = type;
         this.curXY = cell;
     }

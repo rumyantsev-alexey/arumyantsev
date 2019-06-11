@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class StoreXML {
     private File file;
-    private static final Logger log = Logger.getLogger(StoreSQL.class.getName());
+    private static final Logger LOG = Logger.getLogger(StoreSQL.class.getName());
 
     public StoreXML(File target) {
         file = target;
@@ -36,7 +36,7 @@ public class StoreXML {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.marshal(new Entries(list), file);
         } catch (JAXBException e) {
-            log.log(Level.WARNING, "JAXB error", e);
+            LOG.log(Level.WARNING, "JAXB error", e);
         }
     }
 
@@ -58,10 +58,10 @@ public class StoreXML {
                 result.add(new Entry(rs.getInt("field")));
             }
             } catch (SQLException e) {
-                log.log(Level.WARNING, "SQL error", e);
+                LOG.log(Level.WARNING, "SQL error", e);
             }
         } catch (IOException | ClassNotFoundException e) {
-            log.log(Level.WARNING, e.getMessage(), e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
         }
         return result;
     }

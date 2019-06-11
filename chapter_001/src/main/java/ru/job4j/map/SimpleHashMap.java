@@ -14,7 +14,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
     // начальное количество "корзин"
     private static final int BACKETS_COUNT = 16;
     // хеш таблица
-    private Node<K, V> [] table = new Node [BACKETS_COUNT];
+    private Node<K, V> [] table = new Node[BACKETS_COUNT];
     // количество элементов в хранилище
     private int size = 0;
     // счетчик модификации хранилища
@@ -60,7 +60,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
      * @param newsize новый размер
      */
     public void convertTable(int newsize) {
-        Node<K, V> [] newtable = new Node [newsize];
+        Node<K, V> [] newtable = new Node[newsize];
         for (Node<K, V> node: table) {
             if (node != null) {
                 newtable [convertHash(node.key, newsize)] = node;
@@ -84,8 +84,8 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
             size++;
             result = true;
         }
-        if (size > table.length-2) {
-            realbackets*=2;
+        if (size > table.length - 2) {
+            realbackets *= 2;
             convertTable(realbackets);
         }
         return result;
@@ -107,9 +107,9 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
      * @param key ключ
      * @return успешность удаления
      */
-    public boolean delete(K key){
+    public boolean delete(K key) {
         boolean result = false;
-        if (table[convertHash(key, realbackets)] != null ) {
+        if (table[convertHash(key, realbackets)] != null) {
             table [convertHash(key, realbackets)] = null;
             modCount++;
             size--;
@@ -144,7 +144,7 @@ public class SimpleHashMap<K, V> implements Iterable<K> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                for (int i = last; i < table.length;i++) {
+                for (int i = last; i < table.length; i++) {
                     if (table [i] != null) {
                         result = table [i].key;
                         pointer++;

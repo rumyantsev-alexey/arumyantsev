@@ -12,7 +12,7 @@ public class Hero implements Runnable {
     private final Figure figure;
     private final Board board;
 
-    Hero (final int initX, final int initY, final Board board, final SynchronousQueue<Direction> dir) {
+    Hero(final int initX, final int initY, final Board board, final SynchronousQueue<Direction> dir) {
         figure = new Figure(Type.HERO, new Cell(initX, initY));
         this.board = board;
         this.dir = dir;
@@ -55,14 +55,15 @@ public class Hero implements Runnable {
     private Cell cellDirect(final Cell cell, final Direction direct) {
         Cell result = cell;
         switch (direct) {
-            case UP:    result = new Cell(cell.getX(), cell.getY()-1);
+            case UP:    result = new Cell(cell.getX(), cell.getY() - 1);
                 break;
-            case DOWN:  result = new Cell(cell.getX(), cell.getY()+1);
+            case DOWN:  result = new Cell(cell.getX(), cell.getY() + 1);
                 break;
-            case LEFT:  result = new Cell(cell.getX()-1, cell.getY());
+            case LEFT:  result = new Cell(cell.getX() - 1, cell.getY());
                 break;
-            case RIGHT: result = new Cell(cell.getX()+1, cell.getY());
+            case RIGHT: result = new Cell(cell.getX() + 1, cell.getY());
                 break;
+            default: break;
         }
         return result;
     }

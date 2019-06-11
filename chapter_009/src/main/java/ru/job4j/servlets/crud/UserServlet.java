@@ -53,9 +53,9 @@ public class UserServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action") == null? "--" : req.getParameter("action");
-        String name = req.getParameter("name") == null? "--" : req.getParameter("name");
-        int id = req.getParameter("id") == null? -1 : Integer.parseInt(req.getParameter("id"));
+        String action = req.getParameter("action") == null ? "--" : req.getParameter("action");
+        String name = req.getParameter("name") == null ? "--" : req.getParameter("name");
+        int id = req.getParameter("id") == null ? -1 : Integer.parseInt(req.getParameter("id"));
         try {
             if (action.equals("logout")) {
                 req.getSession().invalidate();

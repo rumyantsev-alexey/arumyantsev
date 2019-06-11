@@ -15,7 +15,7 @@ public class ConvertList {
      * @param list список массивов
      * @return результирующий список
      */
-    public static List<Integer> Convert ( final List<int[]> list) {
+    public static List<Integer> convert(final List<int[]> list) {
         List<Integer> result = new ArrayList<>();
         for (int[] array: list) {
             for (int i = 0; i < array.length; i++) {
@@ -30,9 +30,9 @@ public class ConvertList {
      * @param array 2д массив
      * @return полученный список
      */
-    public static List<Integer> toList (final int[][] array) {
+    public static List<Integer> toList(final int[][] array) {
         // создаем список
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         // перебераем элементы массива
         for (int[] i: array) {
             for (int j: i) {
@@ -48,7 +48,7 @@ public class ConvertList {
      * @param rows количество строк в массиве
      * @return поученный массив
      */
-    public static int[][] toArray (final List<Integer> list, final int rows) {
+    public static int[][] toArray(final List<Integer> list, final int rows) {
         // расчитываем размеры массива
         // количество строк
         final int sizer = rows;

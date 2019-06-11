@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * Класс реализующий бинарное дерево поиска
  * @param <E> класс, объекты которого можно сравнивать друг с другом
  */
-public class BiTree <E extends Comparable<E>> implements Iterable<E> {
+public class BiTree<E extends Comparable<E>> implements Iterable<E> {
     private Node<E> root = null;
     private int modCount = 0;
 
@@ -82,10 +82,10 @@ public class BiTree <E extends Comparable<E>> implements Iterable<E> {
      */
     private boolean hasValue(Node<E> node, E value) {
         boolean result = true;
-        if (node != null && value.compareTo(node.value) != 0 ) {
+        if (node != null && value.compareTo(node.value) != 0) {
             result = value.compareTo(node.value) > 0 ? hasValue(node.right, value) : hasValue(node.left, value);
         }
-        return node == null? false : result;
+        return node == null ? false : result;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class BiTree <E extends Comparable<E>> implements Iterable<E> {
 
             @Override
             public E next() {
-                if (! hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 return data.get(position++);

@@ -1,4 +1,4 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -15,13 +15,13 @@ import java.util.NoSuchElementException;
 public class DynArray<E> implements Iterable<E> {
     @GuardedBy("this")
     // массив данных
-    private Object[] container = new Object [10];
+    private Object[] container = new Object[10];
     // кол-во внесенных данных
     private int count = 0;
     // счетчик изменений контейнера
     private int modCount = 0;
 
-    public DynArray () {
+    public DynArray() {
     }
 
     /**
@@ -29,7 +29,7 @@ public class DynArray<E> implements Iterable<E> {
      * @param size размер
      */
     public DynArray(int size) {
-        container = new Object [size];
+        container = new Object[size];
     }
 
     /**
@@ -46,9 +46,9 @@ public class DynArray<E> implements Iterable<E> {
      * @param obj объект для добавления
      */
     public synchronized void add(E obj) {
-        if ( count == this.container.length ) {
-            Object [] temp = new Object[container.length*2+1];
-            System.arraycopy(container,0,temp,0,count);
+        if (count == this.container.length) {
+            Object[] temp = new Object[container.length * 2 + 1];
+            System.arraycopy(container, 0, temp, 0, count);
             container = temp;
         }
         this.container[count++] = obj;
@@ -62,7 +62,7 @@ public class DynArray<E> implements Iterable<E> {
      * @return объект типа E
      */
     public E get(int index) {
-        if ( index < count) {
+        if (index < count) {
             return (E) this.container[index];
         } else {
             throw new IndexOutOfBoundsException();

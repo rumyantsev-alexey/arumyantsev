@@ -12,7 +12,7 @@ public class BoardTest {
     public void whenPaintBoardWithWidthThreeAndHeightThreeThenStringWithThreeColsAndThreeRows() {
         Board board = new Board();
         String result = board.paint(3, 3);
-        String expected = "X X"+line+" X "+line+"X X"+line;
+        String expected = "X X" + line + " X " + line + "X X" + line;
         assertThat(result, is(expected));
     }
 
@@ -20,7 +20,7 @@ public class BoardTest {
     public void whenPaintBoardWithWidthFiveAndHeightFourThenStringWithFiveColsAndFourRows() {
         Board board = new Board();
         String result = board.paint(5, 4);
-        String expected = "X X X"+line+" X X "+line+"X X X"+line+" X X "+line;
+        String expected = "X X X" + line + " X X " + line + "X X X" + line + " X X " + line;
         assertThat(result, is(expected));
 
     }

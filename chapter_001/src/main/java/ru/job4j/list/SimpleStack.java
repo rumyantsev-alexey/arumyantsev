@@ -1,4 +1,4 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 import java.util.NoSuchElementException;
 
@@ -27,7 +27,7 @@ public class SimpleStack<T> {
         if (stack.size() > 0) {
             T result = stack.getLastNode().data;
             stack.setLastNode(stack.getLastNode().left);
-            stack.setSize(stack.size()-1);
+            stack.setSize(stack.size() - 1);
             return result;
         } else {
             throw new NoSuchElementException();

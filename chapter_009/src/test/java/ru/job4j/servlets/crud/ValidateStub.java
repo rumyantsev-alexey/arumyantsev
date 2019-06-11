@@ -26,14 +26,14 @@ public class ValidateStub extends ValidateService {
     }
 
     @Override
-    public boolean addFull(String name, String login, String pass, String email, Integer role_id, Integer city_id) {
+    public boolean addFull(String name, String login, String pass, String email, Integer roleid, Integer cityid) {
         User user = new User();
         user.setId(this.ids++);
         user.setName(name);
         user.setLogin(login);
         user.setPass(pass);
         user.setEmail(email);
-        user.setRole_id(role_id);
+        user.setRoleid(roleid);
         this.store.put(user.getId(), user);
         return true;
     }

@@ -23,13 +23,13 @@ public class SimpleArrayTest {
         assertThat(simple.size(), is(4));
         simple.add("five");
         assertThat(simple.get(1), is("second"));
-        simple.set(3,"four");
+        simple.set(3, "four");
         assertThat(simple.get(3), is("four"));
         simple.add("six");
         assertThat(simple.get(5), is("six"));
         simple.delete(1);
         assertThat(simple.get(1), is("third"));
-        assertThat(simpleiter.next(),is("first"));
+        assertThat(simpleiter.next(), is("first"));
         assertThat(simpleiter.hasNext(), is(true));
     }
 
@@ -47,13 +47,13 @@ public class SimpleArrayTest {
         assertThat(simple.size(), is(4));
         simple.add(5);
         assertThat(simple.get(1), is(2));
-        simple.set(3,4);
+        simple.set(3, 4);
         assertThat(simple.get(3), is(4));
         simple.add(6);
         assertThat(simple.get(5), is(6));
         simple.delete(1);
         assertThat(simple.get(1), is(3));
-        assertThat(simpleiter.next(),is(1));
+        assertThat(simpleiter.next(), is(1));
         assertThat(simpleiter.hasNext(), is(true));
     }
 

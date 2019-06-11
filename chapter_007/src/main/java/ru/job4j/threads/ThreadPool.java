@@ -38,7 +38,7 @@ public class ThreadPool {
     // инициализация пула пустыми потоками
     {
         for (int i = 0; i < MAXPROC; i++) {
-            workPool.add(new Work( new Thread() {
+            workPool.add(new Work(new Thread() {
                 @Override
                 public void run() {
                 }
@@ -51,7 +51,7 @@ public class ThreadPool {
      */
     class Work {
         private Thread work;
-        Work (Thread w) {
+        Work(Thread w) {
             work = w;
         }
     }
@@ -98,7 +98,7 @@ public class ThreadPool {
      * @return истина если нет работающих потоков
      */
     public boolean isEmpty() {
-        return workPool.stream().anyMatch( s -> !s.work.isAlive());
+        return workPool.stream().anyMatch(s -> !s.work.isAlive());
     }
 
     /**

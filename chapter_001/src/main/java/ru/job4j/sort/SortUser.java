@@ -12,7 +12,7 @@ public class SortUser {
      * @param users список пользователей
      * @return отсортированное множество
      */
-    public static TreeSet<User> sort (final List<User> users) {
+    public static TreeSet<User> sort(final List<User> users) {
         return new TreeSet<User>(users);
     }
 
@@ -21,7 +21,7 @@ public class SortUser {
      * @param users список пользователей
      * @return отсортированный по длине имени список
      */
-    public static List<User> sortNameLength (final List<User> users) {
+    public static List<User> sortNameLength(final List<User> users) {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
@@ -37,7 +37,7 @@ public class SortUser {
      * @param users список пользователей
      * @return отсортированный список
      */
-    public static List<User> sortByAllFields (final List<User> users) {
+    public static List<User> sortByAllFields(final List<User> users) {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {

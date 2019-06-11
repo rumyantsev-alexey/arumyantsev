@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 public class SimpleArray<T> implements Iterable<T> {
 
     // массив данных
-    private Object [] array;
+    private Object[] array;
     // кол-во внесенных данных
     private int count = 0;
 
@@ -18,8 +18,8 @@ public class SimpleArray<T> implements Iterable<T> {
      * Конструктор с начальным размером хранилища
      * @param size размер
      */
-    public SimpleArray (int size) {
-        this.array = new Object [size];
+    public SimpleArray(int size) {
+        this.array = new Object[size];
     }
 
     /**
@@ -36,9 +36,9 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param model объект для добавления
      */
     public void add(T model) {
-        if ( count == this.array.length ) {
-            Object [] temp = new Object[array.length*2+1];
-            System.arraycopy(array,0,temp,0,count);
+        if (count == this.array.length) {
+            Object[] temp = new Object[array.length * 2 + 1];
+            System.arraycopy(array, 0, temp, 0, count);
             array = temp;
         }
         this.array[count++] = model;
@@ -51,7 +51,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param model новый объект
      */
     public void set(int index, T model) {
-        if ( index < count) {
+        if (index < count) {
             this.array[index] = model;
         } else {
             throw new IndexOutOfBoundsException();
@@ -64,8 +64,8 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param index индекс хранения
      */
     public void delete(int index) {
-        if ( index < count) {
-                System.arraycopy(array,index+1,array,index,count-index-1);
+        if (index < count) {
+                System.arraycopy(array, index + 1, array, index, count - index - 1);
                 count--;
         } else {
             throw new IndexOutOfBoundsException();
@@ -80,7 +80,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @return объект типа T
      */
     public T get(int index) {
-        if ( index < count) {
+        if (index < count) {
             return (T) this.array[index];
         } else {
             throw new IndexOutOfBoundsException();
@@ -102,7 +102,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
             @Override
             public T next() {
-                if (! hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 return (T) array[pointer++];

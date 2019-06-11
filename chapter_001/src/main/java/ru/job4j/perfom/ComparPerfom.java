@@ -17,7 +17,7 @@ public class ComparPerfom {
     private static final int RANDOM_STRING_COUNT = 100000;
 
     // тестовый массив
-    private static  final String[] VALUES = new String [RANDOM_STRING_COUNT];
+    private static  final String[] VALUES = new String[RANDOM_STRING_COUNT];
 
     // заполняем тестовый массив случайными строками
     static {
@@ -66,7 +66,7 @@ public class ComparPerfom {
      * @throws NullPointerException передана пустая ссылка на коллекцию
      * @throws NoValidAmountException количество элементов меньше 1 или больше количества значений в тестовом массиве
      */
-    public static long delete (final Collection<String> collection, final int amount) throws NullPointerException, NoValidAmountException {
+    public static long delete(final Collection<String> collection, final int amount) throws NullPointerException, NoValidAmountException {
         long start = System.currentTimeMillis();
         if (amount < 1 || amount > RANDOM_STRING_COUNT) {
             throw new NoValidAmountException();
@@ -77,7 +77,7 @@ public class ComparPerfom {
         return System.currentTimeMillis() - start;
     }
 
-    public static void main(final String args[] ) throws NullPointerException, NoValidAmountException {
+    public static void main(final String[] args) throws NullPointerException, NoValidAmountException {
 
         ArrayList<String> arlist = new ArrayList<>();
         LinkedList<String> lilist = new LinkedList<>();

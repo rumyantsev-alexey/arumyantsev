@@ -20,16 +20,16 @@ public class BankTest {
      * Метод, заплняющий тестовое хранилище данными для тестов
      */
     public void setUp() throws NoSuchUserException, AlreadyThereSuchUserException {
-        bank.addUser(new User("vasja","ac 576435"));
-        bank.addUser(new User("petya","as 234565"));
-        bank.addUser(new User("ivan","tr 533476"));
-        bank.addUser(new User("dima","bv 654365"));
-        bank.addAccountToUser("as 234565", new Account("qaz876654322",23465.65d));
-        bank.addAccountToUser("bv 654365", new Account("tre876675552",465.74d));
-        bank.addAccountToUser("tr 533476", new Account("fds453654322",234.43d));
-        bank.addAccountToUser("bv 654365", new Account("jhg876677000",4465.76d));
-        bank.addAccountToUser("as 234565", new Account("ytr654654322",123465.11d));
-        bank.addAccountToUser("bv 654365", new Account("nbv876632332",4659.76d));
+        bank.addUser(new User("vasja", "ac 576435"));
+        bank.addUser(new User("petya", "as 234565"));
+        bank.addUser(new User("ivan", "tr 533476"));
+        bank.addUser(new User("dima", "bv 654365"));
+        bank.addAccountToUser("as 234565", new Account("qaz876654322", 23465.65d));
+        bank.addAccountToUser("bv 654365", new Account("tre876675552", 465.74d));
+        bank.addAccountToUser("tr 533476", new Account("fds453654322", 234.43d));
+        bank.addAccountToUser("bv 654365", new Account("jhg876677000", 4465.76d));
+        bank.addAccountToUser("as 234565", new Account("ytr654654322", 123465.11d));
+        bank.addAccountToUser("bv 654365", new Account("nbv876632332", 4659.76d));
 
     }
 
@@ -39,8 +39,8 @@ public class BankTest {
      * Добавляем клиента и проверяем появился ли он в хранилище
      */
     public void addUser() throws AlreadyThereSuchUserException {
-        bank.addUser(new User("igor","fd 998765"));
-        assertThat(bank.getUsers().containsKey(new User("igor","fd 998765")), is(true));
+        bank.addUser(new User("igor", "fd 998765"));
+        assertThat(bank.getUsers().containsKey(new User("igor", "fd 998765")), is(true));
     }
 
     @Test
@@ -48,9 +48,9 @@ public class BankTest {
      * Тест метода deleteUser()
      * Удаляет клиента и проверяем остался ли он в хранилище
      */
-    public void deleteUser() throws NoSuchUserException{
-        bank.deleteUser (new User("ivan","tr 533476"));
-        assertThat(bank.getUsers().containsKey(new User("ivan","tr 533476")), is(false));
+    public void deleteUser() throws NoSuchUserException {
+        bank.deleteUser(new User("ivan", "tr 533476"));
+        assertThat(bank.getUsers().containsKey(new User("ivan", "tr 533476")), is(false));
     }
 
     @Test
@@ -58,10 +58,10 @@ public class BankTest {
      * Тест метода addAccountToUser()
      * Добавляем счета клиента и проверяем появился ли один из них в хранилище
      */
-    public void addAccountToUser() throws NoSuchUserException{
-        bank.addAccountToUser("ac 576435", new Account("qaz876654311",65.65d));
-        bank.addAccountToUser("ac 576435", new Account("tre873237332",465.65d));
-        assertThat(bank.getUsers().get(new User("vasja","ac 576435")).contains(new Account("qaz876654311",65.65d)), is(true));
+    public void addAccountToUser() throws NoSuchUserException {
+        bank.addAccountToUser("ac 576435", new Account("qaz876654311", 65.65d));
+        bank.addAccountToUser("ac 576435", new Account("tre873237332", 465.65d));
+        assertThat(bank.getUsers().get(new User("vasja", "ac 576435")).contains(new Account("qaz876654311", 65.65d)), is(true));
     }
 
     @Test
@@ -69,9 +69,9 @@ public class BankTest {
      * Тест метода deleteAccountFromUser()
      * Удаляем счет клиента и проверяем остался ли он в хранилище
      */
-    public void deleteAccountFromUser() throws NoSuchUserException, NoSuchAccountException{
-        bank.deleteAccountFromUser("bv 654365", new Account("jhg876677000",4465.76d));
-        assertThat(bank.getUsers().get(new User("dima","bv 654365")).contains(new Account("jhg876677000",4465.76d)), is(false));
+    public void deleteAccountFromUser() throws NoSuchUserException, NoSuchAccountException {
+        bank.deleteAccountFromUser("bv 654365", new Account("jhg876677000", 4465.76d));
+        assertThat(bank.getUsers().get(new User("dima", "bv 654365")).contains(new Account("jhg876677000", 4465.76d)), is(false));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class BankTest {
      * Получаем список счетов клиента и проверяем есть ли в нем конкретный счет
      */
     public void getUserAccounts() throws NoSuchUserException {
-        assertThat(bank.getUserAccounts("bv 654365").contains(new Account("nbv876632332",4659.76d)), is(true));
+        assertThat(bank.getUserAccounts("bv 654365").contains(new Account("nbv876632332", 4659.76d)), is(true));
     }
 
     @Test
@@ -92,12 +92,12 @@ public class BankTest {
         boolean result;
         Account src;
         Account dst;
-        bank.addAccountToUser("as 234565", new Account("ytr657781322",123.11d));
-        bank.addAccountToUser("bv 654365", new Account("nbv876777332",46.76d));
+        bank.addAccountToUser("as 234565", new Account("ytr657781322", 123.11d));
+        bank.addAccountToUser("bv 654365", new Account("nbv876777332", 46.76d));
         src = bank.findAccountByRequisite("ytr657781322");
         dst = bank.findAccountByRequisite("nbv876777332");
-        result = bank.transferMoney("as 234565","ytr657781322","bv 654365","nbv876777332",100);
-        assertThat(result && src.getValue()<24 && dst.getValue()>146, is(true));
+        result = bank.transferMoney("as 234565", "ytr657781322", "bv 654365", "nbv876777332", 100);
+        assertThat(result && src.getValue() < 24 && dst.getValue() > 146, is(true));
     }
 
 }

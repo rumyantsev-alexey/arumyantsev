@@ -15,14 +15,14 @@ public class Lock {
      */
     public void lock() {
         while (lock && !Thread.currentThread().equals(lockThread)) {
-            System.out.println(String.format("Thread %s blocking..",Thread.currentThread().getName()));
+            System.out.println(String.format("Thread %s blocking..", Thread.currentThread().getName()));
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(String.format("Thread %s is lock",Thread.currentThread().getName()));
+        System.out.println(String.format("Thread %s is lock", Thread.currentThread().getName()));
         lock = true;
         lockThread = Thread.currentThread();
     }
@@ -32,7 +32,7 @@ public class Lock {
      */
     public void unlock() {
         if (Thread.currentThread().equals(lockThread)) {
-            System.out.println(String.format("Thread %s is unlock..",Thread.currentThread().getName()));
+            System.out.println(String.format("Thread %s is unlock..", Thread.currentThread().getName()));
             lock = false;
             lockThread = null;
         }

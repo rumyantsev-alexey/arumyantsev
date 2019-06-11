@@ -22,7 +22,7 @@ public class Tracker implements AutoCloseable {
     private static String pathsql;
     private static Properties prt = new Properties();
     private Connection con = null;
-    private static final Logger log = Logger.getLogger(Tracker.class.getName());
+    private static final Logger LOG = Logger.getLogger(Tracker.class.getName());
 
     @Override
     public void close() throws Exception {
@@ -50,13 +50,13 @@ public class Tracker implements AutoCloseable {
             tracker.con.close();
             result = true;
         } catch (SQLException e) {
-            log.log(Level.WARNING, "DB connection error:", e);
+            LOG.log(Level.WARNING, "DB connection error:", e);
         } catch (ClassNotFoundException e) {
-            log.log(Level.WARNING, "DB drivers error:", e);
+            LOG.log(Level.WARNING, "DB drivers error:", e);
         } catch (FileNotFoundException e) {
-            log.log(Level.WARNING, "Property file not found:", e);
+            LOG.log(Level.WARNING, "Property file not found:", e);
         } catch (IOException e) {
-            log.log(Level.WARNING, "Property file error:", e);
+            LOG.log(Level.WARNING, "Property file error:", e);
         }
         return result ? tracker : null;
     }
@@ -86,7 +86,7 @@ public class Tracker implements AutoCloseable {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Check DB error:", e);
+            LOG.log(Level.WARNING, "Check DB error:", e);
         }
         return result;
     }
@@ -102,7 +102,7 @@ public class Tracker implements AutoCloseable {
             st.execute("CREATE DATABASE " + db + ";");
             result = true;
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Create DB error:", e);
+            LOG.log(Level.WARNING, "Create DB error:", e);
         }
         return result;
     }
@@ -116,7 +116,7 @@ public class Tracker implements AutoCloseable {
              Statement st = con.createStatement()) {
             st.execute("delete from item;");
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Delete table error:", e);
+            LOG.log(Level.WARNING, "Delete table error:", e);
         }
     }
 
@@ -139,10 +139,10 @@ public class Tracker implements AutoCloseable {
                 }
                 result = true;
             } catch (SQLException e) {
-                log.log(Level.WARNING, "Create table SQL create script error:", e);
+                LOG.log(Level.WARNING, "Create table SQL create script error:", e);
             }
         } catch (IOException e) {
-            log.log(Level.WARNING, "Read SQL create script error:", e);
+            LOG.log(Level.WARNING, "Read SQL create script error:", e);
         }
         return result;
     }
@@ -162,7 +162,7 @@ public class Tracker implements AutoCloseable {
             st.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Add record in DB error:", e);
+            LOG.log(Level.WARNING, "Add record in DB error:", e);
         }
         return result;
     }
@@ -182,7 +182,7 @@ public class Tracker implements AutoCloseable {
             st.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Update record in DB error:", e);
+            LOG.log(Level.WARNING, "Update record in DB error:", e);
         }
         return result;
     }
@@ -199,7 +199,7 @@ public class Tracker implements AutoCloseable {
             st.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.log(Level.WARNING, "Delete record in DB error:", e);
+            LOG.log(Level.WARNING, "Delete record in DB error:", e);
         }
         return result;
     }
@@ -222,7 +222,7 @@ public class Tracker implements AutoCloseable {
                 result.add(item);
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING,"findAll DB error:", e);
+            LOG.log(Level.WARNING, "findAll DB error:", e);
         }
         return result;
     }
@@ -248,7 +248,7 @@ public class Tracker implements AutoCloseable {
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "findByName DB error:", e);
+            LOG.log(Level.WARNING, "findByName DB error:", e);
         }
         return result;
     }
@@ -272,7 +272,7 @@ public class Tracker implements AutoCloseable {
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "findById DB error:", e);
+            LOG.log(Level.WARNING, "findById DB error:", e);
         }
         return item;
     }

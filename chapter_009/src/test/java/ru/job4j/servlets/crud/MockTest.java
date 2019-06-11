@@ -6,8 +6,6 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,16 +16,18 @@ import java.sql.Timestamp;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(ValidateService.class)
 /**
  * Класс реализует тесты сервлетов с помощью mocks
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ValidateService.class)
 public class MockTest {
-    ValidateService validate = new ValidateStub();
-    HttpServletRequestSub req = new HttpServletRequestSub(mock(HttpServletRequest.class));
-    HttpServletResponse resp = mock(HttpServletResponse.class);
+    public ValidateService validate = new ValidateStub();
+    public HttpServletRequestSub req = new HttpServletRequestSub(mock(HttpServletRequest.class));
+    public HttpServletResponse resp = mock(HttpServletResponse.class);
 
     @Before
     public void initServletTest() {

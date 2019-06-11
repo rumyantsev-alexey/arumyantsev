@@ -14,7 +14,7 @@ import javax.xml.transform.stream.StreamResult;
  * Класс конвертирует один xml в другой с помощью шаблона
  */
 public class ConvertXSQT {
-    private static final Logger log = Logger.getLogger(StoreSQL.class.getName());
+    private static final Logger LOG = Logger.getLogger(StoreSQL.class.getName());
 
     /**
      * Метод конвертирует один xml в другой с помощью шаблона
@@ -29,7 +29,7 @@ public class ConvertXSQT {
             transformer = factory.newTransformer(new StreamSource(scheme));
             transformer.transform(new StreamSource(source), new StreamResult(dest));
         } catch (TransformerException e) {
-            log.log(Level.WARNING, "XSLT error", e);
+            LOG.log(Level.WARNING, "XSLT error", e);
         }
     }
 

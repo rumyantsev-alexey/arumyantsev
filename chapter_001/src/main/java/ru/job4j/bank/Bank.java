@@ -138,7 +138,7 @@ public class Bank {
      */
     private User findUserByRequisite(final String requisite) throws NoSuchUserException {
         User result = new User();
-        boolean exit=false;
+        boolean exit = false;
         for (User key: users.keySet()) {
             if (exit) {
                 break;
@@ -165,7 +165,7 @@ public class Bank {
      */
     public Account findAccountByRequisite(final String requisite) throws NoSuchAccountException {
         Account result = new Account();
-        boolean exit=false;
+        boolean exit = false;
         for (User key: users.keySet()) {
             if (exit) {
                 break;
@@ -173,7 +173,7 @@ public class Bank {
             for (Account acc: users.get(key)) {
                 if (acc.getRequisites().equals(requisite)) {
                     result = acc;
-                    exit=true;
+                    exit = true;
                     break;
                 }
             }

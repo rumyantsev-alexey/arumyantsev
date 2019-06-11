@@ -1,6 +1,6 @@
 package ru.job4j.set;
 
-import ru.job4j.List.DynArray;
+import ru.job4j.list.DynArray;
 import java.util.Iterator;
 
 /**
@@ -22,7 +22,7 @@ public class SimpleSet<E> implements Iterable<E> {
                 break;
             }
         }
-        if (! result) {
+        if (!result) {
             inner.add(value);
         }
     }

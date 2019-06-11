@@ -10,7 +10,7 @@ public class UserConvert {
      * @param list список Пользователей
      * @return результирующий меп
      */
-    public static HashMap<Integer, User> Process(List<User> list) {
+    public static HashMap<Integer, User> process(List<User> list) {
         HashMap<Integer, User> result = new HashMap<>();
         for (User user:list) {
             result.put(user.getId(), user);

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Класс реализует игру Bombermen
  */
-public class Bombermen implements Runnable{
+public class Bombermen implements Runnable {
     private final int sizeX;
     private final int sizeY;
     private final Board board;
@@ -23,7 +23,7 @@ public class Bombermen implements Runnable{
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.board = new Board(sizeX, sizeY, countWall);
-        this.hero = new Hero( 0, 0, this.board, dir);
+        this.hero = new Hero(0, 0, this.board, dir);
     }
 
     /**
@@ -43,7 +43,7 @@ public class Bombermen implements Runnable{
         // 10 раз двигаем героя
         for (int i = 0; i < 10; i++) {
             try {
-                System.out.println(String.format("Step # %s", i+1));
+                System.out.println(String.format("Step # %s", i + 1));
                 dir.put(getDirect());
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -66,6 +66,6 @@ public class Bombermen implements Runnable{
      */
     private Direction getDirect() {
         Random rn = new Random();
-        return Direction.values()[rn.nextInt(4)+1];
+        return Direction.values()[rn.nextInt(4) + 1];
     }
 }

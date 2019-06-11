@@ -9,7 +9,7 @@ public class User extends Base  {
      *  Конструктор с параметром
      * @param id параметр
      */
-    User (final String id) {
+    User(final String id) {
         super(id);
     }
 

@@ -14,9 +14,9 @@ public class  MaxTest {
     }
 
     @Test
-    public void whenThreeMoreFirstAndSecond(){
-        Max maxim=new Max();
-        int result=maxim.max3(5,7,9);
+    public void whenThreeMoreFirstAndSecond() {
+        Max maxim = new Max();
+        int result = maxim.max3(5, 7, 9);
         assertThat(result, is(9));
     }
 

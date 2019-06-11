@@ -39,7 +39,7 @@ public class UServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         Answ ans = mapper.readValue(jsonData, Answ.class);
         resp.setContentType("text/plain");
-        resp.setCharacterEncoding( "UTF-8" );
+        resp.setCharacterEncoding("UTF-8");
         switch (ans.type) {
             case ("city"):
                 out.print(ValidateService.getInstance().cityByCityId(Integer.parseInt(ans.data)));
@@ -51,12 +51,13 @@ public class UServlet extends HttpServlet {
                 out.print("<label class=\"control-label col-sm-2\" for=\"country\">Cites</label>");
                 out.print("<div class=\"col-sm-10\">");
                 out.print("<select id=\"country\" class=\"form-control\" onchange=\"printCites();\">");
-                for(String cit: ValidateService.getInstance().findAllCityByCountry(ans.data) ) {
+                for (String cit: ValidateService.getInstance().findAllCityByCountry(ans.data)) {
                     out.print("<option value=\"" + cit + "\">" + cit + "</option>");
                 }
                 out.print("</select>");
                 out.print("</div>");
                 break;
+            default: break;
         }
     }
 }

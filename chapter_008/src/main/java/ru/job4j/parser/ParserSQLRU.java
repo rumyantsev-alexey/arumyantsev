@@ -21,7 +21,7 @@ import org.jsoup.select.Elements;
  */
 public class ParserSQLRU {
 
-    private static final Logger log = LogManager.getLogger(ParserSQLRU.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ParserSQLRU.class.getName());
     private final SimpleDateFormat format = new SimpleDateFormat("d MMM yy, HH:mm", new Locale("ru", "RU"));
 
     /**
@@ -47,7 +47,7 @@ public class ParserSQLRU {
                     }
                }
             } catch (IOException e) {
-                log.error("IO error:", e);
+                LOG.error("IO error:", e);
             }
         }
         return result;
@@ -85,7 +85,7 @@ public class ParserSQLRU {
             try {
                 calendar.setTime(format.parse(date));
             } catch (ParseException e) {
-                log.error("IO error", e);
+                LOG.error("IO error", e);
             }
         }
         return new Timestamp(calendar.getTimeInMillis());

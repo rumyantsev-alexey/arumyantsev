@@ -17,7 +17,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
      * Конструктор, создающий корень дерева
      * @param root значение корня
      */
-    public Tree( E root) {
+    public Tree(E root) {
         this.root = new Node<>(root);
     }
 
@@ -81,7 +81,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
      */
     public boolean add(E parent, E child) {
         boolean result = false;
-        if (findBy(parent).isPresent() && ! findBy(child).isPresent()) {
+        if (findBy(parent).isPresent() && !findBy(child).isPresent()) {
             findBy(parent).get().add(new Node(child));
             modCount++;
             result = true;
@@ -147,7 +147,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>  {
 
             @Override
             public E next() {
-                if (! hasNext()) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 return data.get(position++);

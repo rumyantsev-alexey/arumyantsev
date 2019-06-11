@@ -1,12 +1,10 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
 /**
  * Тест для проверки метода проверки цикличности списка

@@ -20,7 +20,7 @@ public class UserStorage {
      * @param user пользователь
      * @return успех операции
      */
-    public synchronized boolean add (User user) {
+    public synchronized boolean add(User user) {
         return users.add(user);
     }
 
@@ -71,7 +71,7 @@ public class UserStorage {
         boolean result = false;
         Optional<User> userA = findById(fromId);
         Optional<User> userB = findById(toId);
-        if (userA.isPresent() && userB.isPresent() && userA.get().getAmount() - amount >= 0 ) {
+        if (userA.isPresent() && userB.isPresent() && userA.get().getAmount() - amount >= 0) {
             userA.get().setAmount(userA.get().getAmount() - amount);
             userB.get().setAmount(userB.get().getAmount() + amount);
             result = true;

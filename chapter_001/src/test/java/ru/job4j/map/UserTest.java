@@ -12,10 +12,10 @@ public class UserTest {
 
     @Test
     public void testMap() {
-        Object DUMMY = new Object();
-        Map<User,Object> map = new HashMap<>();
-        map.put(new User("Alex",0,new GregorianCalendar(1975,2,15)), DUMMY);
-        map.put(new User("Alex",0,new GregorianCalendar(1975,2,15)), DUMMY);
+        Object dummy = new Object();
+        Map<User, Object> map = new HashMap<>();
+        map.put(new User("Alex", 0, new GregorianCalendar(1975, 2, 15)), dummy);
+        map.put(new User("Alex", 0, new GregorianCalendar(1975, 2, 15)), dummy);
         System.out.println(map);
     }
 

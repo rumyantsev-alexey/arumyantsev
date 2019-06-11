@@ -7,7 +7,7 @@ public class Cell {
     private final int x;
     private final int y;
 
-    Cell (int x, int y) {
+    Cell(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -22,20 +22,23 @@ public class Cell {
 
     @Override
     public String toString() {
-        return "Cell{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "Cell{" + "x=" + x + ", y=" + y + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Cell cell = (Cell) o;
 
-        if (x != cell.x) return false;
+        if (x != cell.x) {
+            return false;
+        }
         return y == cell.y;
     }
 

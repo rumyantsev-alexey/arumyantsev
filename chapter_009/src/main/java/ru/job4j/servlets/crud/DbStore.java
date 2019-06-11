@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class DbStore implements Store<User> {
     private static final BasicDataSource SOURCE = new BasicDataSource();
     private static final DbStore INSTANCE = new DbStore();
-    private static final Logger log = Logger.getLogger(DbStore.class.getName());
+    private static final Logger LOG = Logger.getLogger(DbStore.class.getName());
 
     /**
      * Конструктор с инициализаций DB
@@ -33,17 +33,17 @@ public class DbStore implements Store<User> {
         try (Connection con = SOURCE.getConnection();
              Statement st = con.createStatement()) {
             st.execute("create table if not exists country (id serial PRIMARY KEY, name VARCHAR );");
-            st.execute("create table if not exists city (id serial PRIMARY KEY, name VARCHAR, " +
-                    "country_id integer REFERENCES country (id) );");
+            st.execute("create table if not exists city (id serial PRIMARY KEY, name VARCHAR, "
+                            + "country_id integer REFERENCES country (id) );");
             st.execute("create table if not exists role (id serial PRIMARY KEY, name VARCHAR );");
             st.execute("create table if not exists pages (id serial PRIMARY KEY, name VARCHAR );");
-            st.execute("create table if not exists rights (role_id integer REFERENCES role (id)," +
-                    "pages_id integer REFERENCES pages (id) , UNIQUE (role_id, pages_id));");
-            st.execute("create table if not exists users (id INTEGER PRIMARY KEY ," +
-                    "name VARCHAR , login VARCHAR , pass VARCHAR, email VARCHAR , createDate TIMESTAMP," +
-                    "role_id integer REFERENCES role (id), city_id integer REFERENCES city (id) );");
+            st.execute("create table if not exists rights (role_id integer REFERENCES role (id),"
+                            + "pages_id integer REFERENCES pages (id) , UNIQUE (role_id, pages_id));");
+            st.execute("create table if not exists users (id INTEGER PRIMARY KEY ,"
+                            + "name VARCHAR , login VARCHAR , pass VARCHAR, email VARCHAR , createDate TIMESTAMP,"
+                            + "role_id integer REFERENCES role (id), city_id integer REFERENCES city (id) );");
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
     }
 
@@ -60,21 +60,21 @@ public class DbStore implements Store<User> {
     public boolean add(User model) {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, pass, email, createDate, role_id, city_id)" +
-                     "values (?,?,?,?,?,?,?,?)")) {
+             PreparedStatement st = connection.prepareStatement("insert into users (id, name, login, pass, email, createDate, role_id, city_id)"
+                                                                    + "values (?,?,?,?,?,?,?,?)")) {
             st.setInt(1, model.getId());
             st.setString(2, model.getName());
             st.setString(3, model.getLogin());
             st.setString(4, model.getPass());
             st.setString(5, model.getEmail());
             st.setTimestamp(6, model.getRes());
-            st.setInt(7, model.getRole_id());
-            st.setInt(8, model.getCity_id());
+            st.setInt(7, model.getRoleid());
+            st.setInt(8, model.getCityid());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -93,14 +93,14 @@ public class DbStore implements Store<User> {
             st.setString(1, model.getName());
             st.setString(2, model.getLogin());
             st.setString(3, model.getEmail());
-            st.setInt(4, model.getRole_id());
+            st.setInt(4, model.getRoleid());
             st.setString(5, model.getPass());
-            st.setInt(6, model.getCity_id());
+            st.setInt(6, model.getCityid());
             if (st.executeUpdate() > 0) {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -120,7 +120,7 @@ public class DbStore implements Store<User> {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -141,13 +141,13 @@ public class DbStore implements Store<User> {
                 user.setName(rst.getString(2));
                 user.setLogin(rst.getString(3));
                 user.setEmail(rst.getString(4));
-                user.setRole_id(rst.getInt(5));
+                user.setRoleid(rst.getInt(5));
                 user.setRes(rst.getTimestamp(6));
-                user.setCity_id(rst.getInt(7));
+                user.setCityid(rst.getInt(7));
                 result.add(user);
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -161,7 +161,7 @@ public class DbStore implements Store<User> {
     public User findById(int id) {
         User user = new User();
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select id,name,login,email,role_id,createdate, pass, city_id from users where id = ?")){
+             PreparedStatement st = con.prepareStatement("select id,name,login,email,role_id,createdate, pass, city_id from users where id = ?")) {
             st.setInt(1, id);
              try (ResultSet rst = st.executeQuery()) {
                  if (rst.next()) {
@@ -169,14 +169,14 @@ public class DbStore implements Store<User> {
                      user.setName(rst.getString(2));
                      user.setLogin(rst.getString(3));
                      user.setEmail(rst.getString(4));
-                     user.setRole_id(rst.getInt(5));
+                     user.setRoleid(rst.getInt(5));
                      user.setRes(rst.getTimestamp(6));
                      user.setPass(rst.getString(7));
-                     user.setCity_id(rst.getInt(8));
+                     user.setCityid(rst.getInt(8));
                  }
              }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return user;
     }
@@ -192,11 +192,11 @@ public class DbStore implements Store<User> {
              Statement st = connection.createStatement()) {
             st.executeUpdate("delete from users");
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         for (int i = 0; i < count; i++) {
-            user = new User("name" + rnd.nextInt(10000),"login" + rnd.nextInt(10000),
-                    "111", "email" + rnd.nextInt(10000) + "@test.com", 1111, rnd.nextInt(6)+1 );
+            user = new User("name" + rnd.nextInt(10000), "login" + rnd.nextInt(10000),
+                    "111", "email" + rnd.nextInt(10000) + "@test.com", 1111, rnd.nextInt(6) + 1);
 //            user.setRole_id(1111);
             this.add(user);
         }
@@ -212,27 +212,28 @@ public class DbStore implements Store<User> {
     public Integer checkLogin(final String login, final String pass) {
         Integer result = 0;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select role_id from users where login = ? and pass = ?")){
+             PreparedStatement st = con.prepareStatement("select role_id from users where login = ? and pass = ?")) {
             st.setString(1, login);
             st.setString(2, pass);
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
-                    result = rst.getInt(1);}
+                    result = rst.getInt(1);
+                }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
 
     /**
      * Метод реализует поиск роли по ее айди
-     * @param role_id айди роли
+     * @param roleid айди роли
      * @return Имя роли
      */
     @Override
-    public String roleByRoleId(int role_id) {
-        return nameById(role_id, "role");
+    public String roleByRoleId(int roleid) {
+        return nameById(roleid, "role");
     }
 
     /**
@@ -256,23 +257,24 @@ public class DbStore implements Store<User> {
 
     /**
      * Метод реализует авторизацию пользовтеля по его роли
-     * @param role_id айди роли
+     * @param roleid айди роли
      * @param link пусть к странице
      * @return успех
      */
     @Override
-    public boolean accessToPage(Integer role_id, String link) {
+    public boolean accessToPage(Integer roleid, String link) {
         boolean result = false;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select * from rights where role_id = ? and pages_id = ?")){
-            st.setInt(1, role_id);
+             PreparedStatement st = con.prepareStatement("select * from rights where role_id = ? and pages_id = ?")) {
+            st.setInt(1, roleid);
             st.setInt(2, this.pageidByPage(link));
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
-                    result = true;}
+                    result = true;
+                }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -294,7 +296,7 @@ public class DbStore implements Store<User> {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -314,7 +316,7 @@ public class DbStore implements Store<User> {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -336,7 +338,7 @@ public class DbStore implements Store<User> {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -370,17 +372,17 @@ public class DbStore implements Store<User> {
         return result;
     }
 
-    private boolean addCity(String city, Integer country_id) {
+    private boolean addCity(String city, Integer countryid) {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement("insert into city (name, country_id) values (?,?)")) {
             st.setString(1, city);
-            st.setInt(2, country_id);
+            st.setInt(2, countryid);
             if (st.executeUpdate() > 0) {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -394,19 +396,19 @@ public class DbStore implements Store<User> {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
 
     /**
      * Метод ищет город по айди
-     * @param city_id
+     * @param cityid
      * @return
      */
     @Override
-    public String cityByCityId(int city_id) {
-        return nameById(city_id, "city");
+    public String cityByCityId(int cityid) {
+        return nameById(cityid, "city");
     }
 
     /**
@@ -446,39 +448,39 @@ public class DbStore implements Store<User> {
     @Override
     public ArrayList<String> findAllCityByCountry(String country) {
         ArrayList<String> result = new ArrayList<>();
-        Integer country_id = countryidByCountry(country);
+        Integer countryid = countryidByCountry(country);
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select name from city where country_id = ?")){
-            st.setInt(1, country_id);
+             PreparedStatement st = con.prepareStatement("select name from city where country_id = ?")) {
+            st.setInt(1, countryid);
             try (ResultSet rst = st.executeQuery()) {
                 while (rst.next()) {
                     result.add(rst.getString(1));
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
 
     /**
      * Метод ищет страну по айди города
-     * @param city_id
+     * @param cityid
      * @return
      */
     @Override
-    public String countryByCityid(Integer city_id) {
+    public String countryByCityid(Integer cityid) {
         String country = null;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select country_id from city where id = ?")){
-            st.setInt(1, city_id);
+             PreparedStatement st = con.prepareStatement("select country_id from city where id = ?")) {
+            st.setInt(1, cityid);
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
                     country = nameById(rst.getInt(1), "country");
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return country;
     }
@@ -486,14 +488,15 @@ public class DbStore implements Store<User> {
     private Integer idByName(String name, String table, String col) {
         Integer result = null;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select " + col + " from " + table + " where name = ?")){
+             PreparedStatement st = con.prepareStatement("select " + col + " from " + table + " where name = ?")) {
             st.setString(1, name);
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
-                    result = rst.getInt(1);}
+                    result = rst.getInt(1);
+                }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -501,14 +504,15 @@ public class DbStore implements Store<User> {
     private String nameById(Integer id, String table) {
         String result = null;
         try (Connection con = SOURCE.getConnection();
-             PreparedStatement st = con.prepareStatement("select name from " + table + " where id = ?")){
+             PreparedStatement st = con.prepareStatement("select name from " + table + " where id = ?")) {
             st.setInt(1, id);
             try (ResultSet rst = st.executeQuery()) {
                 if (rst.next()) {
-                    result = rst.getString(1);}
+                    result = rst.getString(1);
+                }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -522,7 +526,7 @@ public class DbStore implements Store<User> {
                     result.add(rst.getString(1));
                 }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }

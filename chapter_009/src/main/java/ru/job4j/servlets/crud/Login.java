@@ -27,7 +27,7 @@ public class Login extends HttpServlet {
             User user = new User();
             user.setLogin(req.getParameter("login"));
             user.setPass(req.getParameter("pass"));
-            user.setRole_id(vserv.checkLogin(req.getParameter("login"), req.getParameter("pass")));
+            user.setRoleid(vserv.checkLogin(req.getParameter("login"), req.getParameter("pass")));
             req.getSession().setAttribute("fuser", user);
             try {
                 resp.sendRedirect("list");

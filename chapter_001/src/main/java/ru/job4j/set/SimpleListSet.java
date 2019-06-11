@@ -1,6 +1,6 @@
 package ru.job4j.set;
 
-import ru.job4j.List.LinkList;
+import ru.job4j.list.LinkList;
 import java.util.Iterator;
 
 /**
@@ -22,7 +22,7 @@ public class SimpleListSet<E> implements Iterable<E> {
                 break;
             }
         }
-        if (! result) {
+        if (!result) {
             inner.add(value);
         }
     }

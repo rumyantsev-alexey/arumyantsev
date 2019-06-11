@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * Класс подсчитывает сумму всех элементов в xml файле
  */
 public class SumSAX {
-    private static final Logger log = Logger.getLogger(StoreSQL.class.getName());
+    private static final Logger LOG = Logger.getLogger(StoreSQL.class.getName());
     private int sum = 0;
 
     /**
@@ -39,7 +39,7 @@ public class SumSAX {
             SAXParser saxParser = saxParsFact.newSAXParser();
             saxParser.parse(new File("ConvertXSQT.xml"), handler);
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            log.log(Level.WARNING, e.getMessage(), e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
         }
         return sum;
     }

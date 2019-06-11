@@ -1,4 +1,4 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 /**
  * Класс описывает узел для проверки цикличности
@@ -9,7 +9,7 @@ class SimpleNode<T> {
     int check = 0;
     SimpleNode<T> next;
 
-    SimpleNode (T value) {
+    SimpleNode(T value) {
         this.value = value;
     }
 }

@@ -18,8 +18,8 @@ public class ThreadsTest {
      * Тест подсчитывает количество пробелов и слов в предложении и потом проверяет полученные значения
      */
     public void testThreads() {
-        new Thread(t. new countSpaces()).start();
-        new Thread(t. new countWords()).start();
+        new Thread(t.new CountSpaces()).start();
+        new Thread(t.new CountWords()).start();
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
@@ -34,8 +34,8 @@ public class ThreadsTest {
      * Тест выводит ссобщение о начале подсчета, потом ожидает окончание потоков и выводит сообщение об окончании
      */
     public void testWaitOutput() {
-        Thread cs = new Thread(t. new countSpaces());
-        Thread cw = new Thread(t. new countWords());
+        Thread cs = new Thread(t.new CountSpaces());
+        Thread cw = new Thread(t.new CountWords());
         System.out.println("Begin count spaces");
         System.out.println("Begin count words");
         cs.start();

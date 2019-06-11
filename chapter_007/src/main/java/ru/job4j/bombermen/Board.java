@@ -21,9 +21,9 @@ public class Board {
      * @param sizeX размер по оси X
      * @param sizeY размер по оси Y
      */
-    Board (final int sizeX, final int sizeY, final int countWall) {
+    Board(final int sizeX, final int sizeY, final int countWall) {
         board = new ReentrantLock[sizeX][sizeY];
-        sizeXY = new Cell( sizeX,sizeY);
+        sizeXY = new Cell(sizeX, sizeY);
         this.countWall = countWall;
     }
 
@@ -35,8 +35,8 @@ public class Board {
 
         moveLock.lock();
 
-        for(x = 0; x < sizeXY.getX(); x++) {
-            for (y = 0; y < sizeXY.getY(); y++){
+        for (x = 0; x < sizeXY.getX(); x++) {
+            for (y = 0; y < sizeXY.getY(); y++) {
                 board[x][y] = new ReentrantLock();
             }
         }
@@ -106,7 +106,7 @@ public class Board {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < sizeXY.getX(); i++) {
             for (int j = 0; j < sizeXY.getY(); j++) {
-                s.append( board[j][i].isLocked() ? "X" : "0");
+                s.append(board[j][i].isLocked() ? "X" : "0");
             }
             s.append("\n");
         }

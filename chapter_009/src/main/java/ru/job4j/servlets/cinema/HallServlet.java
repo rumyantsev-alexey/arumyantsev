@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Класс реализует сервлет, который реализует часть controller моделе MVC
  */
 public class HallServlet extends HttpServlet {
-    private static final DBcinema db = DBcinema.getInstance();
+    private static final DBcinema DB = DBcinema.getInstance();
     private final AntiSwitch asw = new AntiSwitch();
 
     /**
@@ -45,7 +45,7 @@ public class HallServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(jsonData);
         resp.setContentType("text/plain");
-        resp.setCharacterEncoding( "UTF-8" );
+        resp.setCharacterEncoding("UTF-8");
         asw.run(actualObj.get("type").textValue(), out, actualObj);
     }
 
@@ -59,31 +59,31 @@ public class HallServlet extends HttpServlet {
     }
 
     private BiConsumer<PrintWriter, JsonNode> getZone() {
-        return (out, json) -> { writeObjectToWriter(out, db.findAllZones()); };
+        return (out, json) -> { writeObjectToWriter(out, DB.findAllZones()); };
     }
 
     private BiConsumer<PrintWriter, JsonNode> getSession() {
-        return (out, json) -> { writeObjectToWriter(out, db.findAllSessions()); };
+        return (out, json) -> { writeObjectToWriter(out, DB.findAllSessions()); };
     }
 
     private BiConsumer<PrintWriter, JsonNode> getBusy() {
-        return (out, json) -> { writeObjectToWriter(out, db.returnBusySeats(json.get("calendar").textValue(), json.get("zone").textValue(),
+        return (out, json) -> { writeObjectToWriter(out, DB.returnBusySeats(json.get("calendar").textValue(), json.get("zone").textValue(),
                 json.get("session").textValue())); };
     }
 
     private BiConsumer<PrintWriter, JsonNode> getCost() {
-        return (out, json) -> { writeObjectToWriter(out, db.costPerRow(json.get("zone").textValue(), json.get("session").textValue())); };
+        return (out, json) -> { writeObjectToWriter(out, DB.costPerRow(json.get("zone").textValue(), json.get("session").textValue())); };
     }
 
     private BiConsumer<PrintWriter, JsonNode> saleZakaz() {
         return (out, json) -> {
             String result = "Payment failed!!!";
-            if (db.addClient(json.get("name").textValue(), json.get("phone").textValue()) && db.addBusyp(json.get("data").get("calendar").textValue(),
+            if (DB.addClient(json.get("name").textValue(), json.get("phone").textValue()) && DB.addBusyp(json.get("data").get("calendar").textValue(),
                     json.get("data").get("seats"),
-                    db.colByName(json.get("data").get("session").textValue(), "session", "id"),
-                    db.colByName(json.get("data").get("zone").textValue(), "zone", "id"),
-                    db.colByName(json.get("name").textValue(), "clients", "id"))){
-                result= "Payment has passed";
+                    DB.colByName(json.get("data").get("session").textValue(), "session", "id"),
+                    DB.colByName(json.get("data").get("zone").textValue(), "zone", "id"),
+                    DB.colByName(json.get("name").textValue(), "clients", "id"))) {
+                result = "Payment has passed";
             }
             out.print(result);
         };

@@ -5,7 +5,7 @@ public class Session {
     private String time;
 
 
-    public Session(){
+    public Session() {
 
     }
 

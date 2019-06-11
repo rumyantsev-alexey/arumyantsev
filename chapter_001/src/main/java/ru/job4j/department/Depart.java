@@ -15,19 +15,19 @@ public class Depart implements Comparable {
     }
 
     // Конструктор по умолчанию
-    Depart() {
+    public Depart() {
     }
 
     // Конструктор с клонированием объекта
-    Depart (Depart dep) {
+    public Depart(Depart dep) {
         for (String str: dep.names) {
             names.add(str);
         }
     }
 
     // Конструктор из массива строк
-    Depart ( String[] strs) {
-        for ( String str : strs) {
+    public Depart(String[] strs) {
+        for (String str : strs) {
             names.add(str);
         }
     }
@@ -36,7 +36,7 @@ public class Depart implements Comparable {
         return names.size();
     }
 
-    public String get( int i) {
+    public String get(int i) {
         return names.get(i);
     }
 
@@ -75,10 +75,14 @@ public class Depart implements Comparable {
     @Override
     public boolean equals(Object o) {
         Depart depart = (Depart) o;
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || this.names.size()!= depart.names.size()) return false;
-        for ( int i = 0; i < this.names.size(); i++) {
-            if ( ! this.names.get(i).equals(depart.names.get(i))) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass() || this.names.size() != depart.names.size()) {
+            return false;
+        }
+        for (int i = 0; i < this.names.size(); i++) {
+            if (!this.names.get(i).equals(depart.names.get(i))) {
                 return false;
             }
         }

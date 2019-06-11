@@ -11,7 +11,7 @@ public class ValidateService {
     public static final int ADMIN_ID = 9999;
     public static final int USER_ID = 1111;
 
-    private static final ValidateService vserv = new ValidateService();
+    private static final ValidateService VSERV = new ValidateService();
 //    private MemoryStore ms = MemoryStore.getInstance();
     private DbStore ms = DbStore.getInstance();
     protected ValidateService() {
@@ -19,7 +19,7 @@ public class ValidateService {
     }
 
     public static ValidateService getInstance() {
-        return vserv;
+        return VSERV;
     }
 
     private void initData() {
@@ -30,15 +30,15 @@ public class ValidateService {
         ms.addPage("/chapter_009/create");
         ms.addPage("/chapter_009/edit");
         ms.addPage("/chapter_009/ajax");
-        ms.addLink("Admin","/chapter_009/list" );
-        ms.addLink("Admin","/chapter_009/create" );
-        ms.addLink("Admin","/chapter_009/edit" );
-        ms.addLink("Admin","/chapter_009/login" );
-        ms.addLink("Admin","/chapter_009/ajax" );
-        ms.addLink("User","/chapter_009/list" );
-        ms.addLink("User","/chapter_009/edit" );
-        ms.addLink("User","/chapter_009/login" );
-        ms.addLink("User","/chapter_009/ajax" );
+        ms.addLink("Admin", "/chapter_009/list");
+        ms.addLink("Admin", "/chapter_009/create");
+        ms.addLink("Admin", "/chapter_009/edit");
+        ms.addLink("Admin", "/chapter_009/login");
+        ms.addLink("Admin", "/chapter_009/ajax");
+        ms.addLink("User", "/chapter_009/list");
+        ms.addLink("User", "/chapter_009/edit");
+        ms.addLink("User", "/chapter_009/login");
+        ms.addLink("User", "/chapter_009/ajax");
         ms.addCityCountry("Russian", "Moscow");
         ms.addCityCountry("Russian", "Piter");
         ms.addCityCountry("Russian", "Samara");
@@ -55,8 +55,8 @@ public class ValidateService {
      * Метод генерирует определенное количество записей в списке
      * @param count количество
      */
-    public void generate (final int count) {
-        if(count > 0) {
+    public void generate(final int count) {
+        if (count > 0) {
             ms.generate(count);
         }
     }
@@ -67,7 +67,7 @@ public class ValidateService {
      * @return успех
      */
     public boolean add(String name) {
-        return name != null && ms.add(new User(name,null, null,  null, null, null));
+        return name != null && ms.add(new User(name, null, null,  null, null, null));
     }
 
     /**
@@ -123,8 +123,8 @@ public class ValidateService {
      * @param email емейл
      * @return
      */
-    public boolean addFull(final String name, final String login, final String pass, final String email, final Integer role_id, final Integer city_id) {
-        return name != null && ms.add(new User(name, login, pass, email, role_id, city_id));
+    public boolean addFull(final String name, final String login, final String pass, final String email, final Integer roleid, final Integer cityid) {
+        return name != null && ms.add(new User(name, login, pass, email, roleid, cityid));
     }
 
     /**
@@ -134,16 +134,16 @@ public class ValidateService {
      * @return уровень доступа
      */
     public Integer checkLogin(final String login, final String pass) {
-        return  (login != null &&  pass != null) ? ms.checkLogin(login, pass): 0;
+        return  (login != null &&  pass != null) ? ms.checkLogin(login, pass) : 0;
     }
 
     /**
      * Метод реализует поиск роли по ее айди
-     * @param role_id айди
+     * @param roleid айди
      * @return имя роли
      */
-    public String roleByRoleId(Integer role_id) {
-        return ms.roleByRoleId(role_id);
+    public String roleByRoleId(Integer roleid) {
+        return ms.roleByRoleId(roleid);
     }
 
     /**
@@ -165,21 +165,21 @@ public class ValidateService {
 
     /**
      * Метод реализует авторизацию пользовтеля по его роли
-     * @param role_id айди роли
+     * @param roleid айди роли
      * @param link пусть к странице
      * @return успех
      */
-    public boolean access(Integer role_id, String link) {
-        return ms.accessToPage(role_id, link);
+    public boolean access(Integer roleid, String link) {
+        return ms.accessToPage(roleid, link);
     }
 
     /**
      * Метод реализует поиск города по его айди
-     * @param city_id
+     * @param cityid
      * @return
      */
-    public String cityByCityId(int city_id) {
-        return ms.cityByCityId(city_id);
+    public String cityByCityId(int cityid) {
+        return ms.cityByCityId(cityid);
     }
 
     /**
@@ -210,10 +210,10 @@ public class ValidateService {
 
     /**
      * Метод выдает страну по айди города
-     * @param city_id
+     * @param cityid
      * @return
      */
-    public String countryByCityid(Integer city_id) {
-        return ms.countryByCityid(city_id);
+    public String countryByCityid(Integer cityid) {
+        return ms.countryByCityid(cityid);
     }
     }

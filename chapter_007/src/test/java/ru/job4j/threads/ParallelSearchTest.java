@@ -15,11 +15,11 @@ public class ParallelSearchTest {
      * Метод тестирует поиск файлов с конкретными параметрами
      */
     public void testParallelSearch() {
-        ParallelSearch ps = new ParallelSearch("d:\\temp\\1111", "Fli",  Arrays.asList("ics","iii"));
+        ParallelSearch ps = new ParallelSearch("d:\\temp\\1111", "Fli",  Arrays.asList("ics", "iii"));
         assertThat(ps.isFinish(), is(false));
         ps.init();
         while (!ps.isFinish()) {
-
+            ps.isFinish();
         }
         try {
             Thread.sleep(500);

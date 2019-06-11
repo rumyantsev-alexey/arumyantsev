@@ -7,14 +7,14 @@ import java.util.function.BiPredicate;
  * Класс реализующий механизм AntiSwitch
  */
 public class AntiSwitch {
-    private HashMap<String, BiPredicate<Integer,String>> list = new HashMap<>();
+    private HashMap<String, BiPredicate<Integer, String>> list = new HashMap<>();
 
     /**
      * Метод реализует сохранение значения и соответствующего ему действия
      * @param choose значение
      * @param action действие
      */
-    public void load(String choose, BiPredicate<Integer,String> action) {
+    public void load(String choose, BiPredicate<Integer, String> action) {
         list.put(choose, action);
     }
 

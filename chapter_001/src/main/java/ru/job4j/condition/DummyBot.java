@@ -7,7 +7,7 @@ public class DummyBot {
      * @return Ответ.
      */
     public String answer(String question) {
-        switch (question){
+        switch (question) {
             case "Привет, Бот.":
                 return "Привет, умник.";
             case "Пока.":

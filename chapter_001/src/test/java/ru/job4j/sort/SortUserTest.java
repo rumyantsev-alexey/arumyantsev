@@ -20,12 +20,12 @@ public class SortUserTest {
     @Test
     public void getConverUsersListToTree() {
         List<User> users = new ArrayList<>();
-        users.add( new User("igorek", 35));
-        users.add( new User("alex", 15));
-        users.add( new User("svetlana", 25));
-        users.add( new User("anton", 33));
+        users.add(new User("igorek", 35));
+        users.add(new User("alex", 15));
+        users.add(new User("svetlana", 25));
+        users.add(new User("anton", 33));
         TreeSet<User> result = SortUser.sort(users);
-        assertThat(result.first().equals(new User ("alex",15)), is(true));
+        assertThat(result.first().equals(new User("alex", 15)), is(true));
     }
 
     /**
@@ -34,12 +34,12 @@ public class SortUserTest {
     @Test
     public void getUsersListSortByNameLenght() {
         List<User> users = new ArrayList<>();
-        users.add( new User("igorek", 35));
-        users.add( new User("alex", 15));
-        users.add( new User("svetlana", 25));
-        users.add( new User("anton", 33));
+        users.add(new User("igorek", 35));
+        users.add(new User("alex", 15));
+        users.add(new User("svetlana", 25));
+        users.add(new User("anton", 33));
         List<User> result = SortUser.sortNameLength(users);
-        assertThat(result.get(2).equals(new User ("igorek",35)), is(true));
+        assertThat(result.get(2).equals(new User("igorek", 35)), is(true));
     }
 
     /**
@@ -48,15 +48,15 @@ public class SortUserTest {
     @Test
     public void getUsersListSortByAllFields() {
         List<User> users = new ArrayList<>();
-        users.add( new User("igorek", 35));
-        users.add( new User("alex", 15));
-        users.add( new User("svetlana", 25));
-        users.add( new User("anton", 33));
-        users.add( new User("alex", 12));
-        users.add( new User("svetlana", 27));
-        users.add( new User("anton", 30));
+        users.add(new User("igorek", 35));
+        users.add(new User("alex", 15));
+        users.add(new User("svetlana", 25));
+        users.add(new User("anton", 33));
+        users.add(new User("alex", 12));
+        users.add(new User("svetlana", 27));
+        users.add(new User("anton", 30));
         List<User> result = SortUser.sortByAllFields(users);
-        assertThat(result.get(3).equals(new User ("anton",33)), is(true));
+        assertThat(result.get(3).equals(new User("anton", 33)), is(true));
     }
 
 }

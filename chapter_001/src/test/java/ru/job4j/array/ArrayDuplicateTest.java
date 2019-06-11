@@ -10,9 +10,9 @@ public class ArrayDuplicateTest {
     @Test
     public void whenRemoveDuplicatesThenArrayWithoutDuplicate() {
         //напишите здесь тест, проверяющий удаление дубликатов строк из массива строк.
-        String[] arg={"Привет", "Мир", "Привет", "Супер", "Мир"};
-        String[] res= {"Привет", "Мир", "Супер"};
-        ArrayDuplicate ss= new ArrayDuplicate();
-        assertThat(ss.remove(arg),arrayContainingInAnyOrder(res));
+        String[] arg = {"Привет", "Мир", "Привет", "Супер", "Мир"};
+        String[] res = {"Привет", "Мир", "Супер"};
+        ArrayDuplicate ss = new ArrayDuplicate();
+        assertThat(ss.remove(arg), arrayContainingInAnyOrder(res));
     }
 }

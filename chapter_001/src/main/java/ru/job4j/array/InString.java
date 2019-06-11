@@ -10,16 +10,17 @@ public class InString {
      *
      */
 
-    boolean contains(String origin, String sub){
-        char[] ch_origin=origin.toCharArray();
-        char[] ch_sub=sub.toCharArray();
-        boolean subs=false;
-        if(origin!=null&&sub!=null&&origin.length()>=sub.length()){
-            for(int i=0; !subs && i<(origin.length()-sub.length());  i++){
-                if (ch_sub[0]==ch_origin[i]){
-                    subs=true;
-                    for(int j=1; subs&&j<sub.length();j++)
-                        subs=ch_sub[j]==ch_origin[i+j];
+    boolean contains(String origin, String sub) {
+        char[] chorigin = origin.toCharArray();
+        char[] chsub = sub.toCharArray();
+        boolean subs = false;
+        if (origin != null && sub != null && origin.length() >= sub.length()) {
+            for (int i = 0; !subs && i < (origin.length() - sub.length());  i++) {
+                if (chsub[0] == chorigin[i]) {
+                    subs = true;
+                    for (int j = 1; subs && j < sub.length(); j++) {
+                        subs = chsub[j] == chorigin[i + j];
+                    }
                 }
             }
         }

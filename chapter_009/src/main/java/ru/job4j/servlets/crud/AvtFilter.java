@@ -17,13 +17,13 @@ public class AvtFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession ses = req.getSession();
         User user = (User) ses.getAttribute("fuser");
-        if (user != null && vserv.access(user.getRole_id(), req.getRequestURI())) {
+        if (user != null && vserv.access(user.getRoleid(), req.getRequestURI())) {
             filterChain.doFilter(request, response);
             // Set standard HTTP/1.1 no-cache headers.
-            ((HttpServletResponse) response ).setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+            ((HttpServletResponse) response).setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
         } else {
             try {
-                ((HttpServletResponse) response ).sendError(403, req.getRequestURI());
+                ((HttpServletResponse) response).sendError(403, req.getRequestURI());
             } catch (IllegalStateException e) {
 
             }

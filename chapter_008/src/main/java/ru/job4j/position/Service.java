@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Service {
     private static String driver;
     private static String url;
-    private static final Logger log = Logger.getLogger(Service.class.getName());
+    private static final Logger LOG = Logger.getLogger(Service.class.getName());
 
     /**
      * Конструктор читает свойства, инициализирует драйвера и проверяет наличие таблицы
@@ -30,10 +30,10 @@ public class Service {
                  Statement st = con.createStatement()) {
                 st.execute("create table if not exists task (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(200), position INTEGER UNIQUE );");
             } catch (SQLException e) {
-                log.log(Level.WARNING, "SQL error", e);
+                LOG.log(Level.WARNING, "SQL error", e);
             }
         } catch (IOException | ClassNotFoundException e) {
-            log.log(Level.WARNING, e.getMessage(), e);
+            LOG.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
@@ -57,7 +57,7 @@ public class Service {
             }
             st.executeBatch();
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
     }
 
@@ -70,7 +70,7 @@ public class Service {
              Statement st = con.createStatement()) {
             st.executeUpdate("delete from task;");
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class Service {
                 result = true;
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -124,33 +124,33 @@ public class Service {
      * @return успех
      */
     public boolean up(final String name, final int position) {
-        String name_prv = null;
-        int position_prv = 0;
+        String nameprv = null;
+        int positionprv = 0;
         boolean result = false;
         try (Connection con = DriverManager.getConnection(url);
              Statement st = con.createStatement();
              ResultSet rst = st.executeQuery("select * from task order by position")) {
             while (rst.next()) {
-                if (position_prv > 0 && rst.getString(2).equals(name) && rst.getInt(3) == position) {
+                if (positionprv > 0 && rst.getString(2).equals(name) && rst.getInt(3) == position) {
                     try (PreparedStatement st2 = con.prepareStatement("update task set name = ? where position = ?")) {
                         st2.setString(1, name);
-                        st2.setInt(2, position_prv);
+                        st2.setInt(2, positionprv);
                         st2.executeUpdate();
-                        st2.setString(1, name_prv);
+                        st2.setString(1, nameprv);
                         st2.setInt(2, position);
                         st2.executeUpdate();
                         result = true;
                         break;
                     } catch (SQLException e) {
-                        log.log(Level.WARNING, "SQL error", e);
+                        LOG.log(Level.WARNING, "SQL error", e);
                     }
                 } else {
-                    name_prv = rst.getString(2);
-                    position_prv = rst.getInt(3);
+                    nameprv = rst.getString(2);
+                    positionprv = rst.getInt(3);
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -182,7 +182,7 @@ public class Service {
                                 result = true;
                                 break;
                             } catch (SQLException e) {
-                                log.log(Level.WARNING, "SQL error", e);
+                                LOG.log(Level.WARNING, "SQL error", e);
                             }
                         }
                     } else {
@@ -191,7 +191,7 @@ public class Service {
                 } while (flag);
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }
@@ -208,7 +208,7 @@ public class Service {
                 System.out.println(rst.getInt(1) + " " + rst.getString(2) + " " + rst.getInt(3));
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
     }
 
@@ -228,7 +228,7 @@ public class Service {
                 }
             }
         } catch (SQLException e) {
-            log.log(Level.WARNING, "SQL error", e);
+            LOG.log(Level.WARNING, "SQL error", e);
         }
         return result;
     }

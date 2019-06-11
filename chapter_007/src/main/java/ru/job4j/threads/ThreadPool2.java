@@ -24,7 +24,7 @@ public class ThreadPool2 {
         public void run() {
             System.out.println("trans module starting...");
             Work work = null;
-            while(!Thread.currentThread().isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
                     work = tempPreQueue.take();
                 } catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class ThreadPool2 {
             Optional<Work> work;
             System.out.println("clear module starting...");
             while (!Thread.currentThread().isInterrupted()) {
-                work = workPool.stream().filter(s -> s.work.getState()== State.TERMINATED).findFirst();
+                work = workPool.stream().filter(s -> s.work.getState() == State.TERMINATED).findFirst();
                 if (work.isPresent() && workPool.remove(work.get())) {
                     System.out.println(String.format("%s ended", work.get().work.getName()));
                 }
@@ -78,7 +78,7 @@ public class ThreadPool2 {
     static class Work {
         private Thread work;
 
-        Work (Thread w) {
+        Work(Thread w) {
             work = w;
         }
     }
@@ -97,7 +97,7 @@ public class ThreadPool2 {
      */
     public void stop() {
         while (!isEmpty()) {
-
+            isEmpty();
         }
         runPool.interrupt();
         clearPool.interrupt();

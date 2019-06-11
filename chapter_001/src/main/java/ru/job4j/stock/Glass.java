@@ -44,11 +44,13 @@ public class Glass {
         if (bid != null && bid.getBook().equals(this.book)) {
             switch (bid.getAction()) {
                 case ASK:   asks.add(bid);
+                            result = true;
                             break;
                 case BID:   bids.add(bid);
+                            result = true;
                             break;
+                default:    break;
             }
-            result = true;
         }
         return result;
     }
@@ -58,7 +60,7 @@ public class Glass {
      * @param bid заявка
      * @return успешность действия
      */
-    private boolean delete (Bid bid) {
+    private boolean delete(Bid bid) {
         boolean result = false;
         if (bid != null && bid.getBook().equals(this.book)) {
             switch (bid.getAction()) {
@@ -66,6 +68,7 @@ public class Glass {
                             break;
                 case BID:   result = bids.remove(bid);
                             break;
+                default:    break;
             }
         }
         return result;
@@ -76,7 +79,7 @@ public class Glass {
      * @param bid заявка с заданные параметры
      * @return найденная заявка
      */
-    public Bid findByBid (Bid bid) {
+    public Bid findByBid(Bid bid) {
         Bid result = null;
         if (bid != null && bid.getBook().equals(this.book) && (asks.indexOf(bid) != -1 || bids.indexOf(bid) != -1)) {
             switch (bid.getAction()) {
@@ -84,6 +87,7 @@ public class Glass {
                     break;
                 case BID:   result = bids.get(bids.indexOf(bid));
                     break;
+                default:    break;
             }
         }
         return result;
@@ -95,11 +99,11 @@ public class Glass {
     public void shakeGlass() {
         Collections.sort(bids);
         Collections.sort(asks);
-        while (! asks.isEmpty() && ! bids.isEmpty() && asks.peekFirst().getPrice() >= bids.peekLast().getPrice()) {
+        while (!asks.isEmpty() && !bids.isEmpty() && asks.peekFirst().getPrice() >= bids.peekLast().getPrice()) {
             Bid ask = asks.peekFirst();
             Bid bid = bids.peekLast();
             int delta =  ask.getVolume() - bid.getVolume();
-            if ( delta == 0) {
+            if (delta == 0) {
                 asks.removeFirst();
                 bids.removeLast();
             } else {
@@ -123,8 +127,8 @@ public class Glass {
     private LinkedList<Bid> normalGlassForPrint(LinkedList<Bid> glass) {
         int i = 1;
         while (glass.size() > 1 && i < glass.size()) {
-            if ( glass.get(i).getAction().equals(glass.get(i-1).getAction()) && glass.get(i).getPrice()==glass.get(i-1).getPrice()) {
-                glass.get(i-1).setVolume(glass.get(i-1).getVolume() + glass.get(i).getVolume());
+            if (glass.get(i).getAction().equals(glass.get(i - 1).getAction()) && glass.get(i).getPrice() == glass.get(i - 1).getPrice()) {
+                glass.get(i - 1).setVolume(glass.get(i - 1).getVolume() + glass.get(i).getVolume());
                 glass.remove(i);
             } else {
                 i++;
@@ -149,7 +153,7 @@ public class Glass {
         Collections.sort(glass);
         normalGlassForPrint(glass);
         str.append(String.format("Emmitent: %s\n", book));
-        str.append(String.format("%15s%15s%15s\n","ASK","VALUME","BID"));
+        str.append(String.format("%15s%15s%15s\n", "ASK", "VALUME", "BID"));
         for (Bid bid: glass) {
             str.append(bid.toString());
         }

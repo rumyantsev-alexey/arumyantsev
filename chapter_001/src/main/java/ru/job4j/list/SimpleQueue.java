@@ -1,4 +1,4 @@
-package ru.job4j.List;
+package ru.job4j.list;
 
 import java.util.NoSuchElementException;
 
@@ -27,7 +27,7 @@ public class SimpleQueue<T> {
         if (queue.size() > 0) {
             T result = queue.getFirstNode().data;
             queue.setFirstNode(queue.getFirstNode().right);
-            queue.setSize(queue.size()-1);
+            queue.setSize(queue.size() - 1);
             return result;
         } else {
             throw new NoSuchElementException();

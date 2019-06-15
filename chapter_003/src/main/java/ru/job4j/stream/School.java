@@ -13,6 +13,6 @@ public class School {
                 result.add(st);
             }
         }
-        return null;
+        return result;
     }
 }

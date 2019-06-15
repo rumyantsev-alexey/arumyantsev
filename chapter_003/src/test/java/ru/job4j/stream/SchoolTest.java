@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 
 public class SchoolTest {
     private List<Student> students = new ArrayList<>();
+    private School school = new School();
 
     @Before
     public  void generateStudent() {
@@ -24,19 +25,19 @@ public class SchoolTest {
 
     @Test
     public void getStudentsIn10A() {
-        List<Student> result = students.stream().filter((x) -> (x.getScore() >= 70) && (x.getScore() <= 100)).collect(Collectors.toList());
+        List<Student> result = school.collect(students, x -> (x.getScore() >= 70) && (x.getScore() <= 100));
         assertTrue(result.get(1).getScore() >= 70 && result.get(1).getScore() <= 100);
     }
 
     @Test
     public void getStudentsIn10B() {
-        List<Student> result = students.stream().filter((x) -> (x.getScore() >= 50) && (x.getScore() < 70)).collect(Collectors.toList());
+        List<Student> result = school.collect(students, x -> (x.getScore() >= 50) && (x.getScore() < 70));
         assertTrue(result.get(1).getScore() >= 50 && result.get(1).getScore() < 70);
     }
 
     @Test
     public void getStudentsIn10V() {
-        List<Student> result = students.stream().filter((x) -> (x.getScore() >= 0) && (x.getScore() < 50)).collect(Collectors.toList());
+        List<Student> result = school.collect(students, x -> (x.getScore() >= 0) && (x.getScore() < 50));
         assertTrue(result.get(1).getScore() >= 0 && result.get(1).getScore() < 50);
     }
 }

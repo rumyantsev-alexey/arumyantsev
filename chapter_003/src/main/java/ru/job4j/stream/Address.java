@@ -1,44 +1,28 @@
 package ru.job4j.stream;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+@EqualsAndHashCode
+@AllArgsConstructor
 public class Address {
 
+    @Getter
+    @Setter
     private String city;
 
+    @Getter
+    @Setter
     private String street;
 
+    @Getter
+    @Setter
     private int home;
 
+    @Getter
+    @Setter
     private int apartment;
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public int getHome() {
-        return home;
-    }
-
-    public void setHome(int home) {
-        this.home = home;
-    }
-
-    public int getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(int apartment) {
-        this.apartment = apartment;
-    }
 }

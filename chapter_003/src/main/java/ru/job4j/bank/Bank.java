@@ -102,8 +102,8 @@ public class Bank {
         if (srcacc.getValue() >= amount) {
             srcacc.setValue(srcacc.getValue() - amount);
             dstacc.setValue(dstacc.getValue() + amount);
-            srcAccounts.set(srcAccounts.indexOf(srcacc), srcacc);
-            dstAccounts.set(dstAccounts.indexOf(dstacc), dstacc);
+//            srcAccounts.set(srcAccounts.indexOf(srcacc), srcacc);
+//            dstAccounts.set(dstAccounts.indexOf(dstacc), dstacc);
         } else {
             result = false;
         }
@@ -152,7 +152,7 @@ public class Bank {
                 }
             }
         } */
-        Optional<User> result = users.keySet().stream().filter(k -> users.get(k).stream().anyMatch(a -> a.getRequisites().equals(requisite))).findFirst();
+        Optional<User> result = users.keySet().stream().filter(k -> users.get(k).contains(new Account(requisite, 0))).findFirst();
         if (result.isEmpty()) {
             throw new NoSuchUserException();
         }

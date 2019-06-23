@@ -43,9 +43,21 @@ public class SchoolTest {
 
     @Test
     public void converListStudentsToMapStudentsTest() {
-        Map<String, Student> studentsmap = new HashMap<>();
-        studentsmap = students.stream().collect(Collectors.toMap(Student::getName, s -> s, (name1, name2) -> name2));
+        Map<String, Student> studentsmap = students.stream().collect(Collectors.toMap(Student::getName, s -> s, (name1, name2) -> name2));
         assertEquals(23, studentsmap.get("Petrov").getScore());
         assertEquals(65, studentsmap.get("Ivanov").getScore());
     }
+
+    @Test
+    public void getStudentsWhenScoreMoreNumber() {
+        students.set(10, null);
+        students.set(20, null);
+        students.set(30, null);
+        students.set(40, null);
+        students.set(50, null);
+        List<Student> result = school.levelOf(students, 50);
+        assertTrue(result.get(1).getScore() > 50);
+        assertTrue(result.get(0).getScore() >= result.get(1).getScore());
+    }
+
 }

@@ -2,11 +2,7 @@ package ru.job4j.availability;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.function.Predicate.not;
 
 /**
  * Класс для анализа файла лога сосотояний сервера

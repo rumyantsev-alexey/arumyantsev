@@ -14,5 +14,14 @@
     <artifactId>chapter_004</artifactId>
     <version>1.0</version>
 
-    
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.28.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>

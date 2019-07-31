@@ -52,7 +52,7 @@ public class InteractCalc {
     }
 
     public static void main(String[] args) {
-        RPNCalc calc = new SimpleRPNCalc();
+        RPNCalc calc = new TrigRPNCalc();
         runCalc(calc);
     }
 }

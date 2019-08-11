@@ -1,14 +1,26 @@
 package ru.job4j.rpncalc;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
  * Класс функционированя интерфейса пользователя для калькуляторов типа RPN
  */
 public class InteractCalc {
+    private final RPNCalc calc;
+    private final InputStream input;
+    private final PrintStream output;
 
-    public static void runCalc(RPNCalc calc) {
-        Scanner scn = new Scanner(System.in);
+    public InteractCalc(final RPNCalc calc, final InputStream input, final PrintStream output) {
+        this.calc = calc;
+        this.input = input;
+        this.output = output;
+    }
+
+    public void runCalc() {
+        Scanner scn = new Scanner(input);
+        System.setOut(output);
         System.out.println("Калькулятор основанный на обратной польской записи:");
         System.out.printf("\tвведите ? для списка комманд калькулятора%n\tили lsto для перевыполнения последней операции%n\tили q для выхода%n%n");
         Boolean exit = false;
@@ -48,11 +60,11 @@ public class InteractCalc {
         } while (!exit);
 
         System.out.printf("%nКалькулятор калькулятор закончил работу !!!%n");
-
+        System.setOut(System.out);
     }
 
     public static void main(String[] args) {
-        RPNCalc calc = new TrigRPNCalc();
-        runCalc(calc);
+        InteractCalc calc = new InteractCalc(new TrigRPNCalc(), System.in, System.out);
+        calc.runCalc();
     }
 }

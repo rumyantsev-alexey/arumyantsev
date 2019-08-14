@@ -10,6 +10,11 @@ public class Trash extends Store<Food> {
     public Trash(String name) {
         super(name);
     }
+
+    public Trash(String name, int capacity) {
+        super(name, capacity);
+    }
+
     @Override
     boolean accept(Food food, Date check) {
         boolean result = false;

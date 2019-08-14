@@ -11,6 +11,9 @@ public class Warehouse extends Store<Food> {
         super(name);
     }
 
+    public Warehouse(String name, int capacity) {
+        super(name, capacity);
+    }
     @Override
     boolean accept(Food food, Date check) {
         boolean result = false;

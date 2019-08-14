@@ -11,6 +11,10 @@ public final class Shop extends Store<Food> {
         super(name);
     }
 
+    public Shop(String name, int capacity) {
+        super(name, capacity);
+    }
+
     @Override
     boolean accept(Food food, Date check) {
         boolean result = false;

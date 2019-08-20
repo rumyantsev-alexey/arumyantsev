@@ -1,7 +1,5 @@
 package ru.job4j.foods;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -20,16 +18,15 @@ public class Recycle extends Store<Food> {
         super(name, capacity);
         this.trash = trash;
     }
+
     @Override
     boolean accept(Food food, Date check) {
         boolean result = false;
         try {
-            Method recycle = food.getClass().getMethod("isCanReproduct");
-            result = trash.accept(food, check) && (Boolean) recycle.invoke(food) && this.checkFree();
-
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            FoodAdv fooda = (FoodAdv) food;
+            result = trash.accept(food, check) && fooda.isCanReproduct() && this.checkFree();
+        } catch (ClassCastException e) {
         }
-
-        return result;
+            return result;
     }
 }

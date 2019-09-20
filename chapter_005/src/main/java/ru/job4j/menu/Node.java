@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * Класс описывает пункт меню
  */
 @NoArgsConstructor
-public class Node {
+public class Node implements iNode{
     @Getter
     private String text;
 
@@ -24,6 +24,7 @@ public class Node {
     private  Node parent = null;
 
     @Getter
+    @Setter
     private List<Node> childs = new ArrayList<>();
 
     @Setter
@@ -37,7 +38,7 @@ public class Node {
      * Метод добавляет к пункту меню его дочерний пункт
      * @param node дочерний узел
      */
-    public void addChild(final Node node) {
+    private void addChild(final Node node) {
         if (node != null) {
             childs.add(node);
             node.setNumber(childs.size());
@@ -58,5 +59,10 @@ public class Node {
      */
     public void doOperation() {
         todo.accept(this.text);
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" + text + '}';
     }
 }

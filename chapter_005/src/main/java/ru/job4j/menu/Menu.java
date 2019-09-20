@@ -3,17 +3,25 @@ package ru.job4j.menu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Класс реализует меню и его представление
  */
 @NoArgsConstructor
-public class Menu {
+public class Menu implements iMenu {
 
     @Getter
     private Node root = new Node();
+
+    /**
+     * Метод создвет меню из списка связвнных пунктов меню
+     * @param menu список
+     */
+    @Override
+    public void createMenu(List<Node> menu) {
+        this.root.addNodes(menu);
+    }
 
     /**
      * Метод отображает номер пункта меню в меню (зависит от местоположения в меню)
@@ -32,24 +40,42 @@ public class Menu {
 
     /**
      * Метод преобразует дерево меню в список узлов
-     * @param root корень меню
      * @return список всех пунктов меню
      */
-    protected List<Node> getAllMenu(final Node root) {
+    @Override
+    public List<Node> getAllMenu() {
+        List<Node> rlist;
         List<Node> result = new ArrayList<>();
-        if (root.getParent() != null) {
-            result.add(root);
-        }
-        for (Node nnn: root.getChilds()) {
-            result.addAll(this.getAllMenu(nnn));
+        Deque<Node> stack = new ArrayDeque<>();
+        stack.add(root);
+        do {
+            Node cur = stack.pop();
+            rlist = cur.getChilds();
+            if (rlist.size() > 0) {
+                rlist = this.reverseOrder(rlist);
+                rlist.forEach(stack::push);
+            }
+            result.add(cur);
+        } while(stack.size() > 0);
+        result.remove(0);
+        return result;
+    }
+
+    private <E> List<E> reverseOrder(List<E> list) {
+        List<E> result = new ArrayList<>();
+        if (list.size() > 0) {
+            for (int i = list.size() - 1; i > -1; i--) {
+                result.add(list.get(i));
+            }
         }
         return result;
     }
 
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        List<Node> menu = this.getAllMenu(this.root);
+        List<Node> menu = this.getAllMenu();
         for (Node nnn: menu) {
             String num = this.getNumberMenuPoint(nnn);
             int lvl = num.split("\\.").length;

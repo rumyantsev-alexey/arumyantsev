@@ -9,7 +9,7 @@ import java.util.*;
  * Класс реализует меню и его представление
  */
 @NoArgsConstructor
-public class Menu implements iMenu {
+public class Menu implements IMenu {
 
     @Getter
     private Node root = new Node();
@@ -56,7 +56,7 @@ public class Menu implements iMenu {
                 rlist.forEach(stack::push);
             }
             result.add(cur);
-        } while(stack.size() > 0);
+        } while (stack.size() > 0);
         result.remove(0);
         return result;
     }

@@ -1,5 +1,5 @@
 package ru.job4j.menu;
 
-public interface iDoMenu {
+public interface IDoMenu {
     Node runMenu();
 }

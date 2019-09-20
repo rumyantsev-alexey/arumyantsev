@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * Класс описывает пункт меню
  */
 @NoArgsConstructor
-public class Node implements iNode{
+public class Node implements INode {
     @Getter
     private String text;
 

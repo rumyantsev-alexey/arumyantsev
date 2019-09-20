@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Класс описывает работу с меню
  */
-public class DoMenu implements iDoMenu {
+public class DoMenu implements IDoMenu {
     private final Menu menu;
     private final Map<String, Node> choose = new HashMap<>();
     private final InputStream in;
